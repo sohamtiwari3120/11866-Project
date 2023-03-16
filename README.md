@@ -1,3 +1,6 @@
+# 11866-Project
+We would like to cite the original respository from which we have forked this [repository](https://github.com/evonneng/learning2listen). 
+
 # Learning to Listen: Modeling Non-Deterministic Dyadic Facial Motion
 This repository contains a pytorch implementation of "Learning to Listen: Modeling Non-Deterministic Dyadic Facial Motion"
 
