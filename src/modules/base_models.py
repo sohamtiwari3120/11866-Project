@@ -264,7 +264,7 @@ class PositionEmbedding(nn.Module):
 
 
 class CrossModalLayer(nn.Module):
-  """Cross Modal Layer inspired by FACT [Li 2021]"""
+  """Cross Modal Layer inspired by FACT [Li 2021]. FACT - Full Attention Cross Modal Transformer https://arxiv.org/pdf/2101.08779.pdf"""
 
   def __init__(self, config):
     super().__init__()

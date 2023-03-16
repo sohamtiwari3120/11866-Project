@@ -1,3 +1,7 @@
+"""
+This file contains code to train the VQ-VAE encoder, the quantizer and the corresponding decoder (quant_index -> image) for the listener. This takes a lot of time to train. This is essentially to obtain the 'codebook' discrete latent representations for a listener.
+"""
+
 import argparse
 import json
 import logging

@@ -83,6 +83,20 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np,
               "audio_full": audio_full}
     return inputs, listener_future_index, raw_listener, btc
 
+def load_transcripts(path):
+    """ Function to load all the transcript files and return a dictionary of full texts.
+
+    Parameters
+    ----------
+    path: str
+        path to directory containing only transcript text files
+    """
+    transcript_fname_text_dict = {}
+    for transcript_fp in os.listdir(transcripts_dir_fp):
+        with open(transcript_fp, "r") as f:
+            transcript_fname_text_dict[os.path.basename(transcript_fp)] = {"full_text": f.read().strip()}
+    print(f"Loaded {len(transcript_fname_text_dict)} transcripts from {transcripts_dir_fp}.\n")
+    return transcript_fname_text_dict
 
 def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
                    smooth=False, speaker=None, segment_tag='', num_out=None):
@@ -115,6 +129,10 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
     all_speakers = ['conan', 'fallon', 'kimmel', 'stephen', 'trevor'] \
                     if speaker is None else [speaker]
     test_X = None
+    transcripts_dir_fp = f"{base_dir}/data/{speaker}/transcripts/"
+    transcript_fname_text_dict = load_transcripts(transcripts_dir_fp)
+
+
     for speaker in all_speakers:
         fp = '{}/data/{}/test/p{}_speak_files_clean_deca{}.npy'\
                             .format(base_dir, speaker, 1-out_num, segment_tag)

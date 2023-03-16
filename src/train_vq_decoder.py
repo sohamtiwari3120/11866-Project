@@ -173,6 +173,8 @@ def main(args):
             '{}{}_best.pth'.format(l_vqconfig['tag'], l_vqconfig['pipeline'])
     l_vq_model, _, _ = setup_vq_transformer(args, l_vqconfig,
                                             load_path=l_model_path)
+                                            
+    # NOTE: freezing the layers of the VQ-VAE model, so that the codebook's discrete representations do not change during training.
     for param in l_vq_model.parameters():
         param.requires_grad = False
     l_vq_model.eval()
