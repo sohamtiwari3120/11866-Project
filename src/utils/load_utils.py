@@ -83,19 +83,19 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np,
               "audio_full": audio_full}
     return inputs, listener_future_index, raw_listener, btc
 
-def load_transcripts(path):
+def load_transcripts(transcripts_dir_fp):
     """ Function to load all the transcript files and return a dictionary of full texts.
 
     Parameters
     ----------
-    path: str
+    transcripts_dir_fp: str
         path to directory containing only transcript text files
     """
     transcript_fname_text_dict = {}
     for transcript_fp in os.listdir(transcripts_dir_fp):
-        with open(transcript_fp, "r") as f:
+        with open(os.path.join(transcripts_dir_fp, transcript_fp), "r") as f:
             transcript_fname_text_dict[os.path.basename(transcript_fp)] = {"full_text": f.read().strip()}
-    print(f"Loaded {len(transcript_fname_text_dict)} transcripts from {transcripts_dir_fp}.\n")
+    print(f"Loaded {len(transcript_fname_text_dict)} transcripts from {transcripts_dir_fp}.")
     return transcript_fname_text_dict
 
 def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
