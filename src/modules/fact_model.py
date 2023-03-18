@@ -121,7 +121,7 @@ class FACTModel(nn.Module):
             cross_modal=True)
         print(f"Using text transcriptions in the architecture: True")
     else:
-       self.cm_transformer = Transformer(
+        self.cm_transformer = Transformer(
             in_size=dim*2,
             hidden_size=dim*2,
             num_hidden_layers=2,
