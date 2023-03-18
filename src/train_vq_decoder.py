@@ -17,7 +17,7 @@ from utils.base_model_util import *
 from utils.load_utils import *
 
 
-def gather_data(config, X, Y, audio, l_vq_model, patch_size, seq_len, bi):
+def gather_data(config, X, Y, audio, transcript_embs, l_vq_model, patch_size, seq_len, bi):
     """ method to prepare data into proper format for training
 
     Parameters
@@ -28,6 +28,8 @@ def gather_data(config, X, Y, audio, l_vq_model, patch_size, seq_len, bi):
         Past raw listener motion of sequence length T2
     audio: tensor (B,T3,A)
         Past raw speaker audio of sequence length T3
+    transcript_embs: tensor (B, TE)
+        Embeddings of the associated text transcription, of dimension TE (Text Embeddings)
     l_vq_model:
         pre-trained VQ-VAE model used to discretize the past listener motion and
         decode future listener motion predictions
@@ -42,16 +44,17 @@ def gather_data(config, X, Y, audio, l_vq_model, patch_size, seq_len, bi):
     speakerData_np = X[idxStart:(idxStart + config['batch_size']), :, :]
     listenerData_np = Y[idxStart:(idxStart + config['batch_size']), :, :]
     audioData_np = audio[idxStart:(idxStart + config['batch_size']), :, :]
+    transcriptData_np = np.repeat(np.expand_dims(transcript_embs[idxStart:(idxStart + config['batch_size']), :], axis=1), config["fact_model"]["speaker_full_transformer_config"]["sequence_length"], axis=1)
     inputs, listener_future, raw_listener, btc = \
         create_data_vq(l_vq_model, speakerData_np, listenerData_np,
-                        audioData_np, seq_len,
+                        audioData_np, transcriptData_np, seq_len,
                         data_type=config['loss_config']['loss_type'],
                         patch_size=patch_size)
     return inputs, listener_future, raw_listener, btc
 
 
 def generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
-                         train_X, train_Y, train_audio, rng, writer,
+                         train_X, train_Y, train_audio, train_transcript_embs, rng, writer,
                          patch_size, seq_len):
     """ method to prepare data into proper format for training
 
@@ -75,7 +78,7 @@ def generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
 
     for bii, bi in enumerate(batchinds):
         inputs, listener_future, _, _ = gather_data(config, train_X, train_Y,
-                                                    train_audio, l_vq_model,
+                                                    train_audio, train_transcript_embs, l_vq_model,
                                                     patch_size, seq_len, bi)
         prediction = generator(inputs,
                         config['fact_model']['cross_modal_model']['max_mask_len'],
@@ -97,7 +100,7 @@ def generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
 
 
 def generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
-                       test_X, test_Y, test_audio, currBestLoss,
+                       test_X, test_Y, test_audio, test_transcript_embs, currBestLoss,
                        prev_save_epoch, tag, writer, patch_size, seq_len):
     """ method to validate training of Predictor model
 
@@ -111,7 +114,7 @@ def generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
 
     for bii, bi in enumerate(batchinds):
         inputs, listener_future, _, _ = gather_data(config, test_X, test_Y,
-                                                    test_audio, l_vq_model,
+                                                    test_audio, test_transcript_embs, l_vq_model,
                                                     patch_size, seq_len, bi)
         with torch.no_grad():
             prediction = generator(inputs,
@@ -189,7 +192,7 @@ def main(args):
     generator.train()
 
     ## training process
-    train_X, test_X, train_Y, test_Y, train_audio, test_audio = \
+    train_X, test_X, train_Y, test_Y, train_audio, test_audio, train_transcript_embs, test_transcript_embs= \
         load_data(config, pipeline, tag, rng, vqconfigs=vq_configs,
                   segment_tag=config['segment_tag'], smooth=True)
     body_mean_dist, body_std_dist = None, None
@@ -200,11 +203,11 @@ def main(args):
             print('best loss:', currBestLoss)
             break
         generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
-                             train_X, train_Y, train_audio, rng, writer,
+                             train_X, train_Y, train_audio, train_transcript_embs, rng, writer,
                              patch_size, seq_len)
         currBestLoss, prev_save_epoch, g_loss = \
             generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
-                               test_X, test_Y, test_audio, currBestLoss,
+                               test_X, test_Y, test_audio, test_transcript_embs, currBestLoss,
                                prev_save_epoch, tag, writer, patch_size, seq_len)
     print('final best loss:', currBestLoss)
 

@@ -3,7 +3,7 @@ import numpy as np
 import os
 import scipy
 import pickle
-
+from typing import Dict
 from torchvision import transforms
 import torch
 from torch.autograd import Variable
@@ -25,7 +25,7 @@ def bilateral_filter(outputs):
     return outputs_smooth.astype(np.float32)
 
 
-def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np,
+def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, transcriptData_np,
                    seq_len, startpoint=0, midpoint=None, data_type='on_logit',
                    btc=None, patch_size=8):
     """ data preparation function
@@ -39,6 +39,8 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np,
     listenerData = Variable(torch.from_numpy(listenerData_np),
                             requires_grad=False).cuda()
     audioData = Variable(torch.from_numpy(audioData_np),
+                         requires_grad=False).cuda()
+    transcriptData = Variable(torch.from_numpy(transcriptData_np),
                          requires_grad=False).cuda()
 
     ## future timesteps for speaker inputs (keep past and current context)
@@ -80,7 +82,8 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np,
                     else None
     inputs = {"speaker_full": speaker_full,
               "listener_past": listener_past_index,
-              "audio_full": audio_full}
+              "audio_full": audio_full,
+              "transcript_full": transcriptData}
     return inputs, listener_future_index, raw_listener, btc
 
 def load_transcripts(transcripts_dir_fp):
@@ -97,6 +100,34 @@ def load_transcripts(transcripts_dir_fp):
             transcript_fname_text_dict[os.path.basename(transcript_fp)] = {"full_text": f.read().strip()}
     print(f"Loaded {len(transcript_fname_text_dict)} transcripts from {transcripts_dir_fp}.")
     return transcript_fname_text_dict
+
+def load_single_transcript_embedding(transcript_embedding_fp:str)->np.ndarray:
+    """Util function to load a transcript embedding as a np array
+
+    Args:
+        transcript_embedding_fp (str): file path to the transcript embedidng npy file
+
+    Returns:
+        np.ndarray: np array containing embedding
+    """    
+    return np.load(transcript_embedding_fp).reshape(1, -1)
+
+def load_all_transcript_embeddings(transcript_embeddings_dir: str)->Dict[str, torch.Tensor]:
+    """Function to load all the transcript embeddings as torch tensors and return in dictionary where the keys are the transcript filenames and the values are the respective torch embeddings.
+
+    Args:
+        transcript_embeddings_dir (str): Directory containing all the transcript embeddings
+
+    Returns:
+        Dict[str, torch.Tensor]: Dictionary where the keys are the transcript filenames and the values are the respective torch embeddings.
+    """
+    if not os.path.exists(transcript_embeddings_dir):
+        raise Exception(f"No transcript embeddings exist at {transcript_embeddings_dir}. Create the transcript embeddings using the desired transformer first. Refer utils/process_transcripts.py")
+    filenames = os.listdir(transcript_embeddings_dir)
+    transcript_embeddings_dict = {}
+    for filename in filenames:
+        transcript_embeddings_dict[filename[:-8]] = load_single_transcript_embedding(os.path.join(transcript_embeddings_dir, filename))
+    return transcript_embeddings_dict
 
 def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
                    smooth=False, speaker=None, segment_tag='', num_out=None):
@@ -129,7 +160,7 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
     all_speakers = ['conan', 'fallon', 'kimmel', 'stephen', 'trevor'] \
                     if speaker is None else [speaker]
     test_X = None
-    transcripts_dir_fp = f"{base_dir}/data/{speaker}/transcripts/"
+    transcripts_dir_fp = os.path.join(base_dir, f"data", speaker, "transcripts/")
     transcript_fname_text_dict = load_transcripts(transcripts_dir_fp)
 
 
@@ -202,6 +233,8 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
 
     base_dir = config['data']['basedir']
     out_num = 0
+    transcripts_embeddings_dict = load_all_transcript_embeddings(config['data']['transcript_embeddings_dir'])
+
     if config['data']['speaker'] == 'all':
         ## load associated files for all speakers
         all_speakers = ['conan', 'kimmel', 'fallon', 'stephen', 'trevor']
@@ -261,8 +294,18 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
     test_Y = (test_Y - body_mean_Y) / body_std_Y
     train_audio = (train_audio - body_mean_audio) / body_std_audio
     test_audio = (test_audio - body_mean_audio) / body_std_audio
+    train_transcript_embs, test_transcript_embs = [], []
+    for filepath in curr_paths[train_idx][:, 0, 0]:
+        train_transcript_embs.append(transcripts_embeddings_dict[os.path.basename(filepath)])
+    train_transcript_embs = np.concatenate(train_transcript_embs, axis=0)
+
+    for filepath in curr_paths[test_idx][:, 0, 0]:
+        test_transcript_embs.append(transcripts_embeddings_dict[os.path.basename(filepath)])
+    test_transcript_embs = np.concatenate(test_transcript_embs, axis=0)
+
+    
     print("=====> standardization done")
-    return train_X, test_X, train_Y, test_Y, train_audio, test_audio
+    return train_X, test_X, train_Y, test_Y, train_audio, test_audio, train_transcript_embs, test_transcript_embs
 
 
 def get_local_files(base_dir, speaker, out_num, segment_tag):

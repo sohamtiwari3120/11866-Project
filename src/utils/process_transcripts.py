@@ -33,11 +33,11 @@ def main(dir_path, model_name, output_dir):
     os.makedirs(output_dir, exist_ok=True)
 
     transcripts_dict, embeddings = generate_transcript_embeddings(dir_path, model_name)
-    
+    embedding_dim = embeddings.shape[-1]
     for i, key in enumerate(transcripts_dict.keys()):
         with open(os.path.join(output_dir, f"{key}.npy"), "wb") as f:
             np.save(f, embeddings[i])
-    print(f"Saved the processed transcripts in {os.path.join(output_dir)}")
+    print(f"Saved the processed transcripts in {os.path.join(output_dir)}. The dim of each embedding - {embedding_dim}")
     
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@
   "learning_rate": 0.01,
   "warmup_steps": 100000,
   "model_path": "models/",
-  "num_epochs": 500000,
+  "num_epochs": 5,
   "batch_size": 32,
   "loss_config": {
     "loss_aug": "normal",
@@ -54,6 +54,8 @@
   "data": {
     "local": true,
     "basedir": "./",
-    "speaker": "conan"
+    "speaker": "conan",
+    "transcript_embeddings_dir": "./data/transcript_embeddings/all-MiniLM-L6-v2/",
+    "transcript_embeddings_dim": 384
   }
 }
