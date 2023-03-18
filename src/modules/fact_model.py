@@ -44,6 +44,7 @@ def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
                                   map_location=lambda storage, loc: storage)
         if disable_strict_load:
             generator.load_state_dict(loaded_state['state_dict'], strict=False)
+            import pdb; pdb.set_trace()
         else:
             generator.load_state_dict(loaded_state['state_dict'], strict=True)
         g_optimizer._optimizer.load_state_dict(
@@ -118,6 +119,7 @@ class FACTModel(nn.Module):
             intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
                                         ['intermediate_size'],
             cross_modal=True)
+        print(f"Using text transcriptions in the architecture: True")
     else:
        self.cm_transformer = Transformer(
             in_size=dim*2,
@@ -128,6 +130,8 @@ class FACTModel(nn.Module):
             intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
                                         ['intermediate_size'],
             cross_modal=True)
+        print(f"Using text transcriptions in the architecture: False")
+       
     # creating post processing layers that will temporally downsample merged
     # speaker embedding
     post_layers = [nn.Sequential(
@@ -252,14 +256,14 @@ class FACTModel(nn.Module):
     data_features = {'x_a':audio_full_features, 'x_b':motion_full_features}
     # Modality A: to generate queries
     # Modality B: to generate key, value pairs
-    speaker_audioandmotion_features = self.cm_transformer_audio_motion(data_features)
 
     if self.use_text_transcriptions:
+        speaker_audioandmotion_features = self.cm_transformer_audio_motion(data_features)
         text_full_features = self.text_embedding_projector(inputs['transcript_full'])
         data_features = {'x_a':text_full_features, 'x_b':speaker_audioandmotion_features}
         speaker_full_features = self.cm_transformer_audioandmotion_text(data_features)
     else:
-       speaker_full_features = speaker_audioandmotion_features
+       speaker_full_features = self.cm_transformer(data_features)
 
     speaker_full_features = \
         self.post_compressor(speaker_full_features.permute(0,2,1).contiguous())\
