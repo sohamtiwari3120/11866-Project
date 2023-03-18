@@ -17,7 +17,7 @@ from vqgan.vqmodules.gan_models import setup_vq_transformer
 from utils.load_utils import *
 
 
-def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio,
+def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio, transcript_embs,
               seq_len, patch_size, rng=None):
     """ method to run full model pipeline in autorecursive manner
 
@@ -35,6 +35,8 @@ def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio,
         Past raw listener motion of sequence length T2
     test_audio: tensor (B,T3,A)
         Past raw speaker audio of sequence length T3
+    transcript_embs: tensor (B, 1, TE)
+        Text embeddings of associated transcripts
     seq_len: int
         full length of sequence that is taken as input into the VQ-VAE model
     patch_size: int
@@ -62,11 +64,13 @@ def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio,
         listenerData_np = test_Y[idxStart:(idxStart + batch_size), :, :]
         audioData_np = test_audio[idxStart:(idxStart + batch_size), :, :]
         listenerData_np[:,:seq_len,:] *= 0. ## remove the listener from GT
+        transcriptData_np = np.repeat(np.expand_dims(transcript_embs[idxStart:(idxStart + config['batch_size']), :], axis=1), config["fact_model"]["speaker_full_transformer_config"]["sequence_length"], axis=1)
+
         prediction, probs, inputs, quant_size = \
             generate_prediction(config, args, l_vq_model, generator,
                                 speakerData_np[:,:(seq_len+patch_size),:],
                                 listenerData_np[:,:seq_len,:],
-                                audioData_np[:,:(seq_len+patch_size)*4,:],
+                                audioData_np[:,:(seq_len+patch_size)*4,:], transcriptData_np,
                                 seq_len, patch_size, 0, cut_point)
         prediction = torch.cat((inputs['listener_past'],
                                 prediction[:,0]), axis=-1)
@@ -84,7 +88,7 @@ def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio,
                 generate_prediction(config, args, l_vq_model, generator,
                                 speakerData_np[:,t:(t+seq_len+patch_size),:],
                                 listener_in,
-                                audioData_np[:,t:(t+(seq_len+patch_size)*4),:],
+                                audioData_np[:,t:(t+(seq_len+patch_size)*4),:], transcriptData_np,
                                 seq_len, patch_size, int(t/step_t), cut_point,
                                 btc=quant_size)
             prediction = torch.cat((prediction, curr_prediction[:,0]), axis=1)
@@ -132,7 +136,7 @@ def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio,
 
 
 def generate_prediction(config, args, l_vq_model, generator, test_X,
-                        test_Y, test_audio, seq_len, patch_size,
+                        test_Y, test_audio, transcript_emb, seq_len, patch_size,
                         mask_point, cut_point, btc=None):
     """ Function to run inputs through Predictor model and to sample outputs
 
@@ -144,6 +148,7 @@ def generate_prediction(config, args, l_vq_model, generator, test_X,
                        test_X,
                        test_Y,
                        test_audio,
+                       transcript_emb,
                        seq_len,
                        data_type=config['loss_config']['loss_type'],
                        patch_size=patch_size, 
@@ -226,14 +231,14 @@ def main(args):
 
     ## load data
     out_num = 1 if config['data']['speaker'] == 'fallon' else 0
-    test_X, test_Y, test_audio, test_files, _ = \
+    test_X, test_Y, test_audio, test_transcript_embs, test_files, _ = \
             load_test_data(config, pipeline, tag, out_num=out_num,
                            vqconfigs=vq_configs, smooth=True,
                            speaker=args.speaker, num_out=num_out)
 
     ## run model and save/eval
     unstd_pred, probs, unstd_ub = run_model(args, config, l_vq_model, generator,
-                                            test_X, test_Y, test_audio, seq_len,
+                                            test_X, test_Y, test_audio, test_transcript_embs, seq_len,
                                             patch_size, rng=rng)
     overall_l2 = np.mean(
         np.linalg.norm(test_Y[:,seq_len:,:] - unstd_pred[:,seq_len:,:], axis=-1))

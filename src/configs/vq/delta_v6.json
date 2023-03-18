@@ -6,7 +6,7 @@
   "learning_rate": 0.01,
   "warmup_steps": 100000,
   "model_path": "models/",
-  "num_epochs": 5,
+  "num_epochs": 500000,
   "batch_size": 32,
   "loss_config": {
     "loss_aug": "normal",

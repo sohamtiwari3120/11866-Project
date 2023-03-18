@@ -160,8 +160,8 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
     all_speakers = ['conan', 'fallon', 'kimmel', 'stephen', 'trevor'] \
                     if speaker is None else [speaker]
     test_X = None
-    transcripts_dir_fp = os.path.join(base_dir, f"data", speaker, "transcripts/")
-    transcript_fname_text_dict = load_transcripts(transcripts_dir_fp)
+    transcripts_embeddings_dict = load_all_transcript_embeddings(config['data']['transcript_embeddings_dir'])
+
 
 
     for speaker in all_speakers:
@@ -221,7 +221,11 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
     test_X = (test_X - body_mean_X) / body_std_X
     test_Y = (test_Y - body_mean_Y) / body_std_Y
     test_audio = (test_audio - body_mean_audio) / body_std_audio
-    return test_X, test_Y, test_audio, filepaths, std_info
+    test_transcript_embs = []
+    for filepath in filepaths[:][:, 0, 0]:
+        test_transcript_embs.append(transcripts_embeddings_dict[os.path.basename(filepath)])
+    test_transcript_embs = np.concatenate(test_transcript_embs, axis=0)
+    return test_X, test_Y, test_audio, test_transcript_embs, filepaths, std_info
 
 
 def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
