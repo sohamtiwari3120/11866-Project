@@ -188,7 +188,7 @@ def main(args):
     load_path = fileName if os.path.exists(fileName) else None
     generator, g_optimizer, start_epoch = setup_model(config, l_vqconfig,
                                                       s_vqconfig=None,
-                                                      load_path=load_path)
+                                                      load_path=load_path, use_text_transcriptions=args.use_text_transcriptions, disable_strict_load=args.disable_strict_load)
     generator.train()
 
     ## training process
@@ -196,10 +196,15 @@ def main(args):
         load_data(config, pipeline, tag, rng, vqconfigs=vq_configs,
                   segment_tag=config['segment_tag'], smooth=True)
     body_mean_dist, body_std_dist = None, None
+
+    patience = config["early_stopping"]["patience"]
+    num_epochs_since_loss_improv = 0
+    
     for epoch in range(start_epoch, start_epoch + config['num_epochs']):
         print('epoch', epoch, 'num_epochs', config['num_epochs'])
-        if epoch == start_epoch+config['num_epochs']-1:
+        if (epoch == start_epoch+config['num_epochs']-1) or (num_epochs_since_loss_improv == patience):
             print('early stopping at:', epoch)
+            print("prev save epoch: ", prev_save_epoch)
             print('best loss:', currBestLoss)
             break
         generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
@@ -209,6 +214,11 @@ def main(args):
             generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
                                test_X, test_Y, test_audio, test_transcript_embs, currBestLoss,
                                prev_save_epoch, tag, writer, patch_size, seq_len)
+        if currBestLoss == g_loss:
+            num_epochs_since_loss_improv = 0
+        else:
+            num_epochs_since_loss_improv += 1
+        
     print('final best loss:', currBestLoss)
 
 
@@ -218,5 +228,7 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoint', type=str, default=None)
     parser.add_argument('--test', action='store_true')
     parser.add_argument('--ar_load', action='store_true')
+    parser.add_argument('-ut', '--use_text_transcriptions', action='store_true')
+    parser.add_argument('-dsl', '--disable_strict_load', action='store_true')
     args = parser.parse_args()
     main(args)

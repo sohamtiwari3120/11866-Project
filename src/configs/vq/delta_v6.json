@@ -8,6 +8,9 @@
   "model_path": "models/",
   "num_epochs": 500000,
   "batch_size": 32,
+  "early_stopping": {
+    "patience": 10
+  },
   "loss_config": {
     "loss_aug": "normal",
     "loss_type": "on_logit",

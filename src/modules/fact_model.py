@@ -15,7 +15,7 @@ def calc_logit_loss(pred, target):
 
 
 def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
-                s_vqconfig=None):
+                s_vqconfig=None, use_text_transcriptions=True, disable_strict_load=False):
     """ Method that sets up Predictor for train/test """
 
     ## setting model parameters
@@ -26,7 +26,7 @@ def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
     ## defining generator model and optimizers
     generator = FACTModel(config,
                           mask_index=mask_index,
-                          quant_factor=quant_factor).cuda()
+                          quant_factor=quant_factor, use_text_transcriptions=use_text_transcriptions).cuda()
     print("Let's use", torch.cuda.device_count(), "GPUs!")
     generator = nn.DataParallel(generator)
     g_optimizer = ScheduledOptim(
@@ -42,7 +42,10 @@ def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
         print('loading from checkpoint...', load_path)
         loaded_state = torch.load(load_path,
                                   map_location=lambda storage, loc: storage)
-        generator.load_state_dict(loaded_state['state_dict'], strict=True)
+        if disable_strict_load:
+            generator.load_state_dict(loaded_state['state_dict'], strict=False)
+        else:
+            generator.load_state_dict(loaded_state['state_dict'], strict=True)
         g_optimizer._optimizer.load_state_dict(
                                     loaded_state['optimizer']['optimizer'])
         g_optimizer.set_n_steps(loaded_state['optimizer']['n_steps'])
@@ -56,10 +59,10 @@ def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
 class FACTModel(nn.Module):
   """ Predictor model that outputs future listener motion """
 
-  def __init__(self, config, mask_index=-1, quant_factor=None):
+  def __init__(self, config, mask_index=-1, quant_factor=None, use_text_transcriptions=True):
     super().__init__()
     self.config = copy.deepcopy(config)
-
+    self.use_text_transcriptions = use_text_transcriptions
     ## set up listener motion embedding layers
     self.listener_past_transformer = Transformer(
         in_size=self.config['fact_model']['listener_past_transformer_config']\
@@ -94,26 +97,37 @@ class FACTModel(nn.Module):
     self.motion_full_pos_embedding = PositionEmbedding(
         self.config['fact_model']["speaker_full_transformer_config"]["sequence_length"],
         dim*2)
-    self.text_embedding_projector = nn.Linear(self.config['data']['transcript_embeddings_dim'], dim*2)
-    # creating cross modal transformer that will merge speaker audio and motion
-    self.cm_transformer_audio_motion = Transformer(
-        in_size=dim*2,
-        hidden_size=dim*2,
-        num_hidden_layers=2,
-        num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
-                                       ['num_attention_heads'],
-        intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
-                                     ['intermediate_size'],
-        cross_modal=True)
-    self.cm_transformer_audioandmotion_text = Transformer(
-        in_size=dim*2,
-        hidden_size=dim*2,
-        num_hidden_layers=2,
-        num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
-                                       ['num_attention_heads'],
-        intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
-                                     ['intermediate_size'],
-        cross_modal=True)
+    if self.use_text_transcriptions:
+        self.text_embedding_projector = nn.Linear(self.config['data']['transcript_embeddings_dim'], dim*2)
+        # creating cross modal transformer that will merge speaker audio and motion
+        self.cm_transformer_audio_motion = Transformer(
+            in_size=dim*2,
+            hidden_size=dim*2,
+            num_hidden_layers=2,
+            num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
+                                        ['num_attention_heads'],
+            intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
+                                        ['intermediate_size'],
+            cross_modal=True)
+        self.cm_transformer_audioandmotion_text = Transformer(
+            in_size=dim*2,
+            hidden_size=dim*2,
+            num_hidden_layers=2,
+            num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
+                                        ['num_attention_heads'],
+            intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
+                                        ['intermediate_size'],
+            cross_modal=True)
+    else:
+       self.cm_transformer = Transformer(
+            in_size=dim*2,
+            hidden_size=dim*2,
+            num_hidden_layers=2,
+            num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
+                                        ['num_attention_heads'],
+            intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
+                                        ['intermediate_size'],
+            cross_modal=True)
     # creating post processing layers that will temporally downsample merged
     # speaker embedding
     post_layers = [nn.Sequential(
@@ -234,13 +248,19 @@ class FACTModel(nn.Module):
     audio_full_features = self.audio_full_pos_embedding(audio_full_features)
     motion_full_features = self.motion_projector(inputs['speaker_full'])
     motion_full_features = self.motion_full_pos_embedding(motion_full_features)
-    text_full_features = self.text_embedding_projector(inputs['transcript_full'])
+
     data_features = {'x_a':audio_full_features, 'x_b':motion_full_features}
     # Modality A: to generate queries
     # Modality B: to generate key, value pairs
     speaker_audioandmotion_features = self.cm_transformer_audio_motion(data_features)
-    data_features = {'x_a':text_full_features, 'x_b':speaker_audioandmotion_features}
-    speaker_full_features = self.cm_transformer_audioandmotion_text(data_features)
+
+    if self.use_text_transcriptions:
+        text_full_features = self.text_embedding_projector(inputs['transcript_full'])
+        data_features = {'x_a':text_full_features, 'x_b':speaker_audioandmotion_features}
+        speaker_full_features = self.cm_transformer_audioandmotion_text(data_features)
+    else:
+       speaker_full_features = speaker_audioandmotion_features
+
     speaker_full_features = \
         self.post_compressor(speaker_full_features.permute(0,2,1).contiguous())\
                                                   .permute(0,2,1).contiguous()
