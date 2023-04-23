@@ -192,12 +192,10 @@ def main(args):
     generator.train()
 
     ## training process
+    train_ratio = config['data']['train_split_ratio'] if args.train_split_ratio is None else args.train_split_ratio
     train_X, val_X, train_Y, val_Y, train_audio, val_audio, train_transcript_embs, val_transcript_embs= \
         load_data(config, pipeline, tag, rng, vqconfigs=vq_configs,
-                  segment_tag=config['segment_tag'], smooth=True, train_ratio=args.train_split_ratio)
-    # test_X, test_Y, test_audio, test_transcript_embs, filepaths, std_info = load_test_data(config, pipeline, tag, out_num=0, vqconfigs=vq_configs,
-                #    smooth=True, speaker="conan", segment_tag=config['segment_tag'])
-    body_mean_dist, body_std_dist = None, None
+                  segment_tag=config['segment_tag'], smooth=True, train_ratio=train_ratio)
 
     patience = config["early_stopping"]["patience"]
     num_epochs_since_loss_improv = 0
@@ -205,7 +203,10 @@ def main(args):
     for epoch in range(start_epoch, start_epoch + config['num_epochs']):
         print('epoch', epoch, 'num_epochs', config['num_epochs'])
         if (epoch == start_epoch+config['num_epochs']-1) or (num_epochs_since_loss_improv == patience):
-            print('early stopping at:', epoch)
+            if (num_epochs_since_loss_improv == patience):
+                print('early stopping at:', epoch)
+            else:
+                print('training finished. stopping at:', epoch)
             print("prev save epoch: ", prev_save_epoch)
             print('best loss:', currBestLoss)
             break
@@ -228,9 +229,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, required=True)
     parser.add_argument('--checkpoint', type=str, default=None)
-    parser.add_argument('--train_split_ratio', type=float, default=1.0)
-    parser.add_argument('--test', action='store_true')
-    parser.add_argument('--ar_load', action='store_true')
+    parser.add_argument('--train_split_ratio', type=float, default=None)
     parser.add_argument('-ut', '--use_text_transcriptions', action='store_true')
     parser.add_argument('-dsl', '--disable_strict_load', action='store_true')
     args = parser.parse_args()

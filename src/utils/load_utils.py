@@ -132,7 +132,7 @@ def load_all_transcript_embeddings(transcript_embeddings_dir: str)->Dict[str, to
 
 def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
                    smooth=False, speaker=None, segment_tag='', num_out=None):
-    """ function to load test data from files
+    """ function to load test data from test audio, facil and text embedding files
 
     Parameters
     ----------
@@ -236,14 +236,33 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
 
 def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
               smooth=False, train_ratio=1.0):
-    """ function to load train data from files
-
+    """function to load train and val data splits from TRAIN audio, facial and text embeddings
     see load_test_data() for associated parameters
-    """
+
+    Args:
+        config (_type_): _description_
+        pipeline (_type_): _description_
+        tag (_type_): _description_
+        rng (_type_): _description_
+        vqconfigs (_type_, optional): _description_. Defaults to None.
+        segment_tag (str, optional): _description_. Defaults to ''.
+        smooth (bool, optional): _description_. Defaults to False.
+        train_ratio (float, optional): eg. if train_ratio=0.7, then train_split = 70% of TRAIN DATA and val_split=30% of TRAIN DATA. Defaults to 1.0.
+
+    Returns:
+        _type_: _description_
+    """    
+
 
     base_dir = config['data']['basedir']
     out_num = 0
+
+    # the directory contains the sentence embeddings of the form - 
+    # p1_<youTubeVideoName>_<start_frame>_<end_frame>.txt.npy (if segemented)
+    # OR <youTubeVideoName>.txt.npy (if not segmented)
     train_transcripts_embeddings_dict = load_all_transcript_embeddings(config['data']['train_transcript_embeddings_dir'])
+
+    # NOTE: We are only loading train transcript embddings dict because this function will load the train and val splits (depending on the train_ratio input arg). 
     transcripts_segmented = config['data']['transcripts_segmented']
 
     if config['data']['speaker'] == 'all':
@@ -289,6 +308,7 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
     N = gt_windows.shape[0]
     if train_ratio > 1 or train_ratio < 0:
         train_ratio = 0.7
+    print(f"The train_ration = {train_ratio}")
     train_N = int(N * train_ratio)
     idx = np.random.permutation(N)
     train_idx, val_idx = idx[:train_N], idx[train_N:]

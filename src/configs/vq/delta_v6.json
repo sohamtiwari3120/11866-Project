@@ -1,7 +1,7 @@
 {
   "l_vqconfig": "vqgan/configs/l2_32_smoothSS.json",
   "pipeline": "er2er",
-  "tag": "delta_v6_w_text_es_segmented_es_50_",
+  "tag": "delta_v6_w_text_es_segmented_es_50_tr_sp_0.7_",
   "segment_tag": "",
   "learning_rate": 0.01,
   "warmup_steps": 100000,
@@ -61,6 +61,7 @@
     "train_transcript_embeddings_dir": "./data/train_seg_transcripts_embs/",
     "test_transcript_embeddings_dir": "./data/test_seg_transcripts_embs/",
     "transcript_embeddings_dim": 384,
-    "transcripts_segmented": true
+    "transcripts_segmented": true,
+    "train_split_ratio": 0.70
   }
 }
