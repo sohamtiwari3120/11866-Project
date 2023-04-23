@@ -124,9 +124,10 @@ def load_all_transcript_embeddings(transcript_embeddings_dir: str)->Dict[str, to
     if not os.path.exists(transcript_embeddings_dir):
         raise Exception(f"No transcript embeddings exist at {transcript_embeddings_dir}. Create the transcript embeddings using the desired transformer first. Refer utils/process_transcripts.py")
     filenames = os.listdir(transcript_embeddings_dir)
+    # print(transcript_embeddings_dir, len(filenames))
     transcript_embeddings_dict = {}
     for filename in filenames:
-        transcript_embeddings_dict[filename[:-8]] = load_single_transcript_embedding(os.path.join(transcript_embeddings_dir, filename))
+        transcript_embeddings_dict[filename.replace(".txt.npy", "")] = load_single_transcript_embedding(os.path.join(transcript_embeddings_dir, filename))
     return transcript_embeddings_dict
 
 def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
@@ -160,9 +161,8 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
     all_speakers = ['conan', 'fallon', 'kimmel', 'stephen', 'trevor'] \
                     if speaker is None else [speaker]
     test_X = None
-    transcripts_embeddings_dict = load_all_transcript_embeddings(config['data']['transcript_embeddings_dir'])
-
-
+    test_transcripts_embeddings_dict = load_all_transcript_embeddings(config['data']['test_transcript_embeddings_dir'])
+    transcripts_segmented = config['data']['transcripts_segmented']
 
     for speaker in all_speakers:
         fp = '{}/data/{}/test/p{}_speak_files_clean_deca{}.npy'\
@@ -222,14 +222,20 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
     test_Y = (test_Y - body_mean_Y) / body_std_Y
     test_audio = (test_audio - body_mean_audio) / body_std_audio
     test_transcript_embs = []
-    for filepath in filepaths[:][:, 0, 0]:
-        test_transcript_embs.append(transcripts_embeddings_dict[os.path.basename(filepath)])
+    for filepath_array in filepaths[:]:
+        filepath = filepath_array[0, 0]
+        if transcripts_segmented:
+            start_idx = filepath_array[0, -1]
+            end_idx = filepath_array[-1, -1]
+            test_transcript_embs.append(test_transcripts_embeddings_dict[f"p1_{os.path.basename(filepath)}_{start_idx}_{end_idx}"])
+        else:
+            test_transcript_embs.append(test_transcripts_embeddings_dict[os.path.basename(filepath)])
     test_transcript_embs = np.concatenate(test_transcript_embs, axis=0)
     return test_X, test_Y, test_audio, test_transcript_embs, filepaths, std_info
 
 
 def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
-              smooth=False):
+              smooth=False, train_ratio=1.0):
     """ function to load train data from files
 
     see load_test_data() for associated parameters
@@ -237,15 +243,19 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
 
     base_dir = config['data']['basedir']
     out_num = 0
-    transcripts_embeddings_dict = load_all_transcript_embeddings(config['data']['transcript_embeddings_dir'])
+    train_transcripts_embeddings_dict = load_all_transcript_embeddings(config['data']['train_transcript_embeddings_dir'])
+    transcripts_segmented = config['data']['transcripts_segmented']
 
     if config['data']['speaker'] == 'all':
         ## load associated files for all speakers
         all_speakers = ['conan', 'kimmel', 'fallon', 'stephen', 'trevor']
-        curr_paths = gt_windows = quant_windows = audio_windows = None
+        curr_paths =  None
+        gt_windows =  None
+        quant_windows =  None
+        audio_windows = None
         for speaker in all_speakers:
             tmp_paths, tmp_gt, tmp_quant, tmp_audio, _ = \
-                        get_local_files(base_dir, speaker, out_num, segment_tag)
+                        get_local_files(base_dir, speaker, out_num, segment_tag, "train")
             if curr_paths is None:
                 curr_paths = tmp_paths
                 gt_windows = tmp_gt
@@ -266,7 +276,7 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
         out_num = 1 if config['data']['speaker'] == 'fallon' else 0
         curr_paths, gt_windows, quant_windows, audio_windows, _ = \
             get_local_files(base_dir, config['data']['speaker'],
-                            out_num, segment_tag)
+                            out_num, segment_tag, "train")
     print('===> in/out',
             gt_windows.shape, quant_windows.shape, audio_windows.shape)
 
@@ -274,18 +284,21 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
     if smooth:
         gt_windows = bilateral_filter(gt_windows)
         quant_windows = bilateral_filter(quant_windows)
-    # randomize train/test splits
+        
+    # randomize train/val splits
     N = gt_windows.shape[0]
-    train_N = int(N * 0.7)
+    if train_ratio > 1 or train_ratio < 0:
+        train_ratio = 0.7
+    train_N = int(N * train_ratio)
     idx = np.random.permutation(N)
-    train_idx, test_idx = idx[:train_N], idx[train_N:]
-    train_X, test_X = gt_windows[train_idx, :, :].astype(np.float32),\
-                      gt_windows[test_idx, :, :].astype(np.float32)
-    train_Y, test_Y = quant_windows[train_idx, :, :].astype(np.float32),\
-                      quant_windows[test_idx, :, :].astype(np.float32)
-    train_audio, test_audio = audio_windows[train_idx, :, :].astype(np.float32),\
-                              audio_windows[test_idx, :, :].astype(np.float32)
-    print("====> train/test", train_X.shape, test_X.shape)
+    train_idx, val_idx = idx[:train_N], idx[train_N:]
+    train_X, val_X = gt_windows[train_idx, :, :].astype(np.float32),\
+                      gt_windows[val_idx, :, :].astype(np.float32)
+    train_Y, val_Y = quant_windows[train_idx, :, :].astype(np.float32),\
+                      quant_windows[val_idx, :, :].astype(np.float32)
+    train_audio, val_audio = audio_windows[train_idx, :, :].astype(np.float32),\
+                              audio_windows[val_idx, :, :].astype(np.float32)
+    print("====> train/val", train_X.shape, val_X.shape)
 
     ## check to see how to load/calculate std/dev
     body_mean_X, body_std_X, body_mean_Y, body_std_Y, \
@@ -293,36 +306,52 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
                                                      pipeline, train_X, train_Y,
                                                      train_audio)
     train_X = (train_X - body_mean_X) / body_std_X
-    test_X = (test_X - body_mean_X) / body_std_X
+    val_X = (val_X - body_mean_X) / body_std_X
     train_Y = (train_Y - body_mean_Y) / body_std_Y
-    test_Y = (test_Y - body_mean_Y) / body_std_Y
+    val_Y = (val_Y - body_mean_Y) / body_std_Y
     train_audio = (train_audio - body_mean_audio) / body_std_audio
-    test_audio = (test_audio - body_mean_audio) / body_std_audio
-    train_transcript_embs, test_transcript_embs = [], []
-    for filepath in curr_paths[train_idx][:, 0, 0]:
-        train_transcript_embs.append(transcripts_embeddings_dict[os.path.basename(filepath)])
+    val_audio = (val_audio - body_mean_audio) / body_std_audio
+    train_transcript_embs = []
+    val_transcript_embs = []
+    for filepath_array in curr_paths[train_idx]:
+        # import pdb; pdb.set_trace()
+        filepath = filepath_array[0, 0]
+        if transcripts_segmented:
+            start_idx = filepath_array[0, -1]
+            end_idx = filepath_array[-1, -1]
+            key = f"p1_{os.path.basename(filepath)}_{start_idx}_{end_idx}"
+            train_transcript_embs.append(train_transcripts_embeddings_dict[key])
+        else:
+            train_transcript_embs.append(train_transcripts_embeddings_dict[os.path.basename(filepath)])
     train_transcript_embs = np.concatenate(train_transcript_embs, axis=0)
 
-    for filepath in curr_paths[test_idx][:, 0, 0]:
-        test_transcript_embs.append(transcripts_embeddings_dict[os.path.basename(filepath)])
-    test_transcript_embs = np.concatenate(test_transcript_embs, axis=0)
+    for filepath_array in curr_paths[val_idx]:
+        filepath = filepath_array[0, 0]
+        if transcripts_segmented:
+            start_idx = filepath_array[0, -1]
+            end_idx = filepath_array[-1, -1]
+            key = f"p1_{os.path.basename(filepath)}_{start_idx}_{end_idx}"
+            val_transcript_embs.append(train_transcripts_embeddings_dict[key])
+        else:
+            val_transcript_embs.append(train_transcripts_embeddings_dict[os.path.basename(filepath)])
+    val_transcript_embs = np.concatenate(val_transcript_embs, axis=0) if len(val_transcript_embs) > 0 else np.array(val_transcript_embs)
 
     
     print("=====> standardization done")
-    return train_X, test_X, train_Y, test_Y, train_audio, test_audio, train_transcript_embs, test_transcript_embs
+    return train_X, val_X, train_Y, val_Y, train_audio, val_audio, train_transcript_embs, val_transcript_embs
 
 
-def get_local_files(base_dir, speaker, out_num, segment_tag):
+def get_local_files(base_dir, speaker, out_num, segment_tag, split="train"):
     """ helper function for loading associated files """
 
-    fp = '{}/data/{}/train/p{}_speak_files_clean_deca{}.npy'\
-                .format(base_dir, speaker, 1-out_num, segment_tag)
-    p0_fp = '{}/data/{}/train/p{}_speak_faces_clean_deca{}.npy'\
-                .format(base_dir, speaker, 1-out_num, segment_tag)
-    p1_fp = '{}/data/{}/train/p{}_list_faces_clean_deca{}.npy'\
-                .format(base_dir, speaker, out_num, segment_tag)
-    audio_fp = '{}/data/{}/train/p{}_speak_audio_clean_deca{}.npy'\
-                .format(base_dir, speaker, 1-out_num, segment_tag)
+    fp = '{}/data/{}/{}/p{}_speak_files_clean_deca{}.npy'\
+                .format(base_dir, speaker, split, 1-out_num, segment_tag)
+    p0_fp = '{}/data/{}/{}/p{}_speak_faces_clean_deca{}.npy'\
+                .format(base_dir, speaker, split, 1-out_num, segment_tag)
+    p1_fp = '{}/data/{}/{}/p{}_list_faces_clean_deca{}.npy'\
+                .format(base_dir, speaker, split, out_num, segment_tag)
+    audio_fp = '{}/data/{}/{}/p{}_speak_audio_clean_deca{}.npy'\
+                .format(base_dir, speaker, split, 1-out_num, segment_tag)
     curr_paths = np.load(fp)
     p0_deca = np.load(p0_fp)
     gt_windows = p0_deca[:,:,:56]

@@ -196,7 +196,6 @@ def save_pred(args, config, tag, pipeline, test_files, unstd_pred, probs=None):
                 pickle.dump(data, f)
     print('done save', test_Y.shape)
 
-
 def main(args):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     rng = np.random.RandomState(23456)

@@ -44,7 +44,6 @@ def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
                                   map_location=lambda storage, loc: storage)
         if disable_strict_load:
             generator.load_state_dict(loaded_state['state_dict'], strict=False)
-            import pdb; pdb.set_trace()
         else:
             generator.load_state_dict(loaded_state['state_dict'], strict=True)
         g_optimizer._optimizer.load_state_dict(

@@ -1,7 +1,7 @@
 {
   "l_vqconfig": "vqgan/configs/l2_32_smoothSS.json",
   "pipeline": "er2er",
-  "tag": "delta_v6_w_text_es_",
+  "tag": "delta_v6_w_text_es_segmented_es_50_",
   "segment_tag": "",
   "learning_rate": 0.01,
   "warmup_steps": 100000,
@@ -9,7 +9,7 @@
   "num_epochs": 500000,
   "batch_size": 32,
   "early_stopping": {
-    "patience": 10
+    "patience": 50
   },
   "loss_config": {
     "loss_aug": "normal",
@@ -58,7 +58,9 @@
     "local": true,
     "basedir": "./",
     "speaker": "conan",
-    "transcript_embeddings_dir": "./data/transcript_embeddings/all-MiniLM-L6-v2/",
-    "transcript_embeddings_dim": 384
+    "train_transcript_embeddings_dir": "./data/train_seg_transcripts_embs/",
+    "test_transcript_embeddings_dir": "./data/test_seg_transcripts_embs/",
+    "transcript_embeddings_dim": 384,
+    "transcripts_segmented": true
   }
 }

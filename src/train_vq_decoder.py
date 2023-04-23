@@ -192,9 +192,11 @@ def main(args):
     generator.train()
 
     ## training process
-    train_X, test_X, train_Y, test_Y, train_audio, test_audio, train_transcript_embs, test_transcript_embs= \
+    train_X, val_X, train_Y, val_Y, train_audio, val_audio, train_transcript_embs, val_transcript_embs= \
         load_data(config, pipeline, tag, rng, vqconfigs=vq_configs,
-                  segment_tag=config['segment_tag'], smooth=True)
+                  segment_tag=config['segment_tag'], smooth=True, train_ratio=args.train_split_ratio)
+    # test_X, test_Y, test_audio, test_transcript_embs, filepaths, std_info = load_test_data(config, pipeline, tag, out_num=0, vqconfigs=vq_configs,
+                #    smooth=True, speaker="conan", segment_tag=config['segment_tag'])
     body_mean_dist, body_std_dist = None, None
 
     patience = config["early_stopping"]["patience"]
@@ -212,7 +214,7 @@ def main(args):
                              patch_size, seq_len)
         currBestLoss, prev_save_epoch, g_loss = \
             generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
-                               test_X, test_Y, test_audio, test_transcript_embs, currBestLoss,
+                               val_X, val_Y, val_audio, val_transcript_embs, currBestLoss,
                                prev_save_epoch, tag, writer, patch_size, seq_len)
         if currBestLoss == g_loss:
             num_epochs_since_loss_improv = 0
@@ -226,6 +228,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, required=True)
     parser.add_argument('--checkpoint', type=str, default=None)
+    parser.add_argument('--train_split_ratio', type=float, default=1.0)
     parser.add_argument('--test', action='store_true')
     parser.add_argument('--ar_load', action='store_true')
     parser.add_argument('-ut', '--use_text_transcriptions', action='store_true')
