@@ -53,7 +53,7 @@ def gather_data(config, X, Y, audio, transcript_embs, l_vq_model, patch_size, se
     return inputs, listener_future, raw_listener, btc
 
 
-def generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
+def generator_train_step(config, epoch, autoregressive_generator, g_optimizer, l_vq_model,
                          train_X, train_Y, train_audio, train_transcript_embs, rng, writer,
                          patch_size, seq_len):
     """ method to prepare data into proper format for training
@@ -63,14 +63,14 @@ def generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
     Parameters
     ----------
     epoch: int
-    generator:
+    autoregressive_generator:
         Predictor model that outputs future listener motion conditioned on past
         listener motion and speaker past+current audio+motion
     g_optimizer:
         optimizer for training the Predictor model
     """
 
-    generator.train()
+    autoregressive_generator.train()
     batchinds = np.arange(train_X.shape[0] // config['batch_size'])
     totalSteps = len(batchinds)
     rng.shuffle(batchinds)
@@ -80,7 +80,7 @@ def generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
         inputs, listener_future, _, _ = gather_data(config, train_X, train_Y,
                                                     train_audio, train_transcript_embs, l_vq_model,
                                                     patch_size, seq_len, bi)
-        prediction = generator(inputs,
+        prediction = autoregressive_generator(inputs,
                         config['fact_model']['cross_modal_model']['max_mask_len'],
                         -1)
         cut_point = listener_future.shape[1]
@@ -99,7 +99,7 @@ def generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
     writer.add_scalar('Loss/train_totalLoss', avgLoss / totalSteps, epoch)
 
 
-def generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
+def generator_val_step(config, epoch, autoregressive_generator, g_optimizer, l_vq_model,
                        test_X, test_Y, test_audio, test_transcript_embs, currBestLoss,
                        prev_save_epoch, tag, writer, patch_size, seq_len):
     """ method to validate training of Predictor model
@@ -107,7 +107,7 @@ def generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
     see generator_train_step() for full parameters definition
     """
 
-    generator.eval()
+    autoregressive_generator.eval()
     batchinds = np.arange(test_X.shape[0] // config['batch_size'])
     totalSteps = len(batchinds)
     testLoss = 0
@@ -117,7 +117,7 @@ def generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
                                                     test_audio, test_transcript_embs, l_vq_model,
                                                     patch_size, seq_len, bi)
         with torch.no_grad():
-            prediction = generator(inputs,
+            prediction = autoregressive_generator(inputs,
                 config['fact_model']['cross_modal_model']['max_mask_len'], -1)
         cut_point = listener_future.shape[1]
         logit_loss = calc_logit_loss(prediction[:,:cut_point,:],
@@ -136,7 +136,7 @@ def generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
     if testLoss < currBestLoss:
         prev_save_epoch = epoch
         checkpoint = {'config': args.config,
-                      'state_dict': generator.state_dict(),
+                      'state_dict': autoregressive_generator.state_dict(),
                       'optimizer': {
                         'optimizer': g_optimizer._optimizer.state_dict(),
                         'n_steps': g_optimizer.n_steps,
@@ -186,10 +186,10 @@ def main(args):
     fileName = config['model_path'] + \
                     '{}{}_best.pth'.format(tag, config['pipeline'])
     load_path = fileName if os.path.exists(fileName) else None
-    generator, g_optimizer, start_epoch = setup_model(config, l_vqconfig,
+    autoregressive_generator, g_optimizer, start_epoch = setup_model(config, l_vqconfig,
                                                       s_vqconfig=None,
                                                       load_path=load_path, use_text_transcriptions=args.use_text_transcriptions, disable_strict_load=args.disable_strict_load)
-    generator.train()
+    autoregressive_generator.train()
 
     ## training process
     train_ratio = config['data']['train_split_ratio'] if args.train_split_ratio is None else args.train_split_ratio
@@ -210,11 +210,11 @@ def main(args):
             print("prev save epoch: ", prev_save_epoch)
             print('best loss:', currBestLoss)
             break
-        generator_train_step(config, epoch, generator, g_optimizer, l_vq_model,
+        generator_train_step(config, epoch, autoregressive_generator, g_optimizer, l_vq_model,
                              train_X, train_Y, train_audio, train_transcript_embs, rng, writer,
                              patch_size, seq_len)
         currBestLoss, prev_save_epoch, g_loss = \
-            generator_val_step(config, epoch, generator, g_optimizer, l_vq_model,
+            generator_val_step(config, epoch, autoregressive_generator, g_optimizer, l_vq_model,
                                val_X, val_Y, val_audio, val_transcript_embs, currBestLoss,
                                prev_save_epoch, tag, writer, patch_size, seq_len)
         if currBestLoss == g_loss:

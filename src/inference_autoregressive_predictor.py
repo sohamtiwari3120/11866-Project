@@ -1,4 +1,4 @@
-from test_vq_decoder import *
+from test_autoregressive_predictor import *
 import pandas as pd
 
 def extract_samples(test_X, test_Y, test_audio, test_transcript_embs, test_files, path_list=[]):
@@ -43,10 +43,10 @@ def compute_inference_l2(args):
     ## setup Predictor model
     load_path = args.checkpoint
     print('> checkpoint', load_path)
-    generator, _, _ = setup_model(config, l_vqconfig,
+    autoregressive_generator, _, _ = setup_model(config, l_vqconfig,
                                   mask_index=0, test=True, s_vqconfig=None,
                                   load_path=load_path, use_text_transcriptions=args.use_text_transcriptions, disable_strict_load=args.disable_strict_load)
-    generator.eval()
+    autoregressive_generator.eval()
 
     ## load data
     print(f"Results for paths provided in {args.input_file_path}")
@@ -61,7 +61,7 @@ def compute_inference_l2(args):
                 extract_samples(test_X, test_Y, test_audio, test_transcript_embs, test_files, path_list=listener_video_dict[listener])
 
         ## run model and save/eval
-        unstd_pred, probs, unstd_ub = run_model(args, config, l_vq_model, generator,
+        unstd_pred, probs, unstd_ub = run_model(args, config, l_vq_model, autoregressive_generator,
                                                 test_X, test_Y, test_audio, test_transcript_embs, seq_len,
                                                 patch_size, rng=rng)
         subset = (test_X.shape[0] // config['batch_size']) * config['batch_size']

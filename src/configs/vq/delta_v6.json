@@ -35,6 +35,7 @@
       "max_mask_len": 4
     },
     "listener_past_transformer_config": {
+      "description": "config for listener past transformer ENCODER",
       "use_conv": false,
       "hidden_size": 200,
       "in_dim": 200,
@@ -44,6 +45,7 @@
       "sequence_length": 4
     },
     "speaker_full_transformer_config": {
+      "description": "config for speaker current audio and facial transformer ENCODER(S)",
       "use_continuous": "v6",
       "use_conv": false,
       "hidden_size": 200,

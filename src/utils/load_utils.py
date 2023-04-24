@@ -31,13 +31,13 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, tr
     """ data preparation function
 
     processes the data by truncating full input sequences to remove future info,
-    and converts listener raw motion to listener codebook indices
+    and converts (past) listener raw motion to listener codebook indices
     """
 
     speakerData = Variable(torch.from_numpy(speakerData_np),
                            requires_grad=False).cuda()
     listenerData = Variable(torch.from_numpy(listenerData_np),
-                            requires_grad=False).cuda()
+                            requires_grad=False).cuda() # (batch_size, window_len, d_m+3)?
     audioData = Variable(torch.from_numpy(audioData_np),
                          requires_grad=False).cuda()
     transcriptData = Variable(torch.from_numpy(transcriptData_np),
@@ -50,34 +50,38 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, tr
     ## convert listener past inputs to codebook indices
     with torch.no_grad():
         if listenerData.dim() == 3:
-            # if listener input is in the raw format, directly convert to indxs
+            # if listener input is in the raw format (batch_size, window_len, d_m+3), directly convert to indxs
             listener_past, listener_past_index = \
                         l_vq_model.module.get_quant(listenerData[:,:seq_len,:])
+            #  listener_past shape (batch_size, t/w, dz)?
             btc = listener_past.shape[0], \
                   listener_past.shape[2], \
                   listener_past.shape[1]
             listener_past_index = torch.reshape(listener_past_index,
-                                                (listener_past.shape[0], -1))
+                                                (listener_past.shape[0], -1)) # (batch_size, t/w, 1)?
+            print(listener_past.shape, listener_past_index.shape)
+            import pdb; pdb.set_trace()
         else:
-            # if listener input is already in index format, fetch the quantized
+            # if listener input is already in index format (batch_size, t/w, 1)?, fetch the quantized 
             # raw listener and then re-encode into a new set of indxs
-            tmp_past_index = listenerData[:,:btc[1]]
-            tmp_decoded = l_vq_model.module.decode_to_img(tmp_past_index, btc)
+            # btc = [batch_size, dz, t/w]
+            tmp_past_index = listenerData[:,:btc[1]] # so essentially the same input shape as on line 65?
+            tmp_decoded = l_vq_model.module.decode_to_img(tmp_past_index, btc) # (batch_size, t, dm+3)?
             new_past, new_past_index = l_vq_model.module.get_quant(
                                                     tmp_decoded[:,:seq_len,:])
             listener_past_index = torch.reshape(new_past_index,
-                                                (new_past.shape[0], -1))
+                                                (new_past.shape[0], -1)) # (batch_size, t/w, 1)?
 
         ## dealing with future listener motion (during training only)
         listener_future = None
         listener_future_index = None
         if listenerData.shape[1] > seq_len:
             listener_future, listener_future_index = \
-                        l_vq_model.module.get_quant(listenerData[:,seq_len:,:])
+                        l_vq_model.module.get_quant(listenerData[:,seq_len:,:]) # (batch_size, t/w,  dz); (batch_size, t/w, 1)?
             listener_future_index = torch.reshape(listener_future_index,
                                                 (listener_future.shape[0], -1))
 
-    ## build input dictionary, which will be the input to the Predictor
+    ## build input dictionary, which will be the input to the Autoregressive Predictor
     raw_listener = listenerData[:,seq_len:,:] if listenerData.dim() == 3 \
                     else None
     inputs = {"speaker_full": speaker_full,

@@ -17,7 +17,7 @@ from vqgan.vqmodules.gan_models import setup_vq_transformer
 from utils.load_utils import *
 
 
-def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio, transcript_embs,
+def run_model(args, config, l_vq_model, autoregressive_generator, test_X, test_Y, test_audio, transcript_embs,
               seq_len, patch_size, rng=None):
     """ method to run full model pipeline in autorecursive manner
 
@@ -26,7 +26,7 @@ def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio, t
     l_vq_model:
         pre-trained VQ-VAE model used to discretize the past listener motion and
         decode future listener motion predictions
-    generator:
+    autoregressive_generator:
         Predictor model that outputs future listener motion conditioned on past
         listener motion and speaker past+current audio+motion
     test_X: tensor (B,T1,F)
@@ -67,7 +67,7 @@ def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio, t
         transcriptData_np = np.repeat(np.expand_dims(transcript_embs[idxStart:(idxStart + config['batch_size']), :], axis=1), config["fact_model"]["speaker_full_transformer_config"]["sequence_length"], axis=1)
 
         prediction, probs, inputs, quant_size = \
-            generate_prediction(config, args, l_vq_model, generator,
+            generate_prediction(config, args, l_vq_model, autoregressive_generator,
                                 speakerData_np[:,:(seq_len+patch_size),:],
                                 listenerData_np[:,:seq_len,:],
                                 audioData_np[:,:(seq_len+patch_size)*4,:], transcriptData_np,
@@ -85,7 +85,7 @@ def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio, t
                 prediction.data[:,int(t/step_t):int((t+seq_len)/step_t)]\
                                                                 .cpu().numpy()
             curr_prediction, curr_probs, _ , _= \
-                generate_prediction(config, args, l_vq_model, generator,
+                generate_prediction(config, args, l_vq_model, autoregressive_generator,
                                 speakerData_np[:,t:(t+seq_len+patch_size),:],
                                 listener_in,
                                 audioData_np[:,t:(t+(seq_len+patch_size)*4),:], transcriptData_np,
@@ -135,7 +135,7 @@ def run_model(args, config, l_vq_model, generator, test_X, test_Y, test_audio, t
     return output_pred, output_probs, output_gt
 
 
-def generate_prediction(config, args, l_vq_model, generator, test_X,
+def generate_prediction(config, args, l_vq_model, autoregressive_generator, test_X,
                         test_Y, test_audio, transcript_emb, seq_len, patch_size,
                         mask_point, cut_point, btc=None):
     """ Function to run inputs through Predictor model and to sample outputs
@@ -156,7 +156,7 @@ def generate_prediction(config, args, l_vq_model, generator, test_X,
 
     ## run inputs through Predictor model
     with torch.no_grad():
-        quant_prediction = generator(inputs,
+        quant_prediction = autoregressive_generator(inputs,
                 config['fact_model']['cross_modal_model']['max_mask_len'],
                 mask_point)
 
@@ -223,10 +223,10 @@ def main(args):
     ## setup Predictor model
     load_path = args.checkpoint
     print('> checkpoint', load_path)
-    generator, _, _ = setup_model(config, l_vqconfig,
+    autoregressive_generator, _, _ = setup_model(config, l_vqconfig,
                                   mask_index=0, test=True, s_vqconfig=None,
                                   load_path=load_path, use_text_transcriptions=args.use_text_transcriptions, disable_strict_load=args.disable_strict_load)
-    generator.eval()
+    autoregressive_generator.eval()
 
     ## load data
     out_num = 1 if config['data']['speaker'] == 'fallon' else 0
@@ -236,7 +236,7 @@ def main(args):
                            speaker=args.speaker, num_out=num_out)
 
     ## run model and save/eval
-    unstd_pred, probs, unstd_ub = run_model(args, config, l_vq_model, generator,
+    unstd_pred, probs, unstd_ub = run_model(args, config, l_vq_model, autoregressive_generator,
                                             test_X, test_Y, test_audio, test_transcript_embs, seq_len,
                                             patch_size, rng=rng)
     overall_l2 = np.mean(
