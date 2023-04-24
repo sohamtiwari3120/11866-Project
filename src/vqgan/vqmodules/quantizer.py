@@ -113,3 +113,98 @@ class VectorQuantizer(nn.Module):
             #z_q = z_q.permute(0, 3, 1, 2).contiguous()
 
         return z_q
+    
+
+class StyleTransferVectorQuantizer(VectorQuantizer):
+    """To be only used when have access to pretrained_codebook. Meant to freeze all the pretrained codebook layers
+
+    Args:
+        VectorQuantizer (_type_): _description_
+    """    
+    def __init__(self, n_e, e_dim, beta):
+        super(StyleTransferVectorQuantizer, self).__init__(n_e, e_dim, beta)
+        print(f"Initial model weights: {self.embedding.weight}")
+
+        # froze original codebook
+        self.style_transfer_layer = nn.Linear(1, (n_e) * e_dim)
+    
+    def freeze_codebook(self):
+        self.embedding.weight.requires_grad = False
+    
+    def load_pretrained_codebook_weights(self, load_path):
+        """To extract the pretrained codebook weights from the saved checkpoint for the VQModelTransformer which contains the modules - encoder, quantize and decoder
+
+        Args:
+            load_path (str): path to the saved VQModelTransformer checkpoint
+        """        
+        loaded_state = torch.load(load_path,
+                                  map_location=lambda storage, loc: storage)
+        self.load_state_dict({'embedding.weight': loaded_state['state_dict']['module.quantize.embedding.weight']}, strict=False)
+        self.freeze_codebook()
+
+    def forward(self, z, style_token):
+        # generate style token embedding
+        style_token_emb = self.style_transfer_layer(style_token)
+        # reshape the style token embedding to match the shape of the codebook
+        style_token_emb = style_token_emb.view(self.n_e, self.e_dim)
+        # generate new embeddings layer from frozen codebook and the style token emb
+        new_embedding_weights = self.embedding.weight * style_token_emb
+        # generating quantized 
+        z = z.permute(0, 2, 1).contiguous()
+        z_flattened = z.view(-1, self.e_dim)
+        # distances from z to embeddings e_j (z - e)^2 = z^2 + e^2 - 2 e * z
+
+        d = torch.sum(z_flattened ** 2, dim=1, keepdim=True) + \
+            torch.sum(new_embedding_weights**2, dim=1) - 2 * \
+            torch.matmul(z_flattened, new_embedding_weights.t())
+
+        ## could possible replace this here
+        # #\start...
+        # find closest encodings
+        min_encoding_indices = torch.argmin(d, dim=1).unsqueeze(1)
+
+        min_encodings = torch.zeros(
+            min_encoding_indices.shape[0], self.n_e).to(z)
+        min_encodings.scatter_(1, min_encoding_indices, 1)
+
+        # dtype min encodings: torch.float32
+        # min_encodings shape: torch.Size([2048, 512])
+        # min_encoding_indices.shape: torch.Size([2048, 1])
+
+        # get quantized latent vectors
+        z_q = torch.matmul(min_encodings, new_embedding_weights).view(z.shape)
+        #.........\end
+
+        # with:
+        # .........\start
+        #min_encoding_indices = torch.argmin(d, dim=1)
+        #z_q = self.embedding(min_encoding_indices)
+        # ......\end......... (TODO)
+
+        # compute loss for embedding
+        loss = self.beta * torch.mean((z_q.detach()-z)**2) + \
+                   torch.mean((z_q - z.detach()) ** 2)
+        #loss = torch.mean((z_q.detach()-z)**2) + self.beta * \
+        #    torch.mean((z_q - z.detach()) ** 2)
+
+        # preserve gradients
+        z_q = z + (z_q - z).detach()
+
+        # perplexity
+        e_mean = torch.mean(min_encodings, dim=0)
+        perplexity = torch.exp(-torch.sum(e_mean * torch.log(e_mean + 1e-10)))
+
+        # reshape back to match original input shape
+        z_q = z_q.permute(0, 2, 1).contiguous()
+
+        return z_q, loss, (perplexity, min_encodings, min_encoding_indices)
+
+if __name__ == "__main__":
+    model = StyleTransferVectorQuantizer(200, 256, 0.25)
+    load_path = "/home/ubuntu/learning2listen/src/vqgan/models/l2_32_smoothSS_er2er_best.pth"
+    model.load_pretrained_codebook_weights(load_path)
+    print(f"Model weights after loading: {model.embedding.weight} {model.embedding.weight.requires_grad}")
+    z = torch.randn(1, 4, 128)
+    style_token = torch.ones(1)
+    z_q, loss, x = model(z, style_token)
+    print(z_q.shape, loss, len(x))
