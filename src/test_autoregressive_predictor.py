@@ -234,11 +234,15 @@ def main(args):
             load_test_data(config, pipeline, tag, out_num=out_num,
                            vqconfigs=vq_configs, smooth=True,
                            speaker=args.speaker, num_out=num_out)
+    # test_X - facial embeddings of the speaker (batch_size, seq_len=64, 56 (why not 184? because only the first 50 correspond to the expression and the next 6 correspond to the pose))
 
     ## run model and save/eval
     unstd_pred, probs, unstd_ub = run_model(args, config, l_vq_model, autoregressive_generator,
                                             test_X, test_Y, test_audio, test_transcript_embs, seq_len,
                                             patch_size, rng=rng)
+    # unstd_pred.shape = (1024, 64, 56)
+    # probs.shape (1024, 8, 200)
+    # unstd_ub (1024, 64, 56) - this is the ground truth, I think
     overall_l2 = np.mean(
         np.linalg.norm(test_Y[:,seq_len:,:] - unstd_pred[:,seq_len:,:], axis=-1))
     print('overall l2:', overall_l2)

@@ -60,7 +60,6 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, tr
             listener_past_index = torch.reshape(listener_past_index,
                                                 (listener_past.shape[0], -1)) # (batch_size, t/w, 1)?
             print(listener_past.shape, listener_past_index.shape)
-            import pdb; pdb.set_trace()
         else:
             # if listener input is already in index format (batch_size, t/w, 1)?, fetch the quantized 
             # raw listener and then re-encode into a new set of indxs
@@ -237,6 +236,53 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
     test_transcript_embs = np.concatenate(test_transcript_embs, axis=0)
     return test_X, test_Y, test_audio, test_transcript_embs, filepaths, std_info
 
+def load_reference_style_embeddings(config, type:str):
+    if type not in ["less", "more"]:
+        raise ValueError("type must be either 'less' or'more'")
+    pkl_files_dir = config['data'][f'{type}_expressive_style_embeddings_dir']
+    pkl_files = [os.path.join(pkl_files_dir, f) for f in os.listdir(pkl_files_dir) if f.endswith('.pkl')]
+    pkl_data = []
+    for file in pkl_files:
+        with open(file, 'rb') as f:
+            data = pickle.load(f)
+            expr_data = data['exp'].cpu().detach().numpy().squeeze()
+            pose_data = data['pose'].cpu().detach().numpy().squeeze()
+            pkl_data.append(np.concatenate([expr_data, pose_data], axis=0))
+    unstd_data = np.expand_dims(np.array(pkl_data), axis=0)
+    mean, stddev = mean_std_swap(unstd_data)
+    std_data = (unstd_data - mean) / stddev
+    return std_data, mean, stddev
+
+def format_reference_style_embeddings(embeddings:np.ndarray, seq_len=64, batch_size=32):
+    """function to format the reference style embeddings into a format that can be used by the model
+
+    Args:
+        embeddings (_type_): _description_
+        seq_len (_type_, optional): _description_. Defaults to 64.
+        batch_size (_type_, optional): _description_. Defaults to 32.
+
+    Returns:
+        _type_: _description_
+    """
+    batched_embeddings = []
+    i = 0
+    assert embeddings.shape[0] == 1
+    embeddings = embeddings[0]
+    n_emb = len(embeddings)
+    temp_array = []
+    while True:
+        if i == n_emb:
+            i = 0
+        temp_array.append(embeddings[i])
+        i+=1
+        if len(temp_array) == seq_len:
+            batched_embeddings.append(temp_array)
+            temp_array = []
+        if len(batched_embeddings) == batch_size:
+            break
+    res = np.array(batched_embeddings)
+    assert res.shape == (batch_size, seq_len, 56), f"Invalid np array constructed - {res.shape}"
+    return res
 
 def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
               smooth=False, train_ratio=1.0):
@@ -378,6 +424,7 @@ def get_local_files(base_dir, speaker, out_num, segment_tag, split="train"):
                 .format(base_dir, speaker, split, 1-out_num, segment_tag)
     curr_paths = np.load(fp)
     p0_deca = np.load(p0_fp)
+    # NOTE: WE ONLY ACCESS THE FIRST 56 VALUES BECAUSE THE FIRST 50 are EXPRESSIONS and the next 6 values are POSE INFORMATION
     gt_windows = p0_deca[:,:,:56]
     quant_windows = np.load(p1_fp)[:,:,:56]
     audio_windows = np.load(audio_fp)
@@ -423,3 +470,14 @@ def mean_std_swap(data):
     std =  data.std(axis=1).std(axis=0)[np.newaxis,np.newaxis,:]
     std += EPSILON
     return mean, std
+
+
+if __name__ == '__main__':
+    import json
+    with open('/home/ubuntu/learning2listen/src/configs/vq/delta_v6.json', 'r') as f:
+        config = json.load(f)
+    less_style_embeddings, less_mean, less_stddev = load_reference_style_embeddings(config, "less")
+    more_style_embeddings, more_mean, more_stddev = load_reference_style_embeddings(config, "more")
+    less_style_embeddings_batch = format_reference_style_embeddings(less_style_embeddings)
+    more_style_embeddings_batch = format_reference_style_embeddings(more_style_embeddings)
+    import pdb; pdb.set_trace()

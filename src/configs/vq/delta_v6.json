@@ -62,6 +62,8 @@
     "speaker": "conan",
     "train_transcript_embeddings_dir": "./data/train_seg_transcripts_embs/",
     "test_transcript_embeddings_dir": "./data/test_seg_transcripts_embs/",
+    "less_expressive_style_embeddings_dir": "./data/reference_style_embedidngs/results_less4/code/",
+    "more_expressive_style_embeddings_dir": "./data/reference_style_embedidngs/results_more4/code/",
     "transcript_embeddings_dim": 384,
     "transcripts_segmented": true,
     "train_split_ratio": 0.70
