@@ -174,12 +174,18 @@ def main(args):
         l_vqconfig = json.load(f)
     l_model_path = 'vqgan/' + l_vqconfig['model_path'] + \
             '{}{}_best.pth'.format(l_vqconfig['tag'], l_vqconfig['pipeline'])
-    l_vq_model, _, _ = setup_vq_transformer(args, l_vqconfig,
+    l_vq_model, _, _, style_transfer = setup_vq_transformer(args, l_vqconfig,
                                             load_path=l_model_path)
                                             
     # NOTE: freezing the layers of the VQ-VAE model, so that the codebook's discrete representations do not change during training.
     for param in l_vq_model.parameters():
-        param.requires_grad = False
+        if not style_transfer:
+            param.requires_grad = False
+        else:
+            print(param)
+            import pdb; pdb.set_trace()
+            if "style_transfer_layer" not in param.name:
+                param.requires_grad = False
     l_vq_model.eval()
     vq_configs = {'l_vqconfig': l_vqconfig, 's_vqconfig': None}
     # set up Predictor model

@@ -123,7 +123,7 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
     """    
     def __init__(self, n_e, e_dim, beta):
         super(StyleTransferVectorQuantizer, self).__init__(n_e, e_dim, beta)
-        print(f"Initial model weights: {self.embedding.weight}")
+        # print(f"Initial model weights: {self.embedding.weight}")
 
         # froze original codebook
         self.style_transfer_layer = nn.Linear(1, (n_e) * e_dim)
@@ -131,7 +131,7 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
     def freeze_codebook(self):
         self.embedding.weight.requires_grad = False
     
-    def load_pretrained_codebook_weights(self, load_path):
+    def load_pretrained_codebook_weights(self, load_path, freeze_codebook=False):
         """To extract the pretrained codebook weights from the saved checkpoint for the VQModelTransformer which contains the modules - encoder, quantize and decoder
 
         Args:
@@ -140,13 +140,13 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
         loaded_state = torch.load(load_path,
                                   map_location=lambda storage, loc: storage)
         self.load_state_dict({'embedding.weight': loaded_state['state_dict']['module.quantize.embedding.weight']}, strict=False)
-        self.freeze_codebook()
+        del loaded_state
+        if freeze_codebook:
+            self.freeze_codebook()
 
     def forward(self, z, style_token):
-        # generate style token embedding
-        style_token_emb = self.style_transfer_layer(style_token)
-        # reshape the style token embedding to match the shape of the codebook
-        style_token_emb = style_token_emb.view(self.n_e, self.e_dim)
+        # Get style token embeddings in the shape of the codebook
+        style_token_emb = self.get_reshaped_style_token_embedding(style_token)
         # generate new embeddings layer from frozen codebook and the style token emb
         new_embedding_weights = self.embedding.weight * style_token_emb
         # generating quantized 
@@ -199,12 +199,56 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
 
         return z_q, loss, (perplexity, min_encodings, min_encoding_indices)
 
+    def get_reshaped_style_token_embedding(self, style_token):
+        # generate style token embedding
+        style_token_emb = self.style_transfer_layer(style_token)
+        # reshape the style token embedding to match the shape of the codebook
+        style_token_emb = style_token_emb.view(self.n_e, self.e_dim)
+        return style_token_emb
+
+    def get_distance(self, z, style_token):
+        style_token_emb = self.get_reshaped_style_token_embedding(style_token) # shape (n_e, e_dim), same as the codebook
+        z = z.permute(0, 2, 1).contiguous()
+        z_flattened = z.view(-1, self.e_dim)
+        # distances from z to embeddings e_j (z - e)^2 = z^2 + e^2 - 2 e * z
+
+        # modify the codebook using the style token
+        new_embedding_weights = self.embedding.weight * style_token_emb
+
+        d = torch.sum(z_flattened ** 2, dim=1, keepdim=True) + \
+            torch.sum(new_embedding_weights**2, dim=1) - 2 * \
+            torch.matmul(z_flattened, new_embedding_weights.t())
+        d = torch.reshape(d, (z.shape[0], -1, z.shape[2])).permute(0,2,1).contiguous()
+        return d
+
+    def get_codebook_entry(self, indices, shape, style_token):
+        style_token_emb = self.get_reshaped_style_token_embedding(style_token) # shape (n_e, e_dim), same as the codebook
+        # shape specifying (batch, height, width, channel)
+        # TODO: check for more easy handling with nn.Embedding
+        min_encodings = torch.zeros(indices.shape[0], self.n_e).to(indices)
+        min_encodings.scatter_(1, indices[:,None], 1)
+
+        # modify the codebook using the style token
+        new_embedding_weights = self.embedding.weight * style_token_emb
+
+        # get quantized latent vectors
+        #print(min_encodings.shape, self.embedding.weight.shape)
+        z_q = torch.matmul(min_encodings.float(), new_embedding_weights)
+
+        if shape is not None:
+            z_q = z_q.view(shape)
+
+            # reshape back to match original input shape
+            #z_q = z_q.permute(0, 3, 1, 2).contiguous()
+
+        return z_q
+
 if __name__ == "__main__":
     model = StyleTransferVectorQuantizer(200, 256, 0.25)
     load_path = "/home/ubuntu/learning2listen/src/vqgan/models/l2_32_smoothSS_er2er_best.pth"
-    model.load_pretrained_codebook_weights(load_path)
-    print(f"Model weights after loading: {model.embedding.weight} {model.embedding.weight.requires_grad}")
+    model.load_pretrained_codebook_weights(load_path, freeze_codebook=True)
+    # print(f"Model weights after loading: {model.embedding.weight} {model.embedding.weight.requires_grad}")
     z = torch.randn(1, 4, 128)
     style_token = torch.ones(1)
     z_q, loss, x = model(z, style_token)
-    print(z_q.shape, loss, len(x))
+    # print(z_q.shape, loss, len(x))

@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 import sys
 sys.path.append("../")
-from vqgan.vqmodules.quantizer import VectorQuantizer
+from vqgan.vqmodules.quantizer import VectorQuantizer, StyleTransferVectorQuantizer
 from modules.base_models import Transformer, PositionEmbedding,\
                                 LinearEmbedding, AudioEmbedding
 from utils.base_model_util import get_activation
@@ -20,7 +20,8 @@ def setup_vq_transformer(args, config, load_path=None, test=False, version=None)
     """ function that creates and sets up the VQ-VAE model for train/test """
 
     ## create VQ-VAE model and the optimizer for training
-    generator = VQModelTransformer(config, version).cuda()
+    style_transfer = config['VQuantizer']['style_transfer']
+    generator = VQModelTransformer(config, style_transfer=style_transfer).cuda()
     learning_rate =  config['learning_rate']
     print('starting lr', learning_rate)
     g_optimizer = ScheduledOptim(
@@ -37,7 +38,11 @@ def setup_vq_transformer(args, config, load_path=None, test=False, version=None)
     if load_path is not None:
         loaded_state = torch.load(load_path,
                                   map_location=lambda storage, loc: storage)
-        generator.load_state_dict(loaded_state['state_dict'], strict=True)
+        if style_transfer:
+            generator.load_state_dict(loaded_state['state_dict'], strict=False) # made such changes so that able to load pretrained codebook weights without raising an error
+            generator.module.quantize.load_pretrained_codebook_weights(load_path, freeze_codebook=config['VQuantizer']['freeze_codebook'])
+        else:
+            generator.load_state_dict(loaded_state['state_dict'], strict=True) # made 
         g_optimizer._optimizer.load_state_dict(
                                 loaded_state['optimizer']['optimizer'])
         g_optimizer.set_n_steps(loaded_state['optimizer']['n_steps'])
@@ -46,9 +51,13 @@ def setup_vq_transformer(args, config, load_path=None, test=False, version=None)
             print('>> changing lr to 4.5e-06')
             g_optimizer.set_init_lr(4.5e-06)
         print('loading checkpoint from...', load_path)
+        del loaded_state
     else:
         print('starting from scratch...')
-    return generator, g_optimizer, start_epoch
+    if config['VQuantizer']['freeze_codebook']:
+        generator.module.quantize.freeze_codebook()
+    print(f"Froze codebook: {config['VQuantizer']['freeze_codebook']}")
+    return generator, g_optimizer, start_epoch, style_transfer
 
 
 def calc_vq_loss(pred, target, quant_loss, quant_loss_weight=1.0, alpha=1.0):
@@ -65,45 +74,63 @@ def calc_vq_loss(pred, target, quant_loss, quant_loss_weight=1.0, alpha=1.0):
 class VQModelTransformer(nn.Module):
     """ Transformer model for listener VQ-VAE """
 
-    def __init__(self, config, version):
+    def __init__(self, config, style_transfer=False):
         super().__init__()
         self.encoder = TransformerEncoder(config)
         self.decoder = TransformerDecoder(
                                 config, config['transformer_config']['in_dim'])
-        self.quantize = VectorQuantizer(config['VQuantizer']['n_embed'],
+        self.style_transfer = style_transfer
+        if self.style_transfer:
+            self.quantize = StyleTransferVectorQuantizer(config['VQuantizer']['n_embed'],
+                                            config['VQuantizer']['zquant_dim'],
+                                            beta=0.25)
+        else:
+            self.quantize = VectorQuantizer(config['VQuantizer']['n_embed'],
                                         config['VQuantizer']['zquant_dim'],
                                         beta=0.25)
 
-    def encode(self, x, x_a=None):
+    def encode(self, x, x_a=None, style_token=None):
         h = self.encoder(x) ## x --> z'
-        quant, emb_loss, info = self.quantize(h) ## finds nearest quantization
+        if self.style_transfer:
+            quant, emb_loss, info = self.quantize(h, style_token) ## finds nearest quantization
+        else:
+            quant, emb_loss, info = self.quantize(h) ## finds nearest quantization
         return quant, emb_loss, info
 
     def decode(self, quant):
         dec = self.decoder(quant) ## z' --> x
         return dec
 
-    def forward(self, x, x_a=None):
-        quant, emb_loss, _ = self.encode(x)
+    def forward(self, x, x_a=None, style_token=None):
+        if self.style_transfer:
+            quant, emb_loss, _ = self.encode(x, style_token=style_token)
+        else:
+            quant, emb_loss, _ = self.encode(x)
         dec = self.decode(quant)
         return dec, emb_loss
 
-    def sample_step(self, x, x_a=None):
-        quant_z, _, info = self.encode(x, x_a)
+    def sample_step(self, x, x_a=None, style_token=None):
+        if self.style_transfer:
+            quant_z, _, info = self.encode(x, x_a, style_token=style_token)
+        else:
+            quant_z, _, info = self.encode(x, x_a)
         x_sample_det = self.decode(quant_z)
         btc = quant_z.shape[0], quant_z.shape[2], quant_z.shape[1]
         indices = info[2]
         x_sample_check = self.decode_to_img(indices, btc)
         return x_sample_det, x_sample_check
 
-    def get_quant(self, x, x_a=None):
-        quant_z, _, info = self.encode(x, x_a)
+    def get_quant(self, x, x_a=None, style_token=None):
+        quant_z, _, info = self.encode(x, x_a, style_token=style_token)
         indices = info[2]
         return quant_z, indices
 
-    def get_distances(self, x):
+    def get_distances(self, x, style_token=None):
         h = self.encoder(x) ## x --> z'
-        d = self.quantize.get_distance(h)
+        if self.style_transfer:
+            d = self.quantize.get_distance(h, style_token)
+        else:
+            d = self.quantize.get_distance(h)
         return d
 
     def get_quant_from_d(self, d, btc):
@@ -112,9 +139,13 @@ class VQModelTransformer(nn.Module):
         return x
 
     @torch.no_grad()
-    def decode_to_img(self, index, zshape):
+    def decode_to_img(self, index, zshape, style_token=None):
         index = index.long()
-        quant_z = self.quantize.get_codebook_entry(index.reshape(-1),
+        if self.style_transfer:
+            quant_z = self.quantize.get_codebook_entry(index.reshape(-1),
+                                                   shape=None, style_token=style_token)
+        else:
+            quant_z = self.quantize.get_codebook_entry(index.reshape(-1),
                                                    shape=None)
         quant_z = torch.reshape(quant_z, zshape).permute(0,2,1)
         x = self.decode(quant_z)

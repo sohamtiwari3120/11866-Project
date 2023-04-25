@@ -214,7 +214,7 @@ def main(args):
         l_vqconfig = json.load(f)
     l_model_path = 'vqgan/' + l_vqconfig['model_path'] + \
         '{}{}_best.pth'.format(l_vqconfig['tag'], l_vqconfig['pipeline'])
-    l_vq_model, _, _ = setup_vq_transformer(args, l_vqconfig,
+    l_vq_model, _, _, style_transfer = setup_vq_transformer(args, l_vqconfig,
                                             load_path=l_model_path,
                                             test=True)
     l_vq_model.eval()

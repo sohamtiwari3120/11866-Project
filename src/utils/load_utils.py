@@ -124,6 +124,7 @@ def load_all_transcript_embeddings(transcript_embeddings_dir: str)->Dict[str, to
     Returns:
         Dict[str, torch.Tensor]: Dictionary where the keys are the transcript filenames and the values are the respective torch embeddings.
     """
+    print(os.path.abspath(transcript_embeddings_dir))
     if not os.path.exists(transcript_embeddings_dir):
         raise Exception(f"No transcript embeddings exist at {transcript_embeddings_dir}. Create the transcript embeddings using the desired transformer first. Refer utils/process_transcripts.py")
     filenames = os.listdir(transcript_embeddings_dir)
