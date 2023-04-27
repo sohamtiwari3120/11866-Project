@@ -40,32 +40,45 @@ def setup_vq_transformer(args, config, load_path=None, test=False, version=None)
                                   map_location=lambda storage, loc: storage)
         if style_transfer:
             generator.load_state_dict(loaded_state['state_dict'], strict=False) # made such changes so that able to load pretrained codebook weights without raising an error
-            generator.module.quantize.load_pretrained_codebook_weights(load_path, freeze_codebook=config['VQuantizer']['freeze_codebook'])
+            # generator.module.quantize.load_pretrained_codebook_weights(load_path, freeze_codebook=config['VQuantizer']['freeze_codebook'])
+            print(f"Loaded pretrained codebook weights from {load_path} for style transfer")
         else:
             generator.load_state_dict(loaded_state['state_dict'], strict=True) # made 
-        g_optimizer._optimizer.load_state_dict(
-                                loaded_state['optimizer']['optimizer'])
-        g_optimizer.set_n_steps(loaded_state['optimizer']['n_steps'])
-        start_epoch = loaded_state['epoch']
-        if start_epoch > 500:
+        # g_optimizer._optimizer.load_state_dict(
+        #                         loaded_state['optimizer']['optimizer'], strict=False)
+        # g_optimizer.set_n_steps(loaded_state['optimizer']['n_steps'])
+        # start_epoch = loaded_state['epoch']
+        if loaded_state['epoch'] > 500:
             print('>> changing lr to 4.5e-06')
             g_optimizer.set_init_lr(4.5e-06)
         print('loading checkpoint from...', load_path)
         del loaded_state
     else:
         print('starting from scratch...')
+
     if config['VQuantizer']['freeze_codebook']:
-        generator.module.quantize.freeze_codebook()
+        if style_transfer:
+            generator.module.freeze_all_except_style_transfer_layer()
+        else:
+            generator.module.quantize.embedding.weight.requires_grad = False
+            
+        for name, param in generator.module.named_parameters():
+            if param.requires_grad:
+                print(name, param.data)
+
     print(f"Froze codebook: {config['VQuantizer']['freeze_codebook']}")
+
     return generator, g_optimizer, start_epoch, style_transfer
 
 
 def calc_vq_loss(pred, target, quant_loss, quant_loss_weight=1.0, alpha=1.0):
     """ function that computes the various components of the VQ loss """
 
-    exp_loss = nn.L1Loss()(pred[:,:,:50], target[:,:,:50])
+    exp_loss = nn.L1Loss()(pred[:,:,:50], target[:,:,:50]) # expression loss
     rot_loss = nn.L1Loss()(pred[:,:,50:53], target[:,:,50:53])
     jaw_loss = alpha * nn.L1Loss()(pred[:,:,53:], target[:,:,53:])
+    # if quant_loss_weight == 0.0:
+    #     import pdb; pdb.set_trace()
     ## loss is VQ reconstruction + weighted pre-computed quantization loss
     return quant_loss.mean() * quant_loss_weight + \
             (exp_loss + rot_loss + jaw_loss)
@@ -96,6 +109,14 @@ class VQModelTransformer(nn.Module):
         else:
             quant, emb_loss, info = self.quantize(h) ## finds nearest quantization
         return quant, emb_loss, info
+
+    def freeze_all_except_style_transfer_layer(self):
+        self.quantize.freeze_codebook()
+        for param in self.encoder.parameters():
+            param.requires_grad = False
+        for param in self.decoder.parameters():
+            param.requires_grad = False
+        print(f"Froze all except style transfer layer")
 
     def decode(self, quant):
         dec = self.decoder(quant) ## z' --> x

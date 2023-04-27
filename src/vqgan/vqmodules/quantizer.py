@@ -127,6 +127,8 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
 
         # froze original codebook
         self.style_transfer_layer = nn.Linear(1, (n_e) * e_dim)
+        # torch.nn.init.constant_(self.style_transfer_layer.weight, 1)
+        # torch.nn.init.constant_(self.style_transfer_layer.bias, 0)
     
     def freeze_codebook(self):
         self.embedding.weight.requires_grad = False
@@ -146,7 +148,7 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
 
     def forward(self, z, style_token):
         # Get style token embeddings in the shape of the codebook
-        style_token_emb = self.get_reshaped_style_token_embedding(style_token)
+        style_token_emb = self.get_style_token_embedding(style_token)
         # generate new embeddings layer from frozen codebook and the style token emb
         new_embedding_weights = self.embedding.weight * style_token_emb
         # generating quantized 
@@ -199,7 +201,7 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
 
         return z_q, loss, (perplexity, min_encodings, min_encoding_indices)
 
-    def get_reshaped_style_token_embedding(self, style_token):
+    def get_style_token_embedding(self, style_token):
         # generate style token embedding
         style_token_emb = self.style_transfer_layer(style_token)
         # reshape the style token embedding to match the shape of the codebook
@@ -207,7 +209,7 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
         return style_token_emb
 
     def get_distance(self, z, style_token):
-        style_token_emb = self.get_reshaped_style_token_embedding(style_token) # shape (n_e, e_dim), same as the codebook
+        style_token_emb = self.get_style_token_embedding(style_token) # shape (n_e, e_dim), same as the codebook
         z = z.permute(0, 2, 1).contiguous()
         z_flattened = z.view(-1, self.e_dim)
         # distances from z to embeddings e_j (z - e)^2 = z^2 + e^2 - 2 e * z
@@ -222,7 +224,7 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
         return d
 
     def get_codebook_entry(self, indices, shape, style_token):
-        style_token_emb = self.get_reshaped_style_token_embedding(style_token) # shape (n_e, e_dim), same as the codebook
+        style_token_emb = self.get_style_token_embedding(style_token) # shape (n_e, e_dim), same as the codebook
         # shape specifying (batch, height, width, channel)
         # TODO: check for more easy handling with nn.Embedding
         min_encodings = torch.zeros(indices.shape[0], self.n_e).to(indices)

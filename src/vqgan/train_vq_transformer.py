@@ -37,17 +37,21 @@ def generator_train_step(config, epoch, generator, g_optimizer, train_X,
     """
 
     if style_transfer:
-        train_X = np.repeat(train_X, repeats=2, axis=0) # repeating every element twice to train once with more and less style embeddings respectively
+        # train_X = np.repeat(train_X, repeats=2, axis=0) # repeating every element twice to train once with more and less style embeddings respectively
+        # [face1 face2  face3  face4  face5  face6  face7  face8]
+        orig_len = train_X.shape[0]
+        train_X = np.concatenate([train_X, train_X], axis=0) 
         gt_more = Variable(torch.from_numpy(more_style_embeddings_batch),
                           requires_grad=False).cuda()
         gt_less = Variable(torch.from_numpy(less_style_embeddings_batch),
                           requires_grad=False).cuda()
         beta_style_transfer = config['style_transfer']['loss']['beta_style_transfer']
-        token_more = torch.ones(1)
-        token_less = torch.zeros(1)
-
+        token_more = torch.ones(1, 1)
+        token_less = torch.zeros(1, 1)
+        print("line 49", len(train_X) == train_X.shape[0])
+        
     generator.train()
-    batchinds = np.arange(train_X.shape[0] // config['batch_size'])
+    batchinds = np.arange(len(train_X) // config['batch_size'])
     totalSteps = len(batchinds)
     rng.shuffle(batchinds)
     avgLoss = avgDLoss = 0
@@ -58,12 +62,22 @@ def generator_train_step(config, epoch, generator, g_optimizer, train_X,
         gtData = Variable(torch.from_numpy(gtData_np),
                         requires_grad=False).cuda()
         if style_transfer:
-            if bii % 2 == 0:
-                prediction, quant_loss = generator(gtData, None, style_token=token_less)
-                style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss)
-            else:
+            if idxStart >= orig_len:
+                # use more expressive style embeddings
                 prediction, quant_loss = generator(gtData, None, style_token=token_more)
-                style_transfer_loss = calc_vq_loss(prediction, gt_more, quant_loss)
+                style_transfer_loss = calc_vq_loss(prediction, gt_more, quant_loss, quant_loss_weight=0)
+            else:
+                # use less expressive style embeddings
+                prediction, quant_loss = generator(gtData, None, style_token=token_less)
+                style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss, quant_loss_weight=0)
+            # if bii % 2 == 0:
+            #     prediction, quant_loss = generator(gtData, None, style_token=token_less)
+            #     style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss)
+            # else:
+            #     prediction, quant_loss = generator(gtData, None, style_token=token_more)
+            #     style_transfer_loss = calc_vq_loss(prediction, gt_more, quant_loss)
+            # prediction, quant_loss = generator(gtData, None, style_token=corresponding_style_tokens[idxStart:(idxStart + config['batch_size'])])
+            # style_transfer_loss = calc_vq_loss(prediction, corresponding_gt_styles[idxStart:(idxStart + config['batch_size'])], quant_loss)
         else:
             prediction, quant_loss = generator(gtData, None)
         g_loss = calc_vq_loss(prediction, gtData, quant_loss)
@@ -82,7 +96,7 @@ def generator_train_step(config, epoch, generator, g_optimizer, train_X,
             print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Perplexity: {:5.4f}'\
                     .format(epoch, config['num_epochs'], bii, totalSteps,
                             avgLoss / totalSteps, np.exp(avgLoss / totalSteps)))
-            avg_Loss = 0
+            avgLoss = 0
 
     writer.add_scalar('Loss/train_totalLoss', avgLoss / totalSteps, epoch)
 
@@ -94,7 +108,9 @@ def generator_val_step(config, epoch, generator, g_optimizer, test_X,
     see generator_train_step() for parameter definitions
     """
     if style_transfer:
-        test_X = np.repeat(test_X, repeats=2, axis=0) # repeating every element twice to train once with more and less style embeddings respectively
+        orig_len = test_X.shape[0]
+        test_X = np.concatenate([test_X, test_X], axis=0) # repeating every element twice to train once with more and less style embeddings respectively
+        # test_X = np.repeat(test_X, repeats=2, axis=0) # repeating every element twice to train once with more and less style embeddings respectively
         gt_more = Variable(torch.from_numpy(more_style_embeddings_batch),
                           requires_grad=False).cuda()
         gt_less = Variable(torch.from_numpy(less_style_embeddings_batch),
@@ -117,12 +133,13 @@ def generator_val_step(config, epoch, generator, g_optimizer, test_X,
         with torch.no_grad():
             # prediction, quant_loss = generator(gtData, None)
             if style_transfer:
-                if bii % 2 == 0:
-                    prediction, quant_loss = generator(gtData, None, style_token=token_less)
-                    style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss)
-                else:
+                # if bii % 2 == 0:
+                if idxStart >= orig_len:
                     prediction, quant_loss = generator(gtData, None, style_token=token_more)
                     style_transfer_loss = calc_vq_loss(prediction, gt_more, quant_loss)
+                else:
+                    prediction, quant_loss = generator(gtData, None, style_token=token_less)
+                    style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss)
             else:
                 prediction, quant_loss = generator(gtData, None)
         g_loss = calc_vq_loss(prediction, gtData, quant_loss)
@@ -187,7 +204,10 @@ def main(args):
     ## setting up models
     fileName = config['model_path'] + \
                 '{}{}_best.pth'.format(tag, config['pipeline'])
-    load_path = fileName if os.path.exists(fileName) else None
+    if args.load_path is None:
+        load_path = fileName if os.path.exists(fileName) else None
+    else:
+        load_path = args.load_path
     generator, g_optimizer, start_epoch, style_transfer = setup_vq_transformer(args, config,
                                             version=None, load_path=load_path)
     generator.train()
@@ -201,10 +221,14 @@ def main(args):
     test_X = np.concatenate((test_listener[:,:seq_len,:],
                              test_listener[:,seq_len:,:]), axis=0)
     batch_size = config['batch_size']
+
+    # load reference style embeddings
     less_style_embeddings, less_mean, less_stddev = load_reference_style_embeddings(config, "less")
     more_style_embeddings, more_mean, more_stddev = load_reference_style_embeddings(config, "more")
     less_style_embeddings_batch = format_reference_style_embeddings(less_style_embeddings, seq_len=seq_len, batch_size=batch_size)
     more_style_embeddings_batch = format_reference_style_embeddings(more_style_embeddings, seq_len=seq_len, batch_size=batch_size)
+
+
     print('loaded listener...', train_X.shape, test_X.shape)
     print(f'Loaded reference style embeddings: {more_style_embeddings_batch.shape} {less_style_embeddings_batch.shape}')
     disc_factor = 0.0
@@ -229,5 +253,6 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoint', type=str, default=None)
     parser.add_argument('--test', action='store_true')
     parser.add_argument('--ar_load', action='store_true')
+    parser.add_argument('--load_path', type=str, default=None)
     args = parser.parse_args()
     main(args)

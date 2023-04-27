@@ -124,9 +124,9 @@ def load_all_transcript_embeddings(transcript_embeddings_dir: str)->Dict[str, to
     Returns:
         Dict[str, torch.Tensor]: Dictionary where the keys are the transcript filenames and the values are the respective torch embeddings.
     """
-    print(os.path.abspath(transcript_embeddings_dir))
     if not os.path.exists(transcript_embeddings_dir):
         raise Exception(f"No transcript embeddings exist at {transcript_embeddings_dir}. Create the transcript embeddings using the desired transformer first. Refer utils/process_transcripts.py")
+    print("Loading transcripts from " + os.path.abspath(transcript_embeddings_dir))
     filenames = os.listdir(transcript_embeddings_dir)
     # print(transcript_embeddings_dir, len(filenames))
     transcript_embeddings_dict = {}
@@ -249,8 +249,10 @@ def load_reference_style_embeddings(config, type:str):
             expr_data = data['exp'].cpu().detach().numpy().squeeze()
             pose_data = data['pose'].cpu().detach().numpy().squeeze()
             pkl_data.append(np.concatenate([expr_data, pose_data], axis=0))
-    unstd_data = np.expand_dims(np.array(pkl_data), axis=0)
-    mean, stddev = mean_std_swap(unstd_data)
+    unstd_data = np.array(pkl_data)
+    # mean, stddev = mean_std_swap(unstd_data)
+    mean =  unstd_data.mean(axis=0)[None, :]
+    stddev = unstd_data.std(axis=0)[None, :] + EPSILON
     std_data = (unstd_data - mean) / stddev
     return std_data, mean, stddev
 
@@ -267,8 +269,6 @@ def format_reference_style_embeddings(embeddings:np.ndarray, seq_len=64, batch_s
     """
     batched_embeddings = []
     i = 0
-    assert embeddings.shape[0] == 1
-    embeddings = embeddings[0]
     n_emb = len(embeddings)
     temp_array = []
     while True:
@@ -359,7 +359,7 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
     N = gt_windows.shape[0]
     if train_ratio > 1 or train_ratio < 0:
         train_ratio = 0.7
-    print(f"The train_ration = {train_ratio}")
+    print(f"The train_ratio = {train_ratio}")
     train_N = int(N * train_ratio)
     idx = np.random.permutation(N)
     train_idx, val_idx = idx[:train_N], idx[train_N:]
@@ -467,7 +467,8 @@ def calc_stats(config, vqconfigs, tag, pipeline, train_X, train_Y, train_audio):
 def mean_std_swap(data):
     """ helper function to calc std and mean """
     B,T,F = data.shape
-    mean = data.mean(axis=1).mean(axis=0)[np.newaxis,np.newaxis,:]
+    # data (1, 169, 56)
+    mean = data.mean(axis=1).mean(axis=0)[np.newaxis,np.newaxis,:] # (1, 1, 56)
     std =  data.std(axis=1).std(axis=0)[np.newaxis,np.newaxis,:]
     std += EPSILON
     return mean, std
