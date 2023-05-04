@@ -1,9 +1,9 @@
 {
   "pipeline": "er2er",
-  "tag": "l2_32_smoothSS_",
+  "tag": "l2_32_smoothSS_style_transfer_lr10_bs32_orig_loss_",
   "who": "listener",
   "segment_tag": "",
-  "learning_rate": 2,
+  "learning_rate": 10,
   "warmup_steps": 1,
   "model_path": "models/",
   "num_epochs": 5000000,
@@ -34,8 +34,8 @@
   "VQuantizer": {
     "n_embed": 200,
     "zquant_dim": 256,
-    "style_transfer": false,
-    "freeze_codebook": false
+    "style_transfer": true,
+    "freeze_codebook": true
   },
   "style_transfer": {
     "loss": {

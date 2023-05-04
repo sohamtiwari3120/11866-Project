@@ -59,9 +59,9 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, tr
                   listener_past.shape[1]
             listener_past_index = torch.reshape(listener_past_index,
                                                 (listener_past.shape[0], -1)) # (batch_size, t/w, 1)?
-            print(listener_past.shape, listener_past_index.shape)
+            # print(listener_past.shape, listener_past_index.shape)
         else:
-            # if listener input is already in index format (batch_size, t/w, 1)?, fetch the quantized 
+            # if listener input is already in index format (batch_size, t/w, 1)?, fetch the quantized
             # raw listener and then re-encode into a new set of indxs
             # btc = [batch_size, dz, t/w]
             tmp_past_index = listenerData[:,:btc[1]] # so essentially the same input shape as on line 65?
@@ -112,7 +112,7 @@ def load_single_transcript_embedding(transcript_embedding_fp:str)->np.ndarray:
 
     Returns:
         np.ndarray: np array containing embedding
-    """    
+    """
     return np.load(transcript_embedding_fp).reshape(1, -1)
 
 def load_all_transcript_embeddings(transcript_embeddings_dir: str)->Dict[str, torch.Tensor]:
@@ -302,18 +302,18 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
 
     Returns:
         _type_: _description_
-    """    
+    """
 
 
     base_dir = config['data']['basedir']
     out_num = 0
 
-    # the directory contains the sentence embeddings of the form - 
+    # the directory contains the sentence embeddings of the form -
     # p1_<youTubeVideoName>_<start_frame>_<end_frame>.txt.npy (if segemented)
     # OR <youTubeVideoName>.txt.npy (if not segmented)
     train_transcripts_embeddings_dict = load_all_transcript_embeddings(config['data']['train_transcript_embeddings_dir'])
 
-    # NOTE: We are only loading train transcript embddings dict because this function will load the train and val splits (depending on the train_ratio input arg). 
+    # NOTE: We are only loading train transcript embddings dict because this function will load the train and val splits (depending on the train_ratio input arg).
     transcripts_segmented = config['data']['transcripts_segmented']
 
     if config['data']['speaker'] == 'all':
@@ -354,7 +354,7 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
     if smooth:
         gt_windows = bilateral_filter(gt_windows)
         quant_windows = bilateral_filter(quant_windows)
-        
+
     # randomize train/val splits
     N = gt_windows.shape[0]
     if train_ratio > 1 or train_ratio < 0:
@@ -384,9 +384,13 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
     val_audio = (val_audio - body_mean_audio) / body_std_audio
     train_transcript_embs = []
     val_transcript_embs = []
-    for filepath_array in curr_paths[train_idx]:
+    remove_index = []
+    for i, filepath_array in enumerate(curr_paths[train_idx]):
         # import pdb; pdb.set_trace()
         filepath = filepath_array[0, 0]
+        if filepath == "conan_videos/done_conan_videos9/009YouTube":
+            remove_index.append(i)
+            continue
         if transcripts_segmented:
             start_idx = filepath_array[0, -1]
             end_idx = filepath_array[-1, -1]
@@ -394,10 +398,28 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
             train_transcript_embs.append(train_transcripts_embeddings_dict[key])
         else:
             train_transcript_embs.append(train_transcripts_embeddings_dict[os.path.basename(filepath)])
+    if len(remove_index) > 0:
+        print(f"Removing {remove_index}")
+        print(f"Shape of train_X: {train_X.shape}")
+        print(f"Shape of train_Y: {train_Y.shape}")
+        print(f"Shape of train_audio: {train_audio.shape}")
+        train_X = np.delete(train_X, remove_index, axis=0)
+        train_Y = np.delete(train_Y, remove_index, axis=0)
+        train_audio = np.delete(train_audio, remove_index, axis=0)
+        print(f"After Removing {remove_index}")
+        print(f"Shape of train_X: {train_X.shape}")
+        print(f"Shape of train_Y: {train_Y.shape}")
+        print(f"Shape of train_audio: {train_audio.shape}")
+
+
     train_transcript_embs = np.concatenate(train_transcript_embs, axis=0)
 
-    for filepath_array in curr_paths[val_idx]:
+    remove_index = []
+    for i, filepath_array in enumerate(curr_paths[val_idx]):
         filepath = filepath_array[0, 0]
+        if filepath == "conan_videos/done_conan_videos9/009YouTube":
+            remove_index.append(i)
+            continue
         if transcripts_segmented:
             start_idx = filepath_array[0, -1]
             end_idx = filepath_array[-1, -1]
@@ -406,8 +428,19 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
         else:
             val_transcript_embs.append(train_transcripts_embeddings_dict[os.path.basename(filepath)])
     val_transcript_embs = np.concatenate(val_transcript_embs, axis=0) if len(val_transcript_embs) > 0 else np.array(val_transcript_embs)
+    if len(remove_index) > 0:
+        print(f"Removing {remove_index}")
+        print(f"Shape of val_X: {val_X.shape}")
+        print(f"Shape of val_Y: {val_Y.shape}")
+        print(f"Shape of val_audio: {val_audio.shape}")
+        val_X = np.delete(val_X, remove_index, axis=0)
+        val_Y = np.delete(val_Y, remove_index, axis=0)
+        val_audio = np.delete(val_audio, remove_index, axis=0)
+        print(f"After Removing {remove_index}")
+        print(f"Shape of val_X: {val_X.shape}")
+        print(f"Shape of val_Y: {val_Y.shape}")
+        print(f"Shape of val_audio: {val_audio.shape}")
 
-    
     print("=====> standardization done")
     return train_X, val_X, train_Y, val_Y, train_audio, val_audio, train_transcript_embs, val_transcript_embs
 

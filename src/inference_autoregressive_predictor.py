@@ -59,7 +59,6 @@ def compute_inference_l2(args):
         
         test_X, test_Y, test_audio, test_transcript_embs, test_files = \
                 extract_samples(test_X, test_Y, test_audio, test_transcript_embs, test_files, path_list=listener_video_dict[listener])
-
         ## run model and save/eval
         unstd_pred, probs, unstd_ub = run_model(args, config, l_vq_model, autoregressive_generator,
                                                 test_X, test_Y, test_audio, test_transcript_embs, seq_len,

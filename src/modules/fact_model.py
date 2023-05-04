@@ -17,7 +17,6 @@ def calc_logit_loss(pred, target):
 def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
                 s_vqconfig=None, use_text_transcriptions=True, disable_strict_load=False):
     """ Method that sets up Predictor for train/test """
-
     ## setting model parameters
     quant_factor = l_vqconfig['transformer_config']['quant_factor']
     learning_rate = config['learning_rate']

@@ -40,7 +40,7 @@ def generator_train_step(config, epoch, generator, g_optimizer, train_X,
         # train_X = np.repeat(train_X, repeats=2, axis=0) # repeating every element twice to train once with more and less style embeddings respectively
         # [face1 face2  face3  face4  face5  face6  face7  face8]
         orig_len = train_X.shape[0]
-        train_X = np.concatenate([train_X, train_X], axis=0) 
+        train_X = np.concatenate([train_X, train_X], axis=0)
         gt_more = Variable(torch.from_numpy(more_style_embeddings_batch),
                           requires_grad=False).cuda()
         gt_less = Variable(torch.from_numpy(less_style_embeddings_batch),
@@ -49,13 +49,13 @@ def generator_train_step(config, epoch, generator, g_optimizer, train_X,
         token_more = torch.ones(1, 1)
         token_less = torch.zeros(1, 1)
         print("line 49", len(train_X) == train_X.shape[0])
-        
+
     generator.train()
     batchinds = np.arange(len(train_X) // config['batch_size'])
     totalSteps = len(batchinds)
     rng.shuffle(batchinds)
     avgLoss = avgDLoss = 0
-    
+
     for bii, bi in enumerate(batchinds):
         idxStart = bi * config['batch_size']
         gtData_np = train_X[idxStart:(idxStart + config['batch_size']), :, :]
@@ -65,11 +65,11 @@ def generator_train_step(config, epoch, generator, g_optimizer, train_X,
             if idxStart >= orig_len:
                 # use more expressive style embeddings
                 prediction, quant_loss = generator(gtData, None, style_token=token_more)
-                style_transfer_loss = calc_vq_loss(prediction, gt_more, quant_loss, quant_loss_weight=0)
+                style_transfer_loss = calc_vq_loss(prediction, gt_more, quant_loss)
             else:
                 # use less expressive style embeddings
                 prediction, quant_loss = generator(gtData, None, style_token=token_less)
-                style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss, quant_loss_weight=0)
+                style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss)
             # if bii % 2 == 0:
             #     prediction, quant_loss = generator(gtData, None, style_token=token_less)
             #     style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss)
@@ -118,7 +118,7 @@ def generator_val_step(config, epoch, generator, g_optimizer, test_X,
         beta_style_transfer = config['style_transfer']['loss']['beta_style_transfer']
         token_more = torch.ones(1)
         token_less = torch.zeros(1)
-    
+
     generator.eval()
     batchinds = np.arange(test_X.shape[0] // config['batch_size'])
     totalSteps = len(batchinds)
@@ -129,7 +129,7 @@ def generator_val_step(config, epoch, generator, g_optimizer, test_X,
         gtData_np = test_X[idxStart:(idxStart + config['batch_size']), :, :]
         gtData = Variable(torch.from_numpy(gtData_np),
                           requires_grad=False).cuda()
-        
+
         with torch.no_grad():
             # prediction, quant_loss = generator(gtData, None)
             if style_transfer:
@@ -198,7 +198,7 @@ def main(args):
         print('using style transfer')
         if freeze_codebook:
             print('freezing codebook')
-            
+
     writer = SummaryWriter('runs/debug_{}{}'.format(tag, pipeline))
 
     ## setting up models
@@ -234,8 +234,8 @@ def main(args):
     disc_factor = 0.0
     for epoch in range(start_epoch, start_epoch + config['num_epochs']):
         print('epoch', epoch, 'num_epochs', config['num_epochs'])
-        if epoch == start_epoch+config['num_epochs']-1:
             print('early stopping at:', epoch)
+        if epoch == start_epoch+config['num_epochs']-1:
             print('best loss:', currBestLoss)
             break
         generator_train_step(config, epoch, generator, g_optimizer, train_X,

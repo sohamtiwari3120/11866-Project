@@ -95,7 +95,7 @@ def generator_train_step(config, epoch, autoregressive_generator, g_optimizer, l
             print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Perplexity: {:5.4f}'\
                     .format(epoch, config['num_epochs'], bii, totalSteps,
                             avgLoss / totalSteps, np.exp(avgLoss / totalSteps)))
-            avg_Loss = 0
+            avgLoss = 0
     writer.add_scalar('Loss/train_totalLoss', avgLoss / totalSteps, epoch)
 
 
@@ -176,7 +176,7 @@ def main(args):
             '{}{}_best.pth'.format(l_vqconfig['tag'], l_vqconfig['pipeline'])
     l_vq_model, _, _, style_transfer = setup_vq_transformer(args, l_vqconfig,
                                             load_path=l_model_path)
-                                            
+
     # NOTE: freezing the layers of the VQ-VAE model, so that the codebook's discrete representations do not change during training.
     for param in l_vq_model.parameters():
         if not style_transfer:
@@ -205,7 +205,7 @@ def main(args):
 
     patience = config["early_stopping"]["patience"]
     num_epochs_since_loss_improv = 0
-    
+
     for epoch in range(start_epoch, start_epoch + config['num_epochs']):
         print('epoch', epoch, 'num_epochs', config['num_epochs'])
         if (epoch == start_epoch+config['num_epochs']-1) or (num_epochs_since_loss_improv == patience):
@@ -227,7 +227,7 @@ def main(args):
             num_epochs_since_loss_improv = 0
         else:
             num_epochs_since_loss_improv += 1
-        
+
     print('final best loss:', currBestLoss)
 
 
