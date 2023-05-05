@@ -14,7 +14,7 @@ def generate_sentence_embeddings(sentences, model_name):
 
     Returns:
         np.ndarray: numpy array containing embeddings of all the sentences in the input list
-    """    
+    """
     # Load the pre-trained sentence transformer model
     model = SentenceTransformer(model_name)
     # Generate embeddings for the input sentences
@@ -40,7 +40,7 @@ def main(dir_path, model_name, output_dir):
         with open(os.path.join(output_dir, f"{key}.npy"), "wb") as f:
             np.save(f, embeddings[i])
     print(f"Saved the {ctr} processed transcripts in {os.path.join(output_dir)}. The dim of each embedding - {embedding_dim}")
-    
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process transcript text files')

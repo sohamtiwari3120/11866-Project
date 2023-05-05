@@ -44,17 +44,18 @@ def run_model(args, config, l_vq_model, autoregressive_generator, test_X, test_Y
     rng:
         random number generator for sampling purposes
     """
-
+    # import pdb; pdb.set_trace()
     batch_size = min(config['batch_size'], test_X.shape[0])
-    batchinds = np.arange(test_X.shape[0] // min(test_X.shape[0],batch_size))
+    batchinds = np.arange(test_X.shape[0] // batch_size)
     ## set initial masking variables to mask everything
-    max_mask_len = config['fact_model']['cross_modal_model']['max_mask_len']
+    max_mask_len = config['fact_model']['cross_modal_model']['max_mask_len'] # tau= t/w
     ## set the point in which we discard the remaining Predictor output
     cut_point = config['fact_model']['listener_past_transformer_config']\
-                      ['sequence_length'] # 4
+                      ['sequence_length'] # 4 = tau = t/w
     past_cut_point = config['fact_model']['listener_past_transformer_config']\
-                           ['sequence_length']*patch_size # 4*8 = 32
-    start_t = step_t = patch_size
+                           ['sequence_length']*patch_size # t = tau*w = 4*8 = 32
+    start_t = patch_size
+    step_t = patch_size
     output_pred = None
     output_gt = None
     output_probs = None
@@ -73,7 +74,7 @@ def run_model(args, config, l_vq_model, autoregressive_generator, test_X, test_Y
                                 speakerData_np[:,:(seq_len+patch_size),:],
                                 listenerData_np[:,:seq_len,:],
                                 audioData_np[:,:(seq_len+patch_size)*4,:], transcriptData_np,
-                                seq_len, patch_size, 0, cut_point)
+                                seq_len, patch_size, mask_point = 0, cut_point = cut_point)
         prediction = torch.cat((inputs['listener_past'],
                                 prediction[:,0]), axis=-1)
         probs = torch.cat((torch.zeros((probs.shape[0],
@@ -153,7 +154,7 @@ def generate_prediction(config, args, l_vq_model, autoregressive_generator, test
                        transcript_emb,
                        seq_len,
                        data_type=config['loss_config']['loss_type'],
-                       patch_size=patch_size, 
+                       patch_size=patch_size,
                        btc=btc)
 
     ## run inputs through Predictor model

@@ -234,7 +234,7 @@ def main(args):
     disc_factor = 0.0
     for epoch in range(start_epoch, start_epoch + config['num_epochs']):
         print('epoch', epoch, 'num_epochs', config['num_epochs'])
-            print('early stopping at:', epoch)
+        print('early stopping at:', epoch)
         if epoch == start_epoch+config['num_epochs']-1:
             print('best loss:', currBestLoss)
             break

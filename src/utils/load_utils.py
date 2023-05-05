@@ -46,6 +46,16 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, tr
     ## future timesteps for speaker inputs (keep past and current context)
     speaker_full = speakerData[:,:(seq_len+patch_size),:]
     audio_full = audioData[:,:(seq_len+patch_size)*4,:]
+    # NOTE: Above, in line with the results from the paper on "Feedback delays can enhance anticipatory synchronization in human machine interaction", small delay in the feedback received from the actions of the driver can help the driver learn and anticipate response from the environment.
+    # Thus in this case, for the current speaker input, we receive listener feedback/output which is lagging behind by patch_size, 'w'
+
+    # WARNING: DON'T FORGET TO UNDERSTAND BELOW
+    # NOTE: patch_size = 'w' = 8
+    # NOTE: sequence_len = 't' = 32 = tau * w
+    # NOTE: tau = 't' / 'w' = 32 / 8 = 4
+    # Therefore speaker input is usually of length 32 + 8 = t + w = tau*w + w = (tau + 1) * w
+    # Listener input is usally lagging behind by length 'w', hence is of length 't' = tau * w
+
 
     ## convert listener past inputs to codebook indices
     with torch.no_grad():
@@ -53,7 +63,9 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, tr
             # if listener input is in the raw format (batch_size, window_len, d_m+3), directly convert to indxs
             listener_past, listener_past_index = \
                         l_vq_model.module.get_quant(listenerData[:,:seq_len,:])
-            #  listener_past shape (batch_size, t/w, dz)?
+            # only quantizing listener input of length 't', because we need to have the listener input lag behind by the speaker by length 'w'
+            # import pdb; pdb.set_trace()
+            #  listener_past shape (batch_size, tau = t/w, dz)
             btc = listener_past.shape[0], \
                   listener_past.shape[2], \
                   listener_past.shape[1]
@@ -75,6 +87,7 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, tr
         listener_future = None
         listener_future_index = None
         if listenerData.shape[1] > seq_len:
+            # ideally listenerData.shape[1] == seq_len + patch_size
             listener_future, listener_future_index = \
                         l_vq_model.module.get_quant(listenerData[:,seq_len:,:]) # (batch_size, t/w,  dz); (batch_size, t/w, 1)?
             listener_future_index = torch.reshape(listener_future_index,
@@ -83,10 +96,15 @@ def create_data_vq(l_vq_model, speakerData_np, listenerData_np, audioData_np, tr
     ## build input dictionary, which will be the input to the Autoregressive Predictor
     raw_listener = listenerData[:,seq_len:,:] if listenerData.dim() == 3 \
                     else None
-    inputs = {"speaker_full": speaker_full,
-              "listener_past": listener_past_index,
-              "audio_full": audio_full,
-              "transcript_full": transcriptData}
+    inputs = {"speaker_full": speaker_full, # current raw speaker facial embeddings
+              "listener_past": listener_past_index, # index seqeuences of past listener motion, lagging behind by 1 patch_len, i.e., lagging behind the speaker embeddings by 'w'
+              "audio_full": audio_full, # current raw speaker audio embeddings
+              "transcript_full": transcriptData # the text transcript embeddings are duplicated seq_len + patch_len number of times, i.e., t + w = tau*w + w = (tau + 1) * w
+              }
+    # listener_future_index - (batch_size, win_len, 1) OR (batch_size, 1, 1) if patch wise encoded
+    # raw_listener - (batch_size, tau*w, 56) raw listener facial embeddings, before passing through VQ-VAE encoder and quantization
+    # btc - not sure
+
     return inputs, listener_future_index, raw_listener, btc
 
 def load_transcripts(transcripts_dir_fp):
@@ -388,9 +406,9 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
     for i, filepath_array in enumerate(curr_paths[train_idx]):
         # import pdb; pdb.set_trace()
         filepath = filepath_array[0, 0]
-        if filepath == "conan_videos/done_conan_videos9/009YouTube":
-            remove_index.append(i)
-            continue
+        # if filepath == "conan_videos/done_conan_videos9/009YouTube":
+        #     remove_index.append(i)
+        #     continue
         if transcripts_segmented:
             start_idx = filepath_array[0, -1]
             end_idx = filepath_array[-1, -1]
@@ -398,18 +416,18 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
             train_transcript_embs.append(train_transcripts_embeddings_dict[key])
         else:
             train_transcript_embs.append(train_transcripts_embeddings_dict[os.path.basename(filepath)])
-    if len(remove_index) > 0:
-        print(f"Removing {remove_index}")
-        print(f"Shape of train_X: {train_X.shape}")
-        print(f"Shape of train_Y: {train_Y.shape}")
-        print(f"Shape of train_audio: {train_audio.shape}")
-        train_X = np.delete(train_X, remove_index, axis=0)
-        train_Y = np.delete(train_Y, remove_index, axis=0)
-        train_audio = np.delete(train_audio, remove_index, axis=0)
-        print(f"After Removing {remove_index}")
-        print(f"Shape of train_X: {train_X.shape}")
-        print(f"Shape of train_Y: {train_Y.shape}")
-        print(f"Shape of train_audio: {train_audio.shape}")
+    # if len(remove_index) > 0:
+    #     print(f"Removing {remove_index}")
+    #     print(f"Shape of train_X: {train_X.shape}")
+    #     print(f"Shape of train_Y: {train_Y.shape}")
+    #     print(f"Shape of train_audio: {train_audio.shape}")
+    #     train_X = np.delete(train_X, remove_index, axis=0)
+    #     train_Y = np.delete(train_Y, remove_index, axis=0)
+    #     train_audio = np.delete(train_audio, remove_index, axis=0)
+    #     print(f"After Removing {remove_index}")
+    #     print(f"Shape of train_X: {train_X.shape}")
+    #     print(f"Shape of train_Y: {train_Y.shape}")
+    #     print(f"Shape of train_audio: {train_audio.shape}")
 
 
     train_transcript_embs = np.concatenate(train_transcript_embs, axis=0)
@@ -417,9 +435,9 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
     remove_index = []
     for i, filepath_array in enumerate(curr_paths[val_idx]):
         filepath = filepath_array[0, 0]
-        if filepath == "conan_videos/done_conan_videos9/009YouTube":
-            remove_index.append(i)
-            continue
+        # if filepath == "conan_videos/done_conan_videos9/009YouTube":
+        #     remove_index.append(i)
+        #     continue
         if transcripts_segmented:
             start_idx = filepath_array[0, -1]
             end_idx = filepath_array[-1, -1]
@@ -428,18 +446,18 @@ def load_data(config, pipeline, tag, rng, vqconfigs=None, segment_tag='',
         else:
             val_transcript_embs.append(train_transcripts_embeddings_dict[os.path.basename(filepath)])
     val_transcript_embs = np.concatenate(val_transcript_embs, axis=0) if len(val_transcript_embs) > 0 else np.array(val_transcript_embs)
-    if len(remove_index) > 0:
-        print(f"Removing {remove_index}")
-        print(f"Shape of val_X: {val_X.shape}")
-        print(f"Shape of val_Y: {val_Y.shape}")
-        print(f"Shape of val_audio: {val_audio.shape}")
-        val_X = np.delete(val_X, remove_index, axis=0)
-        val_Y = np.delete(val_Y, remove_index, axis=0)
-        val_audio = np.delete(val_audio, remove_index, axis=0)
-        print(f"After Removing {remove_index}")
-        print(f"Shape of val_X: {val_X.shape}")
-        print(f"Shape of val_Y: {val_Y.shape}")
-        print(f"Shape of val_audio: {val_audio.shape}")
+    # if len(remove_index) > 0:
+    #     print(f"Removing {remove_index}")
+    #     print(f"Shape of val_X: {val_X.shape}")
+    #     print(f"Shape of val_Y: {val_Y.shape}")
+    #     print(f"Shape of val_audio: {val_audio.shape}")
+    #     val_X = np.delete(val_X, remove_index, axis=0)
+    #     val_Y = np.delete(val_Y, remove_index, axis=0)
+    #     val_audio = np.delete(val_audio, remove_index, axis=0)
+    #     print(f"After Removing {remove_index}")
+    #     print(f"Shape of val_X: {val_X.shape}")
+    #     print(f"Shape of val_Y: {val_Y.shape}")
+    #     print(f"Shape of val_audio: {val_audio.shape}")
 
     print("=====> standardization done")
     return train_X, val_X, train_Y, val_Y, train_audio, val_audio, train_transcript_embs, val_transcript_embs

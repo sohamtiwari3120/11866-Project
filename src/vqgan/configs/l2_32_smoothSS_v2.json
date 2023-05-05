@@ -3,7 +3,7 @@
   "tag": "l2_32_smoothSS_style_transfer_lr10_bs32_orig_loss_",
   "who": "listener",
   "segment_tag": "",
-  "learning_rate": 10,
+  "learning_rate": 2,
   "warmup_steps": 1,
   "model_path": "models/",
   "num_epochs": 5000000,
