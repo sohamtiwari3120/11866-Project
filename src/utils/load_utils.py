@@ -297,9 +297,9 @@ def format_reference_style_embeddings(embeddings:np.ndarray, seq_len=64, batch_s
         if len(temp_array) == seq_len:
             batched_embeddings.append(temp_array)
             temp_array = []
-        if len(batched_embeddings) == batch_size:
+        if len(batched_embeddings) == 1:
             break
-    res = np.array(batched_embeddings)
+    res = np.repeat(np.array(batched_embeddings), repeats=batch_size, axis=0)
     assert res.shape == (batch_size, seq_len, 56), f"Invalid np array constructed - {res.shape}"
     return res
 

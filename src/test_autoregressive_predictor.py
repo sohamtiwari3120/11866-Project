@@ -100,7 +100,7 @@ def run_model(args, config, l_vq_model, autoregressive_generator, test_X, test_Y
         ## once we have the full sequence of output, we decode piece by piece
         decoded_pred = None
         #remove initial gt information
-        prediction = prediction[:,quant_size[-1]:]
+        prediction = prediction[:,quant_size[-1]:] # quant_size = [1, 256, 4]
         for t in range(0, prediction.shape[-1], quant_size[-1]):
             curr_decoded = l_vq_model.module.decode_to_img(
                                 prediction[:,t:t+quant_size[-1]], quant_size)

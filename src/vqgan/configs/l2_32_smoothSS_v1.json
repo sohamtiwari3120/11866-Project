@@ -1,9 +1,9 @@
 {
   "pipeline": "er2er",
-  "tag": "l2_32_smoothSS_style_transfer_",
+  "tag": "l2_32_smoothSS_style_transfer_only_more_",
   "who": "listener",
   "segment_tag": "",
-  "learning_rate": 10,
+  "learning_rate": 0.01,
   "warmup_steps": 1,
   "model_path": "models/",
   "num_epochs": 5000000,
@@ -40,6 +40,8 @@
   "style_transfer": {
     "loss": {
       "beta_style_transfer": 0.3
-    }
+    },
+    "style_type":"only_more",
+    "style_types":["only_more", "only_less", "both_more_less"]
   }
 }

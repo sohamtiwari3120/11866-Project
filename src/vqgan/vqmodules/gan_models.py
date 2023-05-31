@@ -43,7 +43,7 @@ def setup_vq_transformer(args, config, load_path=None, test=False, version=None)
             # generator.module.quantize.load_pretrained_codebook_weights(load_path, freeze_codebook=config['VQuantizer']['freeze_codebook'])
             print(f"Loaded pretrained codebook weights from {load_path} for style transfer")
         else:
-            generator.load_state_dict(loaded_state['state_dict'], strict=True) # made 
+            generator.load_state_dict(loaded_state['state_dict'], strict=True) # made
         # g_optimizer._optimizer.load_state_dict(
         #                         loaded_state['optimizer']['optimizer'], strict=False)
         # g_optimizer.set_n_steps(loaded_state['optimizer']['n_steps'])
@@ -61,7 +61,7 @@ def setup_vq_transformer(args, config, load_path=None, test=False, version=None)
             generator.module.freeze_all_except_style_transfer_layer()
         else:
             generator.module.quantize.embedding.weight.requires_grad = False
-            
+
         for name, param in generator.module.named_parameters():
             if param.requires_grad:
                 print(name, param.data)
@@ -111,12 +111,15 @@ class VQModelTransformer(nn.Module):
         return quant, emb_loss, info
 
     def freeze_all_except_style_transfer_layer(self):
-        self.quantize.freeze_codebook()
-        for param in self.encoder.parameters():
-            param.requires_grad = False
-        for param in self.decoder.parameters():
-            param.requires_grad = False
-        print(f"Froze all except style transfer layer")
+        if self.style_transfer:
+            self.quantize.freeze_codebook()
+            for param in self.encoder.parameters():
+                param.requires_grad = False
+            for param in self.decoder.parameters():
+                param.requires_grad = False
+            print(f"Froze all except style transfer layer")
+        else:
+            print(f"Cannot freeze, style transfer is {self.style_transfer}")
 
     def decode(self, quant):
         dec = self.decoder(quant) ## z' --> x

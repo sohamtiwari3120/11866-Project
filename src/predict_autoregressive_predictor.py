@@ -37,7 +37,7 @@ def generate_prediction(args):
     speaker_text_embeddings = np.load(args.input_text_path)
     listener_video_embeddings = np.load("/home/ubuntu/learning2listen/src/data/conan/test/p0_list_faces_clean_deca.npy")[:speaker_video_embeddings.shape[0], :, :56]
 
-
+    import pdb; pdb.set_trace()
     rng = np.random.RandomState(23456)
     torch.manual_seed(23456)
     torch.cuda.manual_seed(23456)

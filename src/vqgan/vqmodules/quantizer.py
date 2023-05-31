@@ -113,32 +113,45 @@ class VectorQuantizer(nn.Module):
             #z_q = z_q.permute(0, 3, 1, 2).contiguous()
 
         return z_q
-    
+
 
 class StyleTransferVectorQuantizer(VectorQuantizer):
     """To be only used when have access to pretrained_codebook. Meant to freeze all the pretrained codebook layers
 
     Args:
         VectorQuantizer (_type_): _description_
-    """    
-    def __init__(self, n_e, e_dim, beta):
+    """
+    def __init__(self, n_e, e_dim, beta, init_strat='normal'):
         super(StyleTransferVectorQuantizer, self).__init__(n_e, e_dim, beta)
         # print(f"Initial model weights: {self.embedding.weight}")
 
         # froze original codebook
-        self.style_transfer_layer = nn.Linear(1, (n_e) * e_dim)
+        # self.style_transfer_layer = nn.Linear(1, e_dim)
+        # self.style_transfer_layer = nn.Linear(1, (n_e) * e_dim)
+        self.positive_param = torch.Tensor(n_e, e_dim)
+        self.negative_param = torch.Tensor(n_e, e_dim)
+
+        self.init_strat = init_strat
+        if self.init_strat == 'normal':
+            nn.init.normal_(self.positive_param)
+            nn.init.normal_(self.negative_param)
+
+        self.positive_style = nn.Parameter(self.positive_param)
+        self.negative_style = nn.Parameter(self.negative_param)
+
+
         # torch.nn.init.constant_(self.style_transfer_layer.weight, 1)
         # torch.nn.init.constant_(self.style_transfer_layer.bias, 0)
-    
+
     def freeze_codebook(self):
         self.embedding.weight.requires_grad = False
-    
+
     def load_pretrained_codebook_weights(self, load_path, freeze_codebook=False):
         """To extract the pretrained codebook weights from the saved checkpoint for the VQModelTransformer which contains the modules - encoder, quantize and decoder
 
         Args:
             load_path (str): path to the saved VQModelTransformer checkpoint
-        """        
+        """
         loaded_state = torch.load(load_path,
                                   map_location=lambda storage, loc: storage)
         self.load_state_dict({'embedding.weight': loaded_state['state_dict']['module.quantize.embedding.weight']}, strict=False)
@@ -147,11 +160,13 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
             self.freeze_codebook()
 
     def forward(self, z, style_token):
+        # style_token is a constant [0, 1]
+        # style_token_emb = style_token * self.positive_style + (1-style_token) * self.negative_style
         # Get style token embeddings in the shape of the codebook
         style_token_emb = self.get_style_token_embedding(style_token)
         # generate new embeddings layer from frozen codebook and the style token emb
         new_embedding_weights = self.embedding.weight * style_token_emb
-        # generating quantized 
+        # generating quantized
         z = z.permute(0, 2, 1).contiguous()
         z_flattened = z.view(-1, self.e_dim)
         # distances from z to embeddings e_j (z - e)^2 = z^2 + e^2 - 2 e * z
@@ -203,9 +218,11 @@ class StyleTransferVectorQuantizer(VectorQuantizer):
 
     def get_style_token_embedding(self, style_token):
         # generate style token embedding
-        style_token_emb = self.style_transfer_layer(style_token)
+        assert style_token.shape == (1, 1)
+        # style_token_emb = self.style_transfer_layer(style_token)
         # reshape the style token embedding to match the shape of the codebook
-        style_token_emb = style_token_emb.view(self.n_e, self.e_dim)
+        # style_token_emb = style_token_emb.view(self.n_e, self.e_dim)
+        style_token_emb = style_token * self.positive_style + (1-style_token) * self.negative_style
         return style_token_emb
 
     def get_distance(self, z, style_token):
