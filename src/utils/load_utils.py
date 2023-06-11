@@ -244,6 +244,16 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
     test_Y = (test_Y - body_mean_Y) / body_std_Y
     test_audio = (test_audio - body_mean_audio) / body_std_audio
     test_transcript_embs = []
+    # previously
+    # case 1: full transcript
+    # case 2: video frames chunk transcript - faulty asr
+    # case 3: 0 to end frame transcript
+
+    # now we have word level time stamps, and we need transcripts for case 2
+    # correct asr - case 2(b) - late fusion
+
+    # early fusion techniques
+    # 1. early fusion architectures
     for filepath_array in filepaths[:]:
         filepath = filepath_array[0, 0]
         if transcripts_segmented:
