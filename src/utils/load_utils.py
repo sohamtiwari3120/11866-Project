@@ -257,7 +257,7 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
 
 def load_reference_style_embeddings(config, type:str):
     if type not in ["less", "more"]:
-        raise ValueError("type must be either 'less' or'more'")
+        raise ValueError("type must be either 'less' or 'more'")
     pkl_files_dir = config['data'][f'{type}_expressive_style_embeddings_dir']
     pkl_files = [os.path.join(pkl_files_dir, f) for f in os.listdir(pkl_files_dir) if f.endswith('.pkl')]
     pkl_data = []

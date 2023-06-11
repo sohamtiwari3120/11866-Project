@@ -4,3 +4,8 @@ logs/
 data/
 models/
 vqgan/models/
+outputs/
+outputs_old/
+inference_outputs/
+models/
+models_old/

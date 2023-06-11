@@ -129,7 +129,7 @@ class FACTModel(nn.Module):
                                         ['intermediate_size'],
             cross_modal=True)
         print(f"Using text transcriptions in the architecture: False")
-       
+
     # creating post processing layers that will temporally downsample merged
     # speaker embedding
     post_layers = [nn.Sequential(

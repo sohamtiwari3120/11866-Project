@@ -1,3 +1,6 @@
+"""For creating predictions for single input video
+"""
+
 from test_autoregressive_predictor import *
 import pandas as pd
 import numpy as np
