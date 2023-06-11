@@ -47,8 +47,10 @@ def generator_train_step(config, epoch, generator, g_optimizer, train_X,
                           requires_grad=False).cuda()
         beta_style_transfer = config['style_transfer']['loss']['beta_style_transfer']
         token_more = torch.ones(1, 1)
-        token_less = torch.zeros(1, 1)
+        token_less = torch.ones(1, 1) * 0
         print("line 49", len(train_X) == train_X.shape[0])
+        style_type = config['style_transfer']['style_type']
+        print(f'style_type = {style_type}')
 
     generator.train()
     batchinds = np.arange(len(train_X) // config['batch_size'])
@@ -56,17 +58,18 @@ def generator_train_step(config, epoch, generator, g_optimizer, train_X,
     rng.shuffle(batchinds)
     avgLoss = avgDLoss = 0
 
+
     for bii, bi in enumerate(batchinds):
         idxStart = bi * config['batch_size']
         gtData_np = train_X[idxStart:(idxStart + config['batch_size']), :, :]
         gtData = Variable(torch.from_numpy(gtData_np),
                         requires_grad=False).cuda()
         if style_transfer:
-            if idxStart >= orig_len:
+            if style_type=="only_more" or (style_type=="both_more_less" and idxStart >= orig_len):
                 # use more expressive style embeddings
                 prediction, quant_loss = generator(gtData, None, style_token=token_more)
                 style_transfer_loss = calc_vq_loss(prediction, gt_more, quant_loss)
-            else:
+            elif style_type=="only_less" or (style_type=="both_more_less" and idxStart < orig_len):
                 # use less expressive style embeddings
                 prediction, quant_loss = generator(gtData, None, style_token=token_less)
                 style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss)
@@ -116,8 +119,10 @@ def generator_val_step(config, epoch, generator, g_optimizer, test_X,
         gt_less = Variable(torch.from_numpy(less_style_embeddings_batch),
                           requires_grad=False).cuda()
         beta_style_transfer = config['style_transfer']['loss']['beta_style_transfer']
-        token_more = torch.ones(1)
-        token_less = torch.zeros(1)
+        token_more = torch.ones(1, 1)
+        token_less = torch.ones(1, 1) * 0
+        style_type = config['style_transfer']['style_type']
+        print(f'style_type = {style_type}')
 
     generator.eval()
     batchinds = np.arange(test_X.shape[0] // config['batch_size'])
@@ -134,10 +139,10 @@ def generator_val_step(config, epoch, generator, g_optimizer, test_X,
             # prediction, quant_loss = generator(gtData, None)
             if style_transfer:
                 # if bii % 2 == 0:
-                if idxStart >= orig_len:
+                if style_type=="only_more" or (style_type=="both_more_less" and idxStart >= orig_len):
                     prediction, quant_loss = generator(gtData, None, style_token=token_more)
                     style_transfer_loss = calc_vq_loss(prediction, gt_more, quant_loss)
-                else:
+                elif style_type=="only_less" or (style_type=="both_more_less" and idxStart < orig_len):
                     prediction, quant_loss = generator(gtData, None, style_token=token_less)
                     style_transfer_loss = calc_vq_loss(prediction, gt_less, quant_loss)
             else:
@@ -188,7 +193,7 @@ def main(args):
 
     tag = config['tag']
     pipeline = config['pipeline']
-    currBestLoss = 1e3
+    currBestLoss = 1e8
     ## can modify via configs, these are default for released model
     seq_len = 32
     prev_save_epoch = 0
@@ -197,7 +202,7 @@ def main(args):
     if style_transfer:
         print('using style transfer')
         if freeze_codebook:
-            print('freezing codebook')
+            print('>'*3+' '+'freezing codebook')
 
     writer = SummaryWriter('runs/debug_{}{}'.format(tag, pipeline))
 
@@ -234,9 +239,9 @@ def main(args):
     disc_factor = 0.0
     for epoch in range(start_epoch, start_epoch + config['num_epochs']):
         print('epoch', epoch, 'num_epochs', config['num_epochs'])
-        print('early stopping at:', epoch)
         if epoch == start_epoch+config['num_epochs']-1:
             print('best loss:', currBestLoss)
+            print('early stopping at:', epoch)
             break
         generator_train_step(config, epoch, generator, g_optimizer, train_X,
                              rng, writer, more_style_embeddings_batch, less_style_embeddings_batch, style_transfer)

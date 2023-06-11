@@ -267,7 +267,7 @@ def load_test_data(config, pipeline, tag, out_num=0, vqconfigs=None,
 
 def load_reference_style_embeddings(config, type:str):
     if type not in ["less", "more"]:
-        raise ValueError("type must be either 'less' or'more'")
+        raise ValueError("type must be either 'less' or 'more'")
     pkl_files_dir = config['data'][f'{type}_expressive_style_embeddings_dir']
     pkl_files = [os.path.join(pkl_files_dir, f) for f in os.listdir(pkl_files_dir) if f.endswith('.pkl')]
     pkl_data = []
@@ -307,9 +307,9 @@ def format_reference_style_embeddings(embeddings:np.ndarray, seq_len=64, batch_s
         if len(temp_array) == seq_len:
             batched_embeddings.append(temp_array)
             temp_array = []
-        if len(batched_embeddings) == batch_size:
+        if len(batched_embeddings) == 1:
             break
-    res = np.array(batched_embeddings)
+    res = np.repeat(np.array(batched_embeddings), repeats=batch_size, axis=0)
     assert res.shape == (batch_size, seq_len, 56), f"Invalid np array constructed - {res.shape}"
     return res
 

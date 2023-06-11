@@ -1,7 +1,7 @@
 {
-  "l_vqconfig": "vqgan/configs/l2_32_smoothSS.json",
+  "l_vqconfig": "vqgan/configs/l2_32_smoothSS_v3.json",
   "pipeline": "er2er",
-  "tag": "delta_v6_w_text_aligned_all_es200_",
+  "tag": "delta_v6_w_text_aligned_all_",
   "segment_tag": "",
   "learning_rate": 0.01,
   "warmup_steps": 100000,
@@ -60,12 +60,12 @@
     "local": true,
     "basedir": "./",
     "speaker": "conan",
-    "train_transcript_embeddings_dir": "./data/train_aligned_all_flatten_embs/",
-    "test_transcript_embeddings_dir": "./data/test_aligned_flatten_embs/",
+    "train_transcript_embeddings_dir": "./data/transcript_embeddings/all-MiniLM-L6-v2",
+    "test_transcript_embeddings_dir": "./data/transcript_embeddings/all-MiniLM-L6-v2",
     "less_expressive_style_embeddings_dir": "./data/reference_style_embedidngs/results_less4/code/",
     "more_expressive_style_embeddings_dir": "./data/reference_style_embedidngs/results_more4/code/",
     "transcript_embeddings_dim": 384,
-    "transcripts_segmented": true,
+    "transcripts_segmented": false,
     "train_split_ratio": 0.70
   }
 }
