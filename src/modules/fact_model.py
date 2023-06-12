@@ -58,10 +58,11 @@ def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
 class FACTModel(nn.Module):
   """ Predictor model that outputs future listener motion """
 
-  def __init__(self, config, mask_index=-1, quant_factor=None, use_text_transcriptions=True):
+  def __init__(self, config, mask_index=-1, quant_factor=None, use_text_transcriptions=True, use_concat_attention = True):
     super().__init__()
     self.config = copy.deepcopy(config)
     self.use_text_transcriptions = use_text_transcriptions
+    self.use_concat_attention = use_concat_attention
     ## set up listener motion embedding layers
     self.listener_past_transformer = Transformer(
         in_size=self.config['fact_model']['listener_past_transformer_config']\
@@ -108,15 +109,37 @@ class FACTModel(nn.Module):
             intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
                                         ['intermediate_size'],
             cross_modal=True)
-        self.cm_transformer_audioandmotion_text = Transformer(
-            in_size=dim*2,
-            hidden_size=dim*2,
-            num_hidden_layers=2,
-            num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
-                                        ['num_attention_heads'],
-            intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
-                                        ['intermediate_size'],
-            cross_modal=True)
+        if self.use_concat_attention:
+            self.cm_transformer_audio_text = Transformer(
+                in_size=dim*2,
+                hidden_size=dim*2,
+                num_hidden_layers=2,
+                num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
+                                            ['num_attention_heads'],
+                intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
+                                            ['intermediate_size'],
+                cross_modal=True)
+
+            self.cm_transformer_motion_text = Transformer(
+                in_size=dim*2,
+                hidden_size=dim*2,
+                num_hidden_layers=2,
+                num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
+                                            ['num_attention_heads'],
+                intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
+                                            ['intermediate_size'],
+                cross_modal=True)
+
+        else:
+            self.cm_transformer_audioandmotion_text = Transformer(
+                in_size=dim*2,
+                hidden_size=dim*2,
+                num_hidden_layers=2,
+                num_attention_heads=self.config['fact_model']['speaker_full_transformer_config']\
+                                            ['num_attention_heads'],
+                intermediate_size=self.config['fact_model']['speaker_full_transformer_config']\
+                                            ['intermediate_size'],
+                cross_modal=True)
         print(f"Using text transcriptions in the architecture: True")
     else:
         self.cm_transformer = Transformer(
@@ -258,8 +281,13 @@ class FACTModel(nn.Module):
     if self.use_text_transcriptions:
         speaker_audioandmotion_features = self.cm_transformer_audio_motion(data_features)
         text_full_features = self.text_embedding_projector(inputs['transcript_full'])
-        data_features = {'x_a':text_full_features, 'x_b':speaker_audioandmotion_features}
-        speaker_full_features = self.cm_transformer_audioandmotion_text(data_features)
+        if self.use_concat_attention:
+            speaker_audioandtext_features = self.cm_transformer_audio_text({'x_a':text_full_features, 'x_b':audio_full_features})
+            speaker_motionandtext_features = self.cm_transformer_motion_text({'x_a':text_full_features, 'x_b':motion_full_features})
+            breakpoint()
+        else:
+            data_features = {'x_a':text_full_features, 'x_b':speaker_audioandmotion_features}
+            speaker_full_features = self.cm_transformer_audioandmotion_text(data_features)
     else:
        speaker_full_features = self.cm_transformer(data_features)
 

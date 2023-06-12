@@ -24,6 +24,7 @@ def generate_sentence_embeddings(sentences, model_name):
 
 def generate_transcript_embeddings(dir_path, model_name):
     transcripts_dict = load_transcripts(dir_path)
+    import pdb; pdb.set_trace()
     embeddings = generate_sentence_embeddings([obj['full_text'] for obj in list(transcripts_dict.values())], model_name)
     return transcripts_dict, embeddings
 
