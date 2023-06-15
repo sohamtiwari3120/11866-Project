@@ -194,7 +194,9 @@ def main(args):
     load_path = fileName if os.path.exists(fileName) else None
     autoregressive_generator, g_optimizer, start_epoch = setup_model(config, l_vqconfig,
                                                       s_vqconfig=None,
-                                                      load_path=load_path, use_text_transcriptions=args.use_text_transcriptions, disable_strict_load=args.disable_strict_load)
+                                                      load_path=load_path, use_text_transcriptions=args.use_text_transcriptions,
+                                                      use_concat_attention = args.use_concat_attention,
+                                                      disable_strict_load=args.disable_strict_load)
     autoregressive_generator.train()
 
     ## training process
@@ -237,6 +239,7 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoint', type=str, default=None)
     parser.add_argument('--train_split_ratio', type=float, default=None)
     parser.add_argument('-ut', '--use_text_transcriptions', action='store_true')
+    parser.add_argument('-uc', '--use_concat_attention', action='store_true')
     parser.add_argument('-dsl', '--disable_strict_load', action='store_true')
     args = parser.parse_args()
     main(args)
