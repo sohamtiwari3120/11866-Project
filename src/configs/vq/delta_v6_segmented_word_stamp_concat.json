@@ -1,0 +1,71 @@
+{
+  "l_vqconfig": "vqgan/configs/l2_32_smoothSS.json",
+  "pipeline": "er2er",
+  "tag": "delta_v6_wtext-Y_seg-Y_ws-Y_es-200_concat-Y_",
+  "segment_tag": "",
+  "learning_rate": 0.01,
+  "warmup_steps": 100000,
+  "model_path": "models/",
+  "num_epochs": 500000,
+  "batch_size": 32,
+  "early_stopping": {
+    "patience": 200
+  },
+  "loss_config": {
+    "loss_aug": "normal",
+    "loss_type": "on_logit",
+    "weight": 0.0
+  },
+  "log_step": 100,
+  "patch": false,
+  "fact_model": {
+    "cross_modal_model": {
+      "use_conv": false,
+      "in_dim": 200,
+      "transformer": {
+        "hidden_size": 200,
+        "num_hidden_layers": 5,
+        "num_attention_heads": 10,
+        "intermediate_size": 128
+      },
+      "output_layer": {
+        "out_dim": 200
+      },
+      "sequence_length": 9,
+      "max_mask_len": 4
+    },
+    "listener_past_transformer_config": {
+      "description": "config for listener past transformer ENCODER",
+      "use_conv": false,
+      "hidden_size": 200,
+      "in_dim": 200,
+      "num_hidden_layers": 1,
+      "num_attention_heads": 10,
+      "intermediate_size": 128,
+      "sequence_length": 4
+    },
+    "speaker_full_transformer_config": {
+      "description": "config for speaker current audio and facial transformer ENCODER(S)",
+      "use_continuous": "v6",
+      "use_conv": false,
+      "hidden_size": 200,
+      "in_dim": 200,
+      "num_hidden_layers": 1,
+      "num_attention_heads": 10,
+      "intermediate_size": 128,
+      "sequence_length": 40
+    }
+  },
+  "data": {
+    "local": true,
+    "basedir": "./",
+    "speaker": "conan",
+    "train_transcript_embeddings_dir": "/home/ubuntu/learning2listen/src/data/word_ts_seg_aligned_transcripts/train_seg_aligned_flatten_embs",
+    "test_transcript_embeddings_dir": "/home/ubuntu/learning2listen/src/data/word_ts_seg_aligned_transcripts/test_seg_aligned_flatten_embs",
+    "less_expressive_style_embeddings_dir": "./data/reference_style_embedidngs/results_less4/code/",
+    "more_expressive_style_embeddings_dir": "./data/reference_style_embedidngs/results_more4/code/",
+    "transcript_embeddings_dim": 384,
+    "transcripts_segmented": true,
+    "train_split_ratio": 0.70
+  }
+}

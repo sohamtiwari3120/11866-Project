@@ -15,7 +15,7 @@ def calc_logit_loss(pred, target):
 
 
 def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
-                s_vqconfig=None, use_text_transcriptions=True, disable_strict_load=False):
+                s_vqconfig=None, use_text_transcriptions=True, use_concat_attention=True, disable_strict_load=False):
     """ Method that sets up Predictor for train/test """
     ## setting model parameters
     quant_factor = l_vqconfig['transformer_config']['quant_factor']
@@ -25,7 +25,7 @@ def setup_model(config, l_vqconfig, mask_index=-1, test=False, load_path=None,
     ## defining generator model and optimizers
     generator = FACTModel(config,
                           mask_index=mask_index,
-                          quant_factor=quant_factor, use_text_transcriptions=use_text_transcriptions).cuda()
+                          quant_factor=quant_factor, use_text_transcriptions=use_text_transcriptions, use_concat_attention=use_concat_attention).cuda()
     print("Let's use", torch.cuda.device_count(), "GPUs!")
     generator = nn.DataParallel(generator)
     g_optimizer = ScheduledOptim(
@@ -63,6 +63,8 @@ class FACTModel(nn.Module):
     self.config = copy.deepcopy(config)
     self.use_text_transcriptions = use_text_transcriptions
     self.use_concat_attention = use_concat_attention
+    print(self.use_concat_attention)
+
     ## set up listener motion embedding layers
     self.listener_past_transformer = Transformer(
         in_size=self.config['fact_model']['listener_past_transformer_config']\
@@ -156,7 +158,7 @@ class FACTModel(nn.Module):
     # creating post processing layers that will temporally downsample merged
     # speaker embedding
     post_layers = [nn.Sequential(
-                   nn.Conv1d(dim*2,dim*2,5,stride=2,padding=2,
+                   nn.Conv1d(dim*2,dim*2,85 if self.use_text_transcriptions and self.use_concat_attention else 5,stride=2,padding=2,
                              padding_mode='replicate'),
                    nn.LeakyReLU(0.2, True),
                    nn.BatchNorm1d(dim*2))]
@@ -284,7 +286,7 @@ class FACTModel(nn.Module):
         if self.use_concat_attention:
             speaker_audioandtext_features = self.cm_transformer_audio_text({'x_a':text_full_features, 'x_b':audio_full_features})
             speaker_motionandtext_features = self.cm_transformer_motion_text({'x_a':text_full_features, 'x_b':motion_full_features})
-            breakpoint()
+            speaker_full_features = torch.concat([speaker_audioandmotion_features, speaker_audioandtext_features, speaker_motionandtext_features], dim=1)
         else:
             data_features = {'x_a':text_full_features, 'x_b':speaker_audioandmotion_features}
             speaker_full_features = self.cm_transformer_audioandmotion_text(data_features)

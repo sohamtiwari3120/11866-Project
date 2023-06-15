@@ -228,7 +228,7 @@ def main(args):
     print('> checkpoint', load_path)
     autoregressive_generator, _, _ = setup_model(config, l_vqconfig,
                                   mask_index=0, test=True, s_vqconfig=None,
-                                  load_path=load_path, use_text_transcriptions=args.use_text_transcriptions, disable_strict_load=args.disable_strict_load)
+                                  load_path=load_path, use_text_transcriptions=args.use_text_transcriptions, use_concat_attention=args.use_concat_attention, disable_strict_load=args.disable_strict_load)
     autoregressive_generator.eval()
 
     ## load data
@@ -263,6 +263,7 @@ if __name__ == '__main__':
     parser.add_argument('--sample_idx', type=int, default=None)
     parser.add_argument('--save', action='store_true')
     parser.add_argument('-ut', '--use_text_transcriptions', action='store_true')
+    parser.add_argument('-uc', '--use_concat_attention', action='store_true')
     parser.add_argument('-dsl', '--disable_strict_load', action='store_true')
 
     args = parser.parse_args()
