@@ -182,8 +182,6 @@ def main(args):
         if not style_transfer:
             param.requires_grad = False
         else:
-            print(param)
-            import pdb; pdb.set_trace()
             if "style_transfer_layer" not in param.name:
                 param.requires_grad = False
     l_vq_model.eval()
