@@ -1,0 +1,12 @@
+Namespace(config='configs/vq/delta_v6.json', checkpoint='models/delta_v6_er2er_best.pth', speaker='stephen', etag='', sample_idx=None, save=False)
+starting lr 2.0
+Let's use 1 GPUs!
+>> changing lr to 4.5e-06
+loading checkpoint from... vqgan/models/l2_32_smoothSS_er2er_best.pth
+> checkpoint models/delta_v6_er2er_best.pth
+starting lr 0.01
+Let's use 1 GPUs!
+loading from checkpoint... models/delta_v6_er2er_best.pth
+loaded: .//data/stephen/test/p1_speak_files_clean_deca.npy (931, 64, 3) (931, 64, 3)
+*******
+out (928, 64, 56)

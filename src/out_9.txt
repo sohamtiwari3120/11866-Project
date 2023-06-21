@@ -1,0 +1,2063 @@
+using config configs/vq/delta_v6_9.json
+starting lr 2
+Let's use 1 GPUs!
+>> changing lr to 4.5e-06
+loading checkpoint from... vqgan/models/l2_32_smoothSS_er2er_best.pth
+Froze codebook: False
+starting lr 0.01
+True
+Using text transcriptions in the architecture: True
+Let's use 1 GPUs!
+starting from scratch...
+Loading transcripts from /home/ubuntu/learning2listen/src/data/word_ts_seg_aligned_transcripts/train_seg_aligned_flatten_embs
+loaded... conan
+===> in/out (9922, 64, 56) (9922, 64, 56) (9922, 256, 128)
+The train_ratio = 0.7
+====> train/val (6945, 64, 56) (2977, 64, 56)
+=====> standardization done
+epoch 0 num_epochs 500000
+Epoch [0/500000], Step [0/217], Loss: 0.0244, Perplexity: 1.0247
+Epoch [0/500000], Step [100/217], Loss: 2.4537, Perplexity: 11.6319
+Epoch [0/500000], Step [200/217], Loss: 2.4533, Perplexity: 11.6271
+val_Epoch [0/500000], Step [92/93], Loss: 5.3169, Perplexity: 203.7557
+----------------------------------
+>>>> saving best epoch 0 5.316921675077048
+epoch 1 num_epochs 500000
+Epoch [1/500000], Step [0/217], Loss: 0.0246, Perplexity: 1.0249
+Epoch [1/500000], Step [100/217], Loss: 2.4509, Perplexity: 11.5989
+Epoch [1/500000], Step [200/217], Loss: 2.4546, Perplexity: 11.6419
+val_Epoch [1/500000], Step [92/93], Loss: 5.3165, Perplexity: 203.6728
+----------------------------------
+>>>> saving best epoch 1 5.31651480479907
+epoch 2 num_epochs 500000
+Epoch [2/500000], Step [0/217], Loss: 0.0245, Perplexity: 1.0248
+Epoch [2/500000], Step [100/217], Loss: 2.4537, Perplexity: 11.6312
+Epoch [2/500000], Step [200/217], Loss: 2.4520, Perplexity: 11.6118
+val_Epoch [2/500000], Step [92/93], Loss: 5.3138, Perplexity: 203.1160
+----------------------------------
+>>>> saving best epoch 2 5.31377705707345
+epoch 3 num_epochs 500000
+Epoch [3/500000], Step [0/217], Loss: 0.0246, Perplexity: 1.0249
+Epoch [3/500000], Step [100/217], Loss: 2.4512, Perplexity: 11.6023
+Epoch [3/500000], Step [200/217], Loss: 2.4517, Perplexity: 11.6081
+val_Epoch [3/500000], Step [92/93], Loss: 5.3157, Perplexity: 203.5130
+----------------------------------
+epoch 4 num_epochs 500000
+Epoch [4/500000], Step [0/217], Loss: 0.0244, Perplexity: 1.0247
+Epoch [4/500000], Step [100/217], Loss: 2.4514, Perplexity: 11.6043
+Epoch [4/500000], Step [200/217], Loss: 2.4502, Perplexity: 11.5908
+val_Epoch [4/500000], Step [92/93], Loss: 5.3103, Perplexity: 202.4083
+----------------------------------
+>>>> saving best epoch 4 5.310286850057622
+epoch 5 num_epochs 500000
+Epoch [5/500000], Step [0/217], Loss: 0.0244, Perplexity: 1.0247
+Epoch [5/500000], Step [100/217], Loss: 2.4492, Perplexity: 11.5791
+Epoch [5/500000], Step [200/217], Loss: 2.4497, Perplexity: 11.5846
+val_Epoch [5/500000], Step [92/93], Loss: 5.3091, Perplexity: 202.1666
+----------------------------------
+>>>> saving best epoch 5 5.3090922140306045
+epoch 6 num_epochs 500000
+Epoch [6/500000], Step [0/217], Loss: 0.0246, Perplexity: 1.0249
+Epoch [6/500000], Step [100/217], Loss: 2.4482, Perplexity: 11.5675
+Epoch [6/500000], Step [200/217], Loss: 2.4477, Perplexity: 11.5622
+val_Epoch [6/500000], Step [92/93], Loss: 5.3049, Perplexity: 201.3192
+----------------------------------
+>>>> saving best epoch 6 5.304891658085649
+epoch 7 num_epochs 500000
+Epoch [7/500000], Step [0/217], Loss: 0.0245, Perplexity: 1.0248
+Epoch [7/500000], Step [100/217], Loss: 2.4473, Perplexity: 11.5573
+Epoch [7/500000], Step [200/217], Loss: 2.4457, Perplexity: 11.5381
+val_Epoch [7/500000], Step [92/93], Loss: 5.3012, Perplexity: 200.5770
+----------------------------------
+>>>> saving best epoch 7 5.301198154367427
+epoch 8 num_epochs 500000
+Epoch [8/500000], Step [0/217], Loss: 0.0244, Perplexity: 1.0247
+Epoch [8/500000], Step [100/217], Loss: 2.4456, Perplexity: 11.5376
+Epoch [8/500000], Step [200/217], Loss: 2.4443, Perplexity: 11.5228
+val_Epoch [8/500000], Step [92/93], Loss: 5.2962, Perplexity: 199.5816
+----------------------------------
+>>>> saving best epoch 8 5.296222943131641
+epoch 9 num_epochs 500000
+Epoch [9/500000], Step [0/217], Loss: 0.0243, Perplexity: 1.0246
+Epoch [9/500000], Step [100/217], Loss: 2.4423, Perplexity: 11.4994
+Epoch [9/500000], Step [200/217], Loss: 2.4411, Perplexity: 11.4859
+val_Epoch [9/500000], Step [92/93], Loss: 5.2924, Perplexity: 198.8147
+----------------------------------
+>>>> saving best epoch 9 5.2923730880983415
+epoch 10 num_epochs 500000
+Epoch [10/500000], Step [0/217], Loss: 0.0244, Perplexity: 1.0247
+Epoch [10/500000], Step [100/217], Loss: 2.4392, Perplexity: 11.4636
+Epoch [10/500000], Step [200/217], Loss: 2.4381, Perplexity: 11.4511
+val_Epoch [10/500000], Step [92/93], Loss: 5.2884, Perplexity: 198.0267
+----------------------------------
+>>>> saving best epoch 10 5.2884020395176385
+epoch 11 num_epochs 500000
+Epoch [11/500000], Step [0/217], Loss: 0.0247, Perplexity: 1.0250
+Epoch [11/500000], Step [100/217], Loss: 2.4369, Perplexity: 11.4371
+Epoch [11/500000], Step [200/217], Loss: 2.4356, Perplexity: 11.4223
+val_Epoch [11/500000], Step [92/93], Loss: 5.2785, Perplexity: 196.0697
+----------------------------------
+>>>> saving best epoch 11 5.278470065004083
+epoch 12 num_epochs 500000
+Epoch [12/500000], Step [0/217], Loss: 0.0243, Perplexity: 1.0246
+Epoch [12/500000], Step [100/217], Loss: 2.4350, Perplexity: 11.4162
+Epoch [12/500000], Step [200/217], Loss: 2.4309, Perplexity: 11.3687
+val_Epoch [12/500000], Step [92/93], Loss: 5.2744, Perplexity: 195.2778
+----------------------------------
+>>>> saving best epoch 12 5.274423342879101
+epoch 13 num_epochs 500000
+Epoch [13/500000], Step [0/217], Loss: 0.0242, Perplexity: 1.0245
+Epoch [13/500000], Step [100/217], Loss: 2.4303, Perplexity: 11.3622
+Epoch [13/500000], Step [200/217], Loss: 2.4306, Perplexity: 11.3652
+val_Epoch [13/500000], Step [92/93], Loss: 5.2669, Perplexity: 193.8224
+----------------------------------
+>>>> saving best epoch 13 5.26694248055899
+epoch 14 num_epochs 500000
+Epoch [14/500000], Step [0/217], Loss: 0.0244, Perplexity: 1.0247
+Epoch [14/500000], Step [100/217], Loss: 2.4269, Perplexity: 11.3241
+Epoch [14/500000], Step [200/217], Loss: 2.4263, Perplexity: 11.3174
+val_Epoch [14/500000], Step [92/93], Loss: 5.2601, Perplexity: 192.4981
+----------------------------------
+>>>> saving best epoch 14 5.26008604931575
+epoch 15 num_epochs 500000
+Epoch [15/500000], Step [0/217], Loss: 0.0241, Perplexity: 1.0244
+Epoch [15/500000], Step [100/217], Loss: 2.4243, Perplexity: 11.2942
+Epoch [15/500000], Step [200/217], Loss: 2.4219, Perplexity: 11.2673
+val_Epoch [15/500000], Step [92/93], Loss: 5.2530, Perplexity: 191.1344
+----------------------------------
+>>>> saving best epoch 15 5.252976981542444
+epoch 16 num_epochs 500000
+Epoch [16/500000], Step [0/217], Loss: 0.0243, Perplexity: 1.0246
+Epoch [16/500000], Step [100/217], Loss: 2.4219, Perplexity: 11.2671
+Epoch [16/500000], Step [200/217], Loss: 2.4191, Perplexity: 11.2353
+val_Epoch [16/500000], Step [92/93], Loss: 5.2464, Perplexity: 189.8844
+----------------------------------
+>>>> saving best epoch 16 5.246415640718194
+epoch 17 num_epochs 500000
+Epoch [17/500000], Step [0/217], Loss: 0.0242, Perplexity: 1.0245
+Epoch [17/500000], Step [100/217], Loss: 2.4183, Perplexity: 11.2271
+Epoch [17/500000], Step [200/217], Loss: 2.4141, Perplexity: 11.1795
+val_Epoch [17/500000], Step [92/93], Loss: 5.2393, Perplexity: 188.5399
+----------------------------------
+>>>> saving best epoch 17 5.239309398076868
+epoch 18 num_epochs 500000
+Epoch [18/500000], Step [0/217], Loss: 0.0242, Perplexity: 1.0244
+Epoch [18/500000], Step [100/217], Loss: 2.4120, Perplexity: 11.1567
+Epoch [18/500000], Step [200/217], Loss: 2.4121, Perplexity: 11.1574
+val_Epoch [18/500000], Step [92/93], Loss: 5.2279, Perplexity: 186.4006
+----------------------------------
+>>>> saving best epoch 18 5.22789833622594
+epoch 19 num_epochs 500000
+Epoch [19/500000], Step [0/217], Loss: 0.0242, Perplexity: 1.0245
+Epoch [19/500000], Step [100/217], Loss: 2.4104, Perplexity: 11.1389
+Epoch [19/500000], Step [200/217], Loss: 2.4069, Perplexity: 11.0993
+val_Epoch [19/500000], Step [92/93], Loss: 5.2210, Perplexity: 185.1132
+----------------------------------
+>>>> saving best epoch 19 5.220967503004177
+epoch 20 num_epochs 500000
+Epoch [20/500000], Step [0/217], Loss: 0.0241, Perplexity: 1.0243
+Epoch [20/500000], Step [100/217], Loss: 2.4044, Perplexity: 11.0718
+Epoch [20/500000], Step [200/217], Loss: 2.4042, Perplexity: 11.0700
+val_Epoch [20/500000], Step [92/93], Loss: 5.2155, Perplexity: 184.0997
+----------------------------------
+>>>> saving best epoch 20 5.2154772153464695
+epoch 21 num_epochs 500000
+Epoch [21/500000], Step [0/217], Loss: 0.0241, Perplexity: 1.0244
+Epoch [21/500000], Step [100/217], Loss: 2.3999, Perplexity: 11.0216
+Epoch [21/500000], Step [200/217], Loss: 2.3999, Perplexity: 11.0218
+val_Epoch [21/500000], Step [92/93], Loss: 5.2061, Perplexity: 182.3883
+----------------------------------
+>>>> saving best epoch 21 5.206138098111716
+epoch 22 num_epochs 500000
+Epoch [22/500000], Step [0/217], Loss: 0.0239, Perplexity: 1.0242
+Epoch [22/500000], Step [100/217], Loss: 2.3960, Perplexity: 10.9793
+Epoch [22/500000], Step [200/217], Loss: 2.3954, Perplexity: 10.9731
+val_Epoch [22/500000], Step [92/93], Loss: 5.1948, Perplexity: 180.3366
+----------------------------------
+>>>> saving best epoch 22 5.194825126278785
+epoch 23 num_epochs 500000
+Epoch [23/500000], Step [0/217], Loss: 0.0241, Perplexity: 1.0244
+Epoch [23/500000], Step [100/217], Loss: 2.3935, Perplexity: 10.9523
+Epoch [23/500000], Step [200/217], Loss: 2.3898, Perplexity: 10.9113
+val_Epoch [23/500000], Step [92/93], Loss: 5.1885, Perplexity: 179.2061
+----------------------------------
+>>>> saving best epoch 23 5.188536531181746
+epoch 24 num_epochs 500000
+Epoch [24/500000], Step [0/217], Loss: 0.0241, Perplexity: 1.0244
+Epoch [24/500000], Step [100/217], Loss: 2.3889, Perplexity: 10.9012
+Epoch [24/500000], Step [200/217], Loss: 2.3856, Perplexity: 10.8661
+val_Epoch [24/500000], Step [92/93], Loss: 5.1796, Perplexity: 177.6113
+----------------------------------
+>>>> saving best epoch 24 5.179597705923101
+epoch 25 num_epochs 500000
+Epoch [25/500000], Step [0/217], Loss: 0.0238, Perplexity: 1.0240
+Epoch [25/500000], Step [100/217], Loss: 2.3831, Perplexity: 10.8385
+Epoch [25/500000], Step [200/217], Loss: 2.3828, Perplexity: 10.8357
+val_Epoch [25/500000], Step [92/93], Loss: 5.1709, Perplexity: 176.0683
+----------------------------------
+>>>> saving best epoch 25 5.170871862801173
+epoch 26 num_epochs 500000
+Epoch [26/500000], Step [0/217], Loss: 0.0239, Perplexity: 1.0241
+Epoch [26/500000], Step [100/217], Loss: 2.3796, Perplexity: 10.8001
+Epoch [26/500000], Step [200/217], Loss: 2.3771, Perplexity: 10.7738
+val_Epoch [26/500000], Step [92/93], Loss: 5.1643, Perplexity: 174.9089
+----------------------------------
+>>>> saving best epoch 26 5.164265114773986
+epoch 27 num_epochs 500000
+Epoch [27/500000], Step [0/217], Loss: 0.0237, Perplexity: 1.0239
+Epoch [27/500000], Step [100/217], Loss: 2.3752, Perplexity: 10.7536
+Epoch [27/500000], Step [200/217], Loss: 2.3741, Perplexity: 10.7416
+val_Epoch [27/500000], Step [92/93], Loss: 5.1565, Perplexity: 173.5524
+----------------------------------
+>>>> saving best epoch 27 5.156479348418533
+epoch 28 num_epochs 500000
+Epoch [28/500000], Step [0/217], Loss: 0.0237, Perplexity: 1.0240
+Epoch [28/500000], Step [100/217], Loss: 2.3737, Perplexity: 10.7365
+Epoch [28/500000], Step [200/217], Loss: 2.3673, Perplexity: 10.6689
+val_Epoch [28/500000], Step [92/93], Loss: 5.1500, Perplexity: 172.4393
+----------------------------------
+>>>> saving best epoch 28 5.150045415406586
+epoch 29 num_epochs 500000
+Epoch [29/500000], Step [0/217], Loss: 0.0238, Perplexity: 1.0241
+Epoch [29/500000], Step [100/217], Loss: 2.3644, Perplexity: 10.6381
+Epoch [29/500000], Step [200/217], Loss: 2.3672, Perplexity: 10.6680
+val_Epoch [29/500000], Step [92/93], Loss: 5.1388, Perplexity: 170.5161
+----------------------------------
+>>>> saving best epoch 29 5.1388296363174275
+epoch 30 num_epochs 500000
+Epoch [30/500000], Step [0/217], Loss: 0.0237, Perplexity: 1.0240
+Epoch [30/500000], Step [100/217], Loss: 2.3631, Perplexity: 10.6239
+Epoch [30/500000], Step [200/217], Loss: 2.3614, Perplexity: 10.6062
+val_Epoch [30/500000], Step [92/93], Loss: 5.1351, Perplexity: 169.8752
+----------------------------------
+>>>> saving best epoch 30 5.135064094297348
+epoch 31 num_epochs 500000
+Epoch [31/500000], Step [0/217], Loss: 0.0236, Perplexity: 1.0239
+Epoch [31/500000], Step [100/217], Loss: 2.3595, Perplexity: 10.5854
+Epoch [31/500000], Step [200/217], Loss: 2.3581, Perplexity: 10.5705
+val_Epoch [31/500000], Step [92/93], Loss: 5.1245, Perplexity: 168.0974
+----------------------------------
+>>>> saving best epoch 31 5.124543410475536
+epoch 32 num_epochs 500000
+Epoch [32/500000], Step [0/217], Loss: 0.0235, Perplexity: 1.0238
+Epoch [32/500000], Step [100/217], Loss: 2.3570, Perplexity: 10.5594
+Epoch [32/500000], Step [200/217], Loss: 2.3531, Perplexity: 10.5186
+val_Epoch [32/500000], Step [92/93], Loss: 5.1156, Perplexity: 166.5998
+----------------------------------
+>>>> saving best epoch 32 5.115594474218225
+epoch 33 num_epochs 500000
+Epoch [33/500000], Step [0/217], Loss: 0.0235, Perplexity: 1.0238
+Epoch [33/500000], Step [100/217], Loss: 2.3528, Perplexity: 10.5153
+Epoch [33/500000], Step [200/217], Loss: 2.3503, Perplexity: 10.4890
+val_Epoch [33/500000], Step [92/93], Loss: 5.1083, Perplexity: 165.3929
+----------------------------------
+>>>> saving best epoch 33 5.108323799666538
+epoch 34 num_epochs 500000
+Epoch [34/500000], Step [0/217], Loss: 0.0235, Perplexity: 1.0238
+Epoch [34/500000], Step [100/217], Loss: 2.3491, Perplexity: 10.4761
+Epoch [34/500000], Step [200/217], Loss: 2.3484, Perplexity: 10.4684
+val_Epoch [34/500000], Step [92/93], Loss: 5.1043, Perplexity: 164.7216
+----------------------------------
+>>>> saving best epoch 34 5.104256537652785
+epoch 35 num_epochs 500000
+Epoch [35/500000], Step [0/217], Loss: 0.0235, Perplexity: 1.0237
+Epoch [35/500000], Step [100/217], Loss: 2.3462, Perplexity: 10.4457
+Epoch [35/500000], Step [200/217], Loss: 2.3442, Perplexity: 10.4248
+val_Epoch [35/500000], Step [92/93], Loss: 5.0957, Perplexity: 163.3259
+----------------------------------
+>>>> saving best epoch 35 5.095747358055525
+epoch 36 num_epochs 500000
+Epoch [36/500000], Step [0/217], Loss: 0.0236, Perplexity: 1.0239
+Epoch [36/500000], Step [100/217], Loss: 2.3424, Perplexity: 10.4058
+Epoch [36/500000], Step [200/217], Loss: 2.3419, Perplexity: 10.4009
+val_Epoch [36/500000], Step [92/93], Loss: 5.0886, Perplexity: 162.1599
+----------------------------------
+>>>> saving best epoch 36 5.088582777207898
+epoch 37 num_epochs 500000
+Epoch [37/500000], Step [0/217], Loss: 0.0233, Perplexity: 1.0235
+Epoch [37/500000], Step [100/217], Loss: 2.3412, Perplexity: 10.3933
+Epoch [37/500000], Step [200/217], Loss: 2.3375, Perplexity: 10.3555
+val_Epoch [37/500000], Step [92/93], Loss: 5.0851, Perplexity: 161.5981
+----------------------------------
+>>>> saving best epoch 37 5.085112146151963
+epoch 38 num_epochs 500000
+Epoch [38/500000], Step [0/217], Loss: 0.0234, Perplexity: 1.0237
+Epoch [38/500000], Step [100/217], Loss: 2.3377, Perplexity: 10.3569
+Epoch [38/500000], Step [200/217], Loss: 2.3336, Perplexity: 10.3154
+val_Epoch [38/500000], Step [92/93], Loss: 5.0777, Perplexity: 160.4079
+----------------------------------
+>>>> saving best epoch 38 5.07771978070659
+epoch 39 num_epochs 500000
+Epoch [39/500000], Step [0/217], Loss: 0.0234, Perplexity: 1.0237
+Epoch [39/500000], Step [100/217], Loss: 2.3329, Perplexity: 10.3081
+Epoch [39/500000], Step [200/217], Loss: 2.3326, Perplexity: 10.3050
+val_Epoch [39/500000], Step [92/93], Loss: 5.0725, Perplexity: 159.5696
+----------------------------------
+>>>> saving best epoch 39 5.072480391430599
+epoch 40 num_epochs 500000
+Epoch [40/500000], Step [0/217], Loss: 0.0234, Perplexity: 1.0237
+Epoch [40/500000], Step [100/217], Loss: 2.3293, Perplexity: 10.2708
+Epoch [40/500000], Step [200/217], Loss: 2.3292, Perplexity: 10.2700
+val_Epoch [40/500000], Step [92/93], Loss: 5.0655, Perplexity: 158.4632
+----------------------------------
+>>>> saving best epoch 40 5.065522240054223
+epoch 41 num_epochs 500000
+Epoch [41/500000], Step [0/217], Loss: 0.0232, Perplexity: 1.0235
+Epoch [41/500000], Step [100/217], Loss: 2.3288, Perplexity: 10.2658
+Epoch [41/500000], Step [200/217], Loss: 2.3244, Perplexity: 10.2203
+val_Epoch [41/500000], Step [92/93], Loss: 5.0607, Perplexity: 157.6980
+----------------------------------
+>>>> saving best epoch 41 5.0606819737342095
+epoch 42 num_epochs 500000
+Epoch [42/500000], Step [0/217], Loss: 0.0234, Perplexity: 1.0237
+Epoch [42/500000], Step [100/217], Loss: 2.3271, Perplexity: 10.2486
+Epoch [42/500000], Step [200/217], Loss: 2.3218, Perplexity: 10.1945
+val_Epoch [42/500000], Step [92/93], Loss: 5.0573, Perplexity: 157.1669
+----------------------------------
+>>>> saving best epoch 42 5.0573083252035165
+epoch 43 num_epochs 500000
+Epoch [43/500000], Step [0/217], Loss: 0.0232, Perplexity: 1.0235
+Epoch [43/500000], Step [100/217], Loss: 2.3225, Perplexity: 10.2008
+Epoch [43/500000], Step [200/217], Loss: 2.3195, Perplexity: 10.1708
+val_Epoch [43/500000], Step [92/93], Loss: 5.0497, Perplexity: 155.9791
+----------------------------------
+>>>> saving best epoch 43 5.049722261326288
+epoch 44 num_epochs 500000
+Epoch [44/500000], Step [0/217], Loss: 0.0232, Perplexity: 1.0234
+Epoch [44/500000], Step [100/217], Loss: 2.3186, Perplexity: 10.1610
+Epoch [44/500000], Step [200/217], Loss: 2.3175, Perplexity: 10.1506
+val_Epoch [44/500000], Step [92/93], Loss: 5.0437, Perplexity: 155.0438
+----------------------------------
+>>>> saving best epoch 44 5.043707970649965
+epoch 45 num_epochs 500000
+Epoch [45/500000], Step [0/217], Loss: 0.0229, Perplexity: 1.0232
+Epoch [45/500000], Step [100/217], Loss: 2.3145, Perplexity: 10.1195
+Epoch [45/500000], Step [200/217], Loss: 2.3182, Perplexity: 10.1570
+val_Epoch [45/500000], Step [92/93], Loss: 5.0395, Perplexity: 154.3922
+----------------------------------
+>>>> saving best epoch 45 5.039496027013307
+epoch 46 num_epochs 500000
+Epoch [46/500000], Step [0/217], Loss: 0.0231, Perplexity: 1.0234
+Epoch [46/500000], Step [100/217], Loss: 2.3140, Perplexity: 10.1151
+Epoch [46/500000], Step [200/217], Loss: 2.3121, Perplexity: 10.0955
+val_Epoch [46/500000], Step [92/93], Loss: 5.0336, Perplexity: 153.4818
+----------------------------------
+>>>> saving best epoch 46 5.033581846503801
+epoch 47 num_epochs 500000
+Epoch [47/500000], Step [0/217], Loss: 0.0230, Perplexity: 1.0233
+Epoch [47/500000], Step [100/217], Loss: 2.3107, Perplexity: 10.0811
+Epoch [47/500000], Step [200/217], Loss: 2.3104, Perplexity: 10.0780
+val_Epoch [47/500000], Step [92/93], Loss: 5.0262, Perplexity: 152.3560
+----------------------------------
+>>>> saving best epoch 47 5.02621994223646
+epoch 48 num_epochs 500000
+Epoch [48/500000], Step [0/217], Loss: 0.0233, Perplexity: 1.0236
+Epoch [48/500000], Step [100/217], Loss: 2.3091, Perplexity: 10.0649
+Epoch [48/500000], Step [200/217], Loss: 2.3059, Perplexity: 10.0335
+val_Epoch [48/500000], Step [92/93], Loss: 5.0228, Perplexity: 151.8406
+----------------------------------
+>>>> saving best epoch 48 5.022831439971924
+epoch 49 num_epochs 500000
+Epoch [49/500000], Step [0/217], Loss: 0.0231, Perplexity: 1.0233
+Epoch [49/500000], Step [100/217], Loss: 2.3044, Perplexity: 10.0178
+Epoch [49/500000], Step [200/217], Loss: 2.3057, Perplexity: 10.0315
+val_Epoch [49/500000], Step [92/93], Loss: 5.0185, Perplexity: 151.1812
+----------------------------------
+>>>> saving best epoch 49 5.018479213919691
+epoch 50 num_epochs 500000
+Epoch [50/500000], Step [0/217], Loss: 0.0229, Perplexity: 1.0231
+Epoch [50/500000], Step [100/217], Loss: 2.3031, Perplexity: 10.0053
+Epoch [50/500000], Step [200/217], Loss: 2.3022, Perplexity: 9.9962
+val_Epoch [50/500000], Step [92/93], Loss: 5.0149, Perplexity: 150.6444
+----------------------------------
+>>>> saving best epoch 50 5.014922418901997
+epoch 51 num_epochs 500000
+Epoch [51/500000], Step [0/217], Loss: 0.0228, Perplexity: 1.0231
+Epoch [51/500000], Step [100/217], Loss: 2.3003, Perplexity: 9.9768
+Epoch [51/500000], Step [200/217], Loss: 2.2988, Perplexity: 9.9620
+val_Epoch [51/500000], Step [92/93], Loss: 5.0090, Perplexity: 149.7491
+----------------------------------
+>>>> saving best epoch 51 5.008961016131986
+epoch 52 num_epochs 500000
+Epoch [52/500000], Step [0/217], Loss: 0.0229, Perplexity: 1.0232
+Epoch [52/500000], Step [100/217], Loss: 2.3003, Perplexity: 9.9768
+Epoch [52/500000], Step [200/217], Loss: 2.2951, Perplexity: 9.9250
+val_Epoch [52/500000], Step [92/93], Loss: 5.0050, Perplexity: 149.1524
+----------------------------------
+>>>> saving best epoch 52 5.004968484242757
+epoch 53 num_epochs 500000
+Epoch [53/500000], Step [0/217], Loss: 0.0230, Perplexity: 1.0233
+Epoch [53/500000], Step [100/217], Loss: 2.2956, Perplexity: 9.9304
+Epoch [53/500000], Step [200/217], Loss: 2.2943, Perplexity: 9.9178
+val_Epoch [53/500000], Step [92/93], Loss: 4.9990, Perplexity: 148.2651
+----------------------------------
+>>>> saving best epoch 53 4.999001687572848
+epoch 54 num_epochs 500000
+Epoch [54/500000], Step [0/217], Loss: 0.0229, Perplexity: 1.0231
+Epoch [54/500000], Step [100/217], Loss: 2.2920, Perplexity: 9.8946
+Epoch [54/500000], Step [200/217], Loss: 2.2935, Perplexity: 9.9093
+val_Epoch [54/500000], Step [92/93], Loss: 4.9944, Perplexity: 147.5846
+----------------------------------
+>>>> saving best epoch 54 4.994401470307381
+epoch 55 num_epochs 500000
+Epoch [55/500000], Step [0/217], Loss: 0.0229, Perplexity: 1.0232
+Epoch [55/500000], Step [100/217], Loss: 2.2912, Perplexity: 9.8873
+Epoch [55/500000], Step [200/217], Loss: 2.2871, Perplexity: 9.8460
+val_Epoch [55/500000], Step [92/93], Loss: 4.9882, Perplexity: 146.6789
+----------------------------------
+>>>> saving best epoch 55 4.9882456461588545
+epoch 56 num_epochs 500000
+Epoch [56/500000], Step [0/217], Loss: 0.0227, Perplexity: 1.0230
+Epoch [56/500000], Step [100/217], Loss: 2.2869, Perplexity: 9.8445
+Epoch [56/500000], Step [200/217], Loss: 2.2870, Perplexity: 9.8454
+val_Epoch [56/500000], Step [92/93], Loss: 4.9863, Perplexity: 146.3968
+----------------------------------
+>>>> saving best epoch 56 4.986320510987313
+epoch 57 num_epochs 500000
+Epoch [57/500000], Step [0/217], Loss: 0.0229, Perplexity: 1.0232
+Epoch [57/500000], Step [100/217], Loss: 2.2845, Perplexity: 9.8205
+Epoch [57/500000], Step [200/217], Loss: 2.2841, Perplexity: 9.8164
+val_Epoch [57/500000], Step [92/93], Loss: 4.9813, Perplexity: 145.6613
+----------------------------------
+>>>> saving best epoch 57 4.981283823649089
+epoch 58 num_epochs 500000
+Epoch [58/500000], Step [0/217], Loss: 0.0229, Perplexity: 1.0232
+Epoch [58/500000], Step [100/217], Loss: 2.2838, Perplexity: 9.8142
+Epoch [58/500000], Step [200/217], Loss: 2.2806, Perplexity: 9.7824
+val_Epoch [58/500000], Step [92/93], Loss: 4.9767, Perplexity: 144.9929
+----------------------------------
+>>>> saving best epoch 58 4.9766850625315024
+epoch 59 num_epochs 500000
+Epoch [59/500000], Step [0/217], Loss: 0.0227, Perplexity: 1.0229
+Epoch [59/500000], Step [100/217], Loss: 2.2803, Perplexity: 9.7801
+Epoch [59/500000], Step [200/217], Loss: 2.2772, Perplexity: 9.7494
+val_Epoch [59/500000], Step [92/93], Loss: 4.9711, Perplexity: 144.1912
+----------------------------------
+>>>> saving best epoch 59 4.971139866818664
+epoch 60 num_epochs 500000
+Epoch [60/500000], Step [0/217], Loss: 0.0228, Perplexity: 1.0230
+Epoch [60/500000], Step [100/217], Loss: 2.2780, Perplexity: 9.7570
+Epoch [60/500000], Step [200/217], Loss: 2.2757, Perplexity: 9.7350
+val_Epoch [60/500000], Step [92/93], Loss: 4.9651, Perplexity: 143.3159
+----------------------------------
+>>>> saving best epoch 60 4.9650509741998485
+epoch 61 num_epochs 500000
+Epoch [61/500000], Step [0/217], Loss: 0.0228, Perplexity: 1.0231
+Epoch [61/500000], Step [100/217], Loss: 2.2761, Perplexity: 9.7383
+Epoch [61/500000], Step [200/217], Loss: 2.2735, Perplexity: 9.7130
+val_Epoch [61/500000], Step [92/93], Loss: 4.9649, Perplexity: 143.2920
+----------------------------------
+>>>> saving best epoch 61 4.964884388831354
+epoch 62 num_epochs 500000
+Epoch [62/500000], Step [0/217], Loss: 0.0227, Perplexity: 1.0230
+Epoch [62/500000], Step [100/217], Loss: 2.2730, Perplexity: 9.7089
+Epoch [62/500000], Step [200/217], Loss: 2.2711, Perplexity: 9.6899
+val_Epoch [62/500000], Step [92/93], Loss: 4.9562, Perplexity: 142.0512
+----------------------------------
+>>>> saving best epoch 62 4.956187243102699
+epoch 63 num_epochs 500000
+Epoch [63/500000], Step [0/217], Loss: 0.0227, Perplexity: 1.0229
+Epoch [63/500000], Step [100/217], Loss: 2.2705, Perplexity: 9.6846
+Epoch [63/500000], Step [200/217], Loss: 2.2664, Perplexity: 9.6442
+val_Epoch [63/500000], Step [92/93], Loss: 4.9549, Perplexity: 141.8641
+----------------------------------
+>>>> saving best epoch 63 4.954869336979364
+epoch 64 num_epochs 500000
+Epoch [64/500000], Step [0/217], Loss: 0.0226, Perplexity: 1.0229
+Epoch [64/500000], Step [100/217], Loss: 2.2655, Perplexity: 9.6356
+Epoch [64/500000], Step [200/217], Loss: 2.2670, Perplexity: 9.6506
+val_Epoch [64/500000], Step [92/93], Loss: 4.9517, Perplexity: 141.4111
+----------------------------------
+>>>> saving best epoch 64 4.951671267068514
+epoch 65 num_epochs 500000
+Epoch [65/500000], Step [0/217], Loss: 0.0227, Perplexity: 1.0229
+Epoch [65/500000], Step [100/217], Loss: 2.2632, Perplexity: 9.6141
+Epoch [65/500000], Step [200/217], Loss: 2.2633, Perplexity: 9.6145
+val_Epoch [65/500000], Step [92/93], Loss: 4.9461, Perplexity: 140.6273
+----------------------------------
+>>>> saving best epoch 65 4.946112781442622
+epoch 66 num_epochs 500000
+Epoch [66/500000], Step [0/217], Loss: 0.0226, Perplexity: 1.0229
+Epoch [66/500000], Step [100/217], Loss: 2.2598, Perplexity: 9.5811
+Epoch [66/500000], Step [200/217], Loss: 2.2623, Perplexity: 9.6048
+val_Epoch [66/500000], Step [92/93], Loss: 4.9410, Perplexity: 139.9062
+----------------------------------
+>>>> saving best epoch 66 4.940972353822442
+epoch 67 num_epochs 500000
+Epoch [67/500000], Step [0/217], Loss: 0.0225, Perplexity: 1.0228
+Epoch [67/500000], Step [100/217], Loss: 2.2600, Perplexity: 9.5827
+Epoch [67/500000], Step [200/217], Loss: 2.2559, Perplexity: 9.5436
+val_Epoch [67/500000], Step [92/93], Loss: 4.9342, Perplexity: 138.9593
+----------------------------------
+>>>> saving best epoch 67 4.934181233888031
+epoch 68 num_epochs 500000
+Epoch [68/500000], Step [0/217], Loss: 0.0226, Perplexity: 1.0229
+Epoch [68/500000], Step [100/217], Loss: 2.2556, Perplexity: 9.5411
+Epoch [68/500000], Step [200/217], Loss: 2.2550, Perplexity: 9.5357
+val_Epoch [68/500000], Step [92/93], Loss: 4.9339, Perplexity: 138.9267
+----------------------------------
+>>>> saving best epoch 68 4.933946158296319
+epoch 69 num_epochs 500000
+Epoch [69/500000], Step [0/217], Loss: 0.0227, Perplexity: 1.0230
+Epoch [69/500000], Step [100/217], Loss: 2.2522, Perplexity: 9.5085
+Epoch [69/500000], Step [200/217], Loss: 2.2525, Perplexity: 9.5110
+val_Epoch [69/500000], Step [92/93], Loss: 4.9233, Perplexity: 137.4572
+----------------------------------
+>>>> saving best epoch 69 4.923312433304325
+epoch 70 num_epochs 500000
+Epoch [70/500000], Step [0/217], Loss: 0.0226, Perplexity: 1.0229
+Epoch [70/500000], Step [100/217], Loss: 2.2507, Perplexity: 9.4940
+Epoch [70/500000], Step [200/217], Loss: 2.2478, Perplexity: 9.4672
+val_Epoch [70/500000], Step [92/93], Loss: 4.9221, Perplexity: 137.2857
+----------------------------------
+>>>> saving best epoch 70 4.9220641095151185
+epoch 71 num_epochs 500000
+Epoch [71/500000], Step [0/217], Loss: 0.0226, Perplexity: 1.0229
+Epoch [71/500000], Step [100/217], Loss: 2.2463, Perplexity: 9.4524
+Epoch [71/500000], Step [200/217], Loss: 2.2461, Perplexity: 9.4505
+val_Epoch [71/500000], Step [92/93], Loss: 4.9197, Perplexity: 136.9620
+----------------------------------
+>>>> saving best epoch 71 4.919703837363951
+epoch 72 num_epochs 500000
+Epoch [72/500000], Step [0/217], Loss: 0.0228, Perplexity: 1.0231
+Epoch [72/500000], Step [100/217], Loss: 2.2433, Perplexity: 9.4248
+Epoch [72/500000], Step [200/217], Loss: 2.2449, Perplexity: 9.4397
+val_Epoch [72/500000], Step [92/93], Loss: 4.9118, Perplexity: 135.8799
+----------------------------------
+>>>> saving best epoch 72 4.911771441018709
+epoch 73 num_epochs 500000
+Epoch [73/500000], Step [0/217], Loss: 0.0223, Perplexity: 1.0225
+Epoch [73/500000], Step [100/217], Loss: 2.2418, Perplexity: 9.4099
+Epoch [73/500000], Step [200/217], Loss: 2.2396, Perplexity: 9.3900
+val_Epoch [73/500000], Step [92/93], Loss: 4.9087, Perplexity: 135.4677
+----------------------------------
+>>>> saving best epoch 73 4.908733075664889
+epoch 74 num_epochs 500000
+Epoch [74/500000], Step [0/217], Loss: 0.0222, Perplexity: 1.0225
+Epoch [74/500000], Step [100/217], Loss: 2.2398, Perplexity: 9.3914
+Epoch [74/500000], Step [200/217], Loss: 2.2377, Perplexity: 9.3719
+val_Epoch [74/500000], Step [92/93], Loss: 4.9046, Perplexity: 134.9049
+----------------------------------
+>>>> saving best epoch 74 4.904569718145555
+epoch 75 num_epochs 500000
+Epoch [75/500000], Step [0/217], Loss: 0.0224, Perplexity: 1.0227
+Epoch [75/500000], Step [100/217], Loss: 2.2384, Perplexity: 9.3783
+Epoch [75/500000], Step [200/217], Loss: 2.2325, Perplexity: 9.3234
+val_Epoch [75/500000], Step [92/93], Loss: 4.9009, Perplexity: 134.4049
+----------------------------------
+>>>> saving best epoch 75 4.90085707941363
+epoch 76 num_epochs 500000
+Epoch [76/500000], Step [0/217], Loss: 0.0226, Perplexity: 1.0229
+Epoch [76/500000], Step [100/217], Loss: 2.2326, Perplexity: 9.3237
+Epoch [76/500000], Step [200/217], Loss: 2.2337, Perplexity: 9.3347
+val_Epoch [76/500000], Step [92/93], Loss: 4.8922, Perplexity: 133.2465
+----------------------------------
+>>>> saving best epoch 76 4.892200454588859
+epoch 77 num_epochs 500000
+Epoch [77/500000], Step [0/217], Loss: 0.0224, Perplexity: 1.0226
+Epoch [77/500000], Step [100/217], Loss: 2.2297, Perplexity: 9.2968
+Epoch [77/500000], Step [200/217], Loss: 2.2274, Perplexity: 9.2757
+val_Epoch [77/500000], Step [92/93], Loss: 4.8874, Perplexity: 132.6129
+----------------------------------
+>>>> saving best epoch 77 4.887434610756495
+epoch 78 num_epochs 500000
+Epoch [78/500000], Step [0/217], Loss: 0.0224, Perplexity: 1.0226
+Epoch [78/500000], Step [100/217], Loss: 2.2279, Perplexity: 9.2808
+Epoch [78/500000], Step [200/217], Loss: 2.2251, Perplexity: 9.2546
+val_Epoch [78/500000], Step [92/93], Loss: 4.8856, Perplexity: 132.3669
+----------------------------------
+>>>> saving best epoch 78 4.8855776222803255
+epoch 79 num_epochs 500000
+Epoch [79/500000], Step [0/217], Loss: 0.0221, Perplexity: 1.0224
+Epoch [79/500000], Step [100/217], Loss: 2.2243, Perplexity: 9.2468
+Epoch [79/500000], Step [200/217], Loss: 2.2221, Perplexity: 9.2265
+val_Epoch [79/500000], Step [92/93], Loss: 4.8794, Perplexity: 131.5567
+----------------------------------
+>>>> saving best epoch 79 4.879437713212864
+epoch 80 num_epochs 500000
+Epoch [80/500000], Step [0/217], Loss: 0.0223, Perplexity: 1.0225
+Epoch [80/500000], Step [100/217], Loss: 2.2190, Perplexity: 9.1979
+Epoch [80/500000], Step [200/217], Loss: 2.2197, Perplexity: 9.2049
+val_Epoch [80/500000], Step [92/93], Loss: 4.8728, Perplexity: 130.6827
+----------------------------------
+>>>> saving best epoch 80 4.872772068105718
+epoch 81 num_epochs 500000
+Epoch [81/500000], Step [0/217], Loss: 0.0218, Perplexity: 1.0220
+Epoch [81/500000], Step [100/217], Loss: 2.2165, Perplexity: 9.1755
+Epoch [81/500000], Step [200/217], Loss: 2.2162, Perplexity: 9.1723
+val_Epoch [81/500000], Step [92/93], Loss: 4.8705, Perplexity: 130.3824
+----------------------------------
+>>>> saving best epoch 81 4.870471908200171
+epoch 82 num_epochs 500000
+Epoch [82/500000], Step [0/217], Loss: 0.0220, Perplexity: 1.0223
+Epoch [82/500000], Step [100/217], Loss: 2.2154, Perplexity: 9.1647
+Epoch [82/500000], Step [200/217], Loss: 2.2123, Perplexity: 9.1365
+val_Epoch [82/500000], Step [92/93], Loss: 4.8682, Perplexity: 130.0805
+----------------------------------
+>>>> saving best epoch 82 4.868153607973489
+epoch 83 num_epochs 500000
+Epoch [83/500000], Step [0/217], Loss: 0.0222, Perplexity: 1.0225
+Epoch [83/500000], Step [100/217], Loss: 2.2095, Perplexity: 9.1112
+Epoch [83/500000], Step [200/217], Loss: 2.2125, Perplexity: 9.1387
+val_Epoch [83/500000], Step [92/93], Loss: 4.8627, Perplexity: 129.3674
+----------------------------------
+>>>> saving best epoch 83 4.862656367722378
+epoch 84 num_epochs 500000
+Epoch [84/500000], Step [0/217], Loss: 0.0220, Perplexity: 1.0222
+Epoch [84/500000], Step [100/217], Loss: 2.2058, Perplexity: 9.0776
+Epoch [84/500000], Step [200/217], Loss: 2.2109, Perplexity: 9.1238
+val_Epoch [84/500000], Step [92/93], Loss: 4.8587, Perplexity: 128.8573
+----------------------------------
+>>>> saving best epoch 84 4.858705935939666
+epoch 85 num_epochs 500000
+Epoch [85/500000], Step [0/217], Loss: 0.0221, Perplexity: 1.0223
+Epoch [85/500000], Step [100/217], Loss: 2.2023, Perplexity: 9.0455
+Epoch [85/500000], Step [200/217], Loss: 2.2061, Perplexity: 9.0800
+val_Epoch [85/500000], Step [92/93], Loss: 4.8531, Perplexity: 128.1371
+----------------------------------
+>>>> saving best epoch 85 4.853100484417331
+epoch 86 num_epochs 500000
+Epoch [86/500000], Step [0/217], Loss: 0.0220, Perplexity: 1.0222
+Epoch [86/500000], Step [100/217], Loss: 2.1985, Perplexity: 9.0112
+Epoch [86/500000], Step [200/217], Loss: 2.2033, Perplexity: 9.0547
+val_Epoch [86/500000], Step [92/93], Loss: 4.8527, Perplexity: 128.0857
+----------------------------------
+>>>> saving best epoch 86 4.852699654076689
+epoch 87 num_epochs 500000
+Epoch [87/500000], Step [0/217], Loss: 0.0218, Perplexity: 1.0220
+Epoch [87/500000], Step [100/217], Loss: 2.1994, Perplexity: 9.0195
+Epoch [87/500000], Step [200/217], Loss: 2.1960, Perplexity: 8.9892
+val_Epoch [87/500000], Step [92/93], Loss: 4.8433, Perplexity: 126.8858
+----------------------------------
+>>>> saving best epoch 87 4.8432873038835424
+epoch 88 num_epochs 500000
+Epoch [88/500000], Step [0/217], Loss: 0.0218, Perplexity: 1.0220
+Epoch [88/500000], Step [100/217], Loss: 2.1973, Perplexity: 9.0011
+Epoch [88/500000], Step [200/217], Loss: 2.1914, Perplexity: 8.9479
+val_Epoch [88/500000], Step [92/93], Loss: 4.8391, Perplexity: 126.3504
+----------------------------------
+>>>> saving best epoch 88 4.839059388765725
+epoch 89 num_epochs 500000
+Epoch [89/500000], Step [0/217], Loss: 0.0220, Perplexity: 1.0222
+Epoch [89/500000], Step [100/217], Loss: 2.1937, Perplexity: 8.9682
+Epoch [89/500000], Step [200/217], Loss: 2.1873, Perplexity: 8.9111
+val_Epoch [89/500000], Step [92/93], Loss: 4.8308, Perplexity: 125.3091
+----------------------------------
+>>>> saving best epoch 89 4.830783100538357
+epoch 90 num_epochs 500000
+Epoch [90/500000], Step [0/217], Loss: 0.0219, Perplexity: 1.0221
+Epoch [90/500000], Step [100/217], Loss: 2.1897, Perplexity: 8.9323
+Epoch [90/500000], Step [200/217], Loss: 2.1900, Perplexity: 8.9349
+val_Epoch [90/500000], Step [92/93], Loss: 4.8293, Perplexity: 125.1211
+----------------------------------
+>>>> saving best epoch 90 4.829282442728679
+epoch 91 num_epochs 500000
+Epoch [91/500000], Step [0/217], Loss: 0.0218, Perplexity: 1.0220
+Epoch [91/500000], Step [100/217], Loss: 2.1846, Perplexity: 8.8873
+Epoch [91/500000], Step [200/217], Loss: 2.1870, Perplexity: 8.9080
+val_Epoch [91/500000], Step [92/93], Loss: 4.8256, Perplexity: 124.6673
+----------------------------------
+>>>> saving best epoch 91 4.825648282163886
+epoch 92 num_epochs 500000
+Epoch [92/500000], Step [0/217], Loss: 0.0218, Perplexity: 1.0220
+Epoch [92/500000], Step [100/217], Loss: 2.1823, Perplexity: 8.8668
+Epoch [92/500000], Step [200/217], Loss: 2.1812, Perplexity: 8.8572
+val_Epoch [92/500000], Step [92/93], Loss: 4.8213, Perplexity: 124.1263
+----------------------------------
+>>>> saving best epoch 92 4.821299558044762
+epoch 93 num_epochs 500000
+Epoch [93/500000], Step [0/217], Loss: 0.0216, Perplexity: 1.0218
+Epoch [93/500000], Step [100/217], Loss: 2.1783, Perplexity: 8.8310
+Epoch [93/500000], Step [200/217], Loss: 2.1784, Perplexity: 8.8319
+val_Epoch [93/500000], Step [92/93], Loss: 4.8126, Perplexity: 123.0510
+----------------------------------
+>>>> saving best epoch 93 4.812598720673592
+epoch 94 num_epochs 500000
+Epoch [94/500000], Step [0/217], Loss: 0.0213, Perplexity: 1.0215
+Epoch [94/500000], Step [100/217], Loss: 2.1764, Perplexity: 8.8143
+Epoch [94/500000], Step [200/217], Loss: 2.1744, Perplexity: 8.7973
+val_Epoch [94/500000], Step [92/93], Loss: 4.8076, Perplexity: 122.4399
+----------------------------------
+>>>> saving best epoch 94 4.8076201715777
+epoch 95 num_epochs 500000
+Epoch [95/500000], Step [0/217], Loss: 0.0218, Perplexity: 1.0221
+Epoch [95/500000], Step [100/217], Loss: 2.1741, Perplexity: 8.7944
+Epoch [95/500000], Step [200/217], Loss: 2.1688, Perplexity: 8.7480
+val_Epoch [95/500000], Step [92/93], Loss: 4.8049, Perplexity: 122.1020
+----------------------------------
+>>>> saving best epoch 95 4.804857059191632
+epoch 96 num_epochs 500000
+Epoch [96/500000], Step [0/217], Loss: 0.0219, Perplexity: 1.0221
+Epoch [96/500000], Step [100/217], Loss: 2.1669, Perplexity: 8.7315
+Epoch [96/500000], Step [200/217], Loss: 2.1712, Perplexity: 8.7689
+val_Epoch [96/500000], Step [92/93], Loss: 4.8029, Perplexity: 121.8635
+----------------------------------
+>>>> saving best epoch 96 4.8029012372416835
+epoch 97 num_epochs 500000
+Epoch [97/500000], Step [0/217], Loss: 0.0217, Perplexity: 1.0219
+Epoch [97/500000], Step [100/217], Loss: 2.1687, Perplexity: 8.7469
+Epoch [97/500000], Step [200/217], Loss: 2.1597, Perplexity: 8.6684
+val_Epoch [97/500000], Step [92/93], Loss: 4.7993, Perplexity: 121.4268
+----------------------------------
+>>>> saving best epoch 97 4.799311935260731
+epoch 98 num_epochs 500000
+Epoch [98/500000], Step [0/217], Loss: 0.0214, Perplexity: 1.0216
+Epoch [98/500000], Step [100/217], Loss: 2.1618, Perplexity: 8.6868
+Epoch [98/500000], Step [200/217], Loss: 2.1608, Perplexity: 8.6780
+val_Epoch [98/500000], Step [92/93], Loss: 4.7946, Perplexity: 120.8618
+----------------------------------
+>>>> saving best epoch 98 4.794647683379471
+epoch 99 num_epochs 500000
+Epoch [99/500000], Step [0/217], Loss: 0.0217, Perplexity: 1.0219
+Epoch [99/500000], Step [100/217], Loss: 2.1587, Perplexity: 8.6602
+Epoch [99/500000], Step [200/217], Loss: 2.1597, Perplexity: 8.6682
+val_Epoch [99/500000], Step [92/93], Loss: 4.7899, Perplexity: 120.2901
+----------------------------------
+>>>> saving best epoch 99 4.789906142860331
+epoch 100 num_epochs 500000
+Epoch [100/500000], Step [0/217], Loss: 0.0215, Perplexity: 1.0217
+Epoch [100/500000], Step [100/217], Loss: 2.1565, Perplexity: 8.6408
+Epoch [100/500000], Step [200/217], Loss: 2.1515, Perplexity: 8.5982
+val_Epoch [100/500000], Step [92/93], Loss: 4.7846, Perplexity: 119.6545
+----------------------------------
+>>>> saving best epoch 100 4.7846080821047545
+epoch 101 num_epochs 500000
+Epoch [101/500000], Step [0/217], Loss: 0.0213, Perplexity: 1.0215
+Epoch [101/500000], Step [100/217], Loss: 2.1496, Perplexity: 8.5818
+Epoch [101/500000], Step [200/217], Loss: 2.1511, Perplexity: 8.5943
+val_Epoch [101/500000], Step [92/93], Loss: 4.7802, Perplexity: 119.1265
+----------------------------------
+>>>> saving best epoch 101 4.780186232700143
+epoch 102 num_epochs 500000
+Epoch [102/500000], Step [0/217], Loss: 0.0215, Perplexity: 1.0218
+Epoch [102/500000], Step [100/217], Loss: 2.1490, Perplexity: 8.5766
+Epoch [102/500000], Step [200/217], Loss: 2.1472, Perplexity: 8.5605
+val_Epoch [102/500000], Step [92/93], Loss: 4.7751, Perplexity: 118.5226
+----------------------------------
+>>>> saving best epoch 102 4.775104025358795
+epoch 103 num_epochs 500000
+Epoch [103/500000], Step [0/217], Loss: 0.0212, Perplexity: 1.0215
+Epoch [103/500000], Step [100/217], Loss: 2.1435, Perplexity: 8.5290
+Epoch [103/500000], Step [200/217], Loss: 2.1446, Perplexity: 8.5386
+val_Epoch [103/500000], Step [92/93], Loss: 4.7703, Perplexity: 117.9510
+----------------------------------
+>>>> saving best epoch 103 4.770269383666336
+epoch 104 num_epochs 500000
+Epoch [104/500000], Step [0/217], Loss: 0.0216, Perplexity: 1.0218
+Epoch [104/500000], Step [100/217], Loss: 2.1390, Perplexity: 8.4914
+Epoch [104/500000], Step [200/217], Loss: 2.1430, Perplexity: 8.5249
+val_Epoch [104/500000], Step [92/93], Loss: 4.7679, Perplexity: 117.6697
+----------------------------------
+>>>> saving best epoch 104 4.767881347287085
+epoch 105 num_epochs 500000
+Epoch [105/500000], Step [0/217], Loss: 0.0215, Perplexity: 1.0217
+Epoch [105/500000], Step [100/217], Loss: 2.1374, Perplexity: 8.4772
+Epoch [105/500000], Step [200/217], Loss: 2.1370, Perplexity: 8.4739
+val_Epoch [105/500000], Step [92/93], Loss: 4.7626, Perplexity: 117.0548
+----------------------------------
+>>>> saving best epoch 105 4.762642552775722
+epoch 106 num_epochs 500000
+Epoch [106/500000], Step [0/217], Loss: 0.0216, Perplexity: 1.0218
+Epoch [106/500000], Step [100/217], Loss: 2.1332, Perplexity: 8.4416
+Epoch [106/500000], Step [200/217], Loss: 2.1343, Perplexity: 8.4508
+val_Epoch [106/500000], Step [92/93], Loss: 4.7532, Perplexity: 115.9523
+----------------------------------
+>>>> saving best epoch 106 4.753178601623864
+epoch 107 num_epochs 500000
+Epoch [107/500000], Step [0/217], Loss: 0.0214, Perplexity: 1.0217
+Epoch [107/500000], Step [100/217], Loss: 2.1310, Perplexity: 8.4231
+Epoch [107/500000], Step [200/217], Loss: 2.1295, Perplexity: 8.4110
+val_Epoch [107/500000], Step [92/93], Loss: 4.7535, Perplexity: 115.9855
+----------------------------------
+epoch 108 num_epochs 500000
+Epoch [108/500000], Step [0/217], Loss: 0.0212, Perplexity: 1.0215
+Epoch [108/500000], Step [100/217], Loss: 2.1286, Perplexity: 8.4030
+Epoch [108/500000], Step [200/217], Loss: 2.1267, Perplexity: 8.3871
+val_Epoch [108/500000], Step [92/93], Loss: 4.7511, Perplexity: 115.7094
+----------------------------------
+>>>> saving best epoch 108 4.751081871730025
+epoch 109 num_epochs 500000
+Epoch [109/500000], Step [0/217], Loss: 0.0217, Perplexity: 1.0219
+Epoch [109/500000], Step [100/217], Loss: 2.1185, Perplexity: 8.3186
+Epoch [109/500000], Step [200/217], Loss: 2.1251, Perplexity: 8.3739
+val_Epoch [109/500000], Step [92/93], Loss: 4.7426, Perplexity: 114.7355
+----------------------------------
+>>>> saving best epoch 109 4.742629517791092
+epoch 110 num_epochs 500000
+Epoch [110/500000], Step [0/217], Loss: 0.0211, Perplexity: 1.0214
+Epoch [110/500000], Step [100/217], Loss: 2.1203, Perplexity: 8.3340
+Epoch [110/500000], Step [200/217], Loss: 2.1177, Perplexity: 8.3123
+val_Epoch [110/500000], Step [92/93], Loss: 4.7416, Perplexity: 114.6119
+----------------------------------
+>>>> saving best epoch 110 4.741551512031145
+epoch 111 num_epochs 500000
+Epoch [111/500000], Step [0/217], Loss: 0.0211, Perplexity: 1.0213
+Epoch [111/500000], Step [100/217], Loss: 2.1161, Perplexity: 8.2984
+Epoch [111/500000], Step [200/217], Loss: 2.1166, Perplexity: 8.3031
+val_Epoch [111/500000], Step [92/93], Loss: 4.7318, Perplexity: 113.4996
+----------------------------------
+>>>> saving best epoch 111 4.731798879561886
+epoch 112 num_epochs 500000
+Epoch [112/500000], Step [0/217], Loss: 0.0207, Perplexity: 1.0209
+Epoch [112/500000], Step [100/217], Loss: 2.1101, Perplexity: 8.2488
+Epoch [112/500000], Step [200/217], Loss: 2.1160, Perplexity: 8.2980
+val_Epoch [112/500000], Step [92/93], Loss: 4.7312, Perplexity: 113.4297
+----------------------------------
+>>>> saving best epoch 112 4.7311835289001465
+epoch 113 num_epochs 500000
+Epoch [113/500000], Step [0/217], Loss: 0.0208, Perplexity: 1.0210
+Epoch [113/500000], Step [100/217], Loss: 2.1043, Perplexity: 8.2017
+Epoch [113/500000], Step [200/217], Loss: 2.1068, Perplexity: 8.2221
+val_Epoch [113/500000], Step [92/93], Loss: 4.7244, Perplexity: 112.6670
+----------------------------------
+>>>> saving best epoch 113 4.724436216456915
+epoch 114 num_epochs 500000
+Epoch [114/500000], Step [0/217], Loss: 0.0209, Perplexity: 1.0211
+Epoch [114/500000], Step [100/217], Loss: 2.1077, Perplexity: 8.2293
+Epoch [114/500000], Step [200/217], Loss: 2.1042, Perplexity: 8.2007
+val_Epoch [114/500000], Step [92/93], Loss: 4.7154, Perplexity: 111.6489
+----------------------------------
+>>>> saving best epoch 114 4.7153594622048
+epoch 115 num_epochs 500000
+Epoch [115/500000], Step [0/217], Loss: 0.0207, Perplexity: 1.0209
+Epoch [115/500000], Step [100/217], Loss: 2.1051, Perplexity: 8.2078
+Epoch [115/500000], Step [200/217], Loss: 2.0975, Perplexity: 8.1461
+val_Epoch [115/500000], Step [92/93], Loss: 4.7160, Perplexity: 111.7199
+----------------------------------
+epoch 116 num_epochs 500000
+Epoch [116/500000], Step [0/217], Loss: 0.0209, Perplexity: 1.0211
+Epoch [116/500000], Step [100/217], Loss: 2.0990, Perplexity: 8.1577
+Epoch [116/500000], Step [200/217], Loss: 2.0960, Perplexity: 8.1332
+val_Epoch [116/500000], Step [92/93], Loss: 4.7134, Perplexity: 111.4260
+----------------------------------
+>>>> saving best epoch 116 4.713360971020114
+epoch 117 num_epochs 500000
+Epoch [117/500000], Step [0/217], Loss: 0.0211, Perplexity: 1.0213
+Epoch [117/500000], Step [100/217], Loss: 2.0884, Perplexity: 8.0718
+Epoch [117/500000], Step [200/217], Loss: 2.0932, Perplexity: 8.1110
+val_Epoch [117/500000], Step [92/93], Loss: 4.7041, Perplexity: 110.3958
+----------------------------------
+>>>> saving best epoch 117 4.704072024232598
+epoch 118 num_epochs 500000
+Epoch [118/500000], Step [0/217], Loss: 0.0209, Perplexity: 1.0211
+Epoch [118/500000], Step [100/217], Loss: 2.0888, Perplexity: 8.0750
+Epoch [118/500000], Step [200/217], Loss: 2.0919, Perplexity: 8.1000
+val_Epoch [118/500000], Step [92/93], Loss: 4.6975, Perplexity: 109.6701
+----------------------------------
+>>>> saving best epoch 118 4.697476489569551
+epoch 119 num_epochs 500000
+Epoch [119/500000], Step [0/217], Loss: 0.0210, Perplexity: 1.0213
+Epoch [119/500000], Step [100/217], Loss: 2.0885, Perplexity: 8.0730
+Epoch [119/500000], Step [200/217], Loss: 2.0824, Perplexity: 8.0234
+val_Epoch [119/500000], Step [92/93], Loss: 4.7037, Perplexity: 110.3539
+----------------------------------
+epoch 120 num_epochs 500000
+Epoch [120/500000], Step [0/217], Loss: 0.0208, Perplexity: 1.0210
+Epoch [120/500000], Step [100/217], Loss: 2.0813, Perplexity: 8.0146
+Epoch [120/500000], Step [200/217], Loss: 2.0818, Perplexity: 8.0189
+val_Epoch [120/500000], Step [92/93], Loss: 4.6928, Perplexity: 109.1531
+----------------------------------
+>>>> saving best epoch 120 4.692751315332228
+epoch 121 num_epochs 500000
+Epoch [121/500000], Step [0/217], Loss: 0.0207, Perplexity: 1.0210
+Epoch [121/500000], Step [100/217], Loss: 2.0801, Perplexity: 8.0053
+Epoch [121/500000], Step [200/217], Loss: 2.0805, Perplexity: 8.0084
+val_Epoch [121/500000], Step [92/93], Loss: 4.6890, Perplexity: 108.7428
+----------------------------------
+>>>> saving best epoch 121 4.688985793821273
+epoch 122 num_epochs 500000
+Epoch [122/500000], Step [0/217], Loss: 0.0208, Perplexity: 1.0210
+Epoch [122/500000], Step [100/217], Loss: 2.0752, Perplexity: 7.9661
+Epoch [122/500000], Step [200/217], Loss: 2.0735, Perplexity: 7.9523
+val_Epoch [122/500000], Step [92/93], Loss: 4.6860, Perplexity: 108.4205
+----------------------------------
+>>>> saving best epoch 122 4.686016795455768
+epoch 123 num_epochs 500000
+Epoch [123/500000], Step [0/217], Loss: 0.0202, Perplexity: 1.0204
+Epoch [123/500000], Step [100/217], Loss: 2.0713, Perplexity: 7.9351
+Epoch [123/500000], Step [200/217], Loss: 2.0678, Perplexity: 7.9074
+val_Epoch [123/500000], Step [92/93], Loss: 4.6816, Perplexity: 107.9419
+----------------------------------
+>>>> saving best epoch 123 4.6815932079028055
+epoch 124 num_epochs 500000
+Epoch [124/500000], Step [0/217], Loss: 0.0207, Perplexity: 1.0209
+Epoch [124/500000], Step [100/217], Loss: 2.0685, Perplexity: 7.9133
+Epoch [124/500000], Step [200/217], Loss: 2.0651, Perplexity: 7.8865
+val_Epoch [124/500000], Step [92/93], Loss: 4.6759, Perplexity: 107.3309
+----------------------------------
+>>>> saving best epoch 124 4.675916507679929
+epoch 125 num_epochs 500000
+Epoch [125/500000], Step [0/217], Loss: 0.0207, Perplexity: 1.0209
+Epoch [125/500000], Step [100/217], Loss: 2.0664, Perplexity: 7.8964
+Epoch [125/500000], Step [200/217], Loss: 2.0604, Perplexity: 7.8488
+val_Epoch [125/500000], Step [92/93], Loss: 4.6690, Perplexity: 106.5926
+----------------------------------
+>>>> saving best epoch 125 4.669014043705438
+epoch 126 num_epochs 500000
+Epoch [126/500000], Step [0/217], Loss: 0.0204, Perplexity: 1.0206
+Epoch [126/500000], Step [100/217], Loss: 2.0626, Perplexity: 7.8664
+Epoch [126/500000], Step [200/217], Loss: 2.0548, Perplexity: 7.8056
+val_Epoch [126/500000], Step [92/93], Loss: 4.6693, Perplexity: 106.6213
+----------------------------------
+epoch 127 num_epochs 500000
+Epoch [127/500000], Step [0/217], Loss: 0.0202, Perplexity: 1.0204
+Epoch [127/500000], Step [100/217], Loss: 2.0538, Perplexity: 7.7978
+Epoch [127/500000], Step [200/217], Loss: 2.0550, Perplexity: 7.8071
+val_Epoch [127/500000], Step [92/93], Loss: 4.6614, Perplexity: 105.7821
+----------------------------------
+>>>> saving best epoch 127 4.661381772769395
+epoch 128 num_epochs 500000
+Epoch [128/500000], Step [0/217], Loss: 0.0200, Perplexity: 1.0202
+Epoch [128/500000], Step [100/217], Loss: 2.0487, Perplexity: 7.7575
+Epoch [128/500000], Step [200/217], Loss: 2.0553, Perplexity: 7.8089
+val_Epoch [128/500000], Step [92/93], Loss: 4.6543, Perplexity: 105.0337
+----------------------------------
+>>>> saving best epoch 128 4.654281006064466
+epoch 129 num_epochs 500000
+Epoch [129/500000], Step [0/217], Loss: 0.0209, Perplexity: 1.0212
+Epoch [129/500000], Step [100/217], Loss: 2.0449, Perplexity: 7.7283
+Epoch [129/500000], Step [200/217], Loss: 2.0499, Perplexity: 7.7673
+val_Epoch [129/500000], Step [92/93], Loss: 4.6549, Perplexity: 105.0964
+----------------------------------
+epoch 130 num_epochs 500000
+Epoch [130/500000], Step [0/217], Loss: 0.0202, Perplexity: 1.0204
+Epoch [130/500000], Step [100/217], Loss: 2.0443, Perplexity: 7.7238
+Epoch [130/500000], Step [200/217], Loss: 2.0416, Perplexity: 7.7030
+val_Epoch [130/500000], Step [92/93], Loss: 4.6486, Perplexity: 104.4403
+----------------------------------
+>>>> saving best epoch 130 4.6486158473517305
+epoch 131 num_epochs 500000
+Epoch [131/500000], Step [0/217], Loss: 0.0205, Perplexity: 1.0207
+Epoch [131/500000], Step [100/217], Loss: 2.0428, Perplexity: 7.7124
+Epoch [131/500000], Step [200/217], Loss: 2.0386, Perplexity: 7.6799
+val_Epoch [131/500000], Step [92/93], Loss: 4.6525, Perplexity: 104.8424
+----------------------------------
+epoch 132 num_epochs 500000
+Epoch [132/500000], Step [0/217], Loss: 0.0204, Perplexity: 1.0206
+Epoch [132/500000], Step [100/217], Loss: 2.0382, Perplexity: 7.6769
+Epoch [132/500000], Step [200/217], Loss: 2.0324, Perplexity: 7.6321
+val_Epoch [132/500000], Step [92/93], Loss: 4.6457, Perplexity: 104.1385
+----------------------------------
+>>>> saving best epoch 132 4.6457212919829995
+epoch 133 num_epochs 500000
+Epoch [133/500000], Step [0/217], Loss: 0.0200, Perplexity: 1.0202
+Epoch [133/500000], Step [100/217], Loss: 2.0313, Perplexity: 7.6238
+Epoch [133/500000], Step [200/217], Loss: 2.0299, Perplexity: 7.6136
+val_Epoch [133/500000], Step [92/93], Loss: 4.6361, Perplexity: 103.1380
+----------------------------------
+>>>> saving best epoch 133 4.636067564769458
+epoch 134 num_epochs 500000
+Epoch [134/500000], Step [0/217], Loss: 0.0208, Perplexity: 1.0211
+Epoch [134/500000], Step [100/217], Loss: 2.0277, Perplexity: 7.5963
+Epoch [134/500000], Step [200/217], Loss: 2.0291, Perplexity: 7.6069
+val_Epoch [134/500000], Step [92/93], Loss: 4.6251, Perplexity: 102.0133
+----------------------------------
+>>>> saving best epoch 134 4.625103653118175
+epoch 135 num_epochs 500000
+Epoch [135/500000], Step [0/217], Loss: 0.0206, Perplexity: 1.0208
+Epoch [135/500000], Step [100/217], Loss: 2.0189, Perplexity: 7.5297
+Epoch [135/500000], Step [200/217], Loss: 2.0248, Perplexity: 7.5743
+val_Epoch [135/500000], Step [92/93], Loss: 4.6256, Perplexity: 102.0618
+----------------------------------
+epoch 136 num_epochs 500000
+Epoch [136/500000], Step [0/217], Loss: 0.0202, Perplexity: 1.0204
+Epoch [136/500000], Step [100/217], Loss: 2.0138, Perplexity: 7.4917
+Epoch [136/500000], Step [200/217], Loss: 2.0208, Perplexity: 7.5443
+val_Epoch [136/500000], Step [92/93], Loss: 4.6234, Perplexity: 101.8429
+----------------------------------
+>>>> saving best epoch 136 4.623431313422419
+epoch 137 num_epochs 500000
+Epoch [137/500000], Step [0/217], Loss: 0.0205, Perplexity: 1.0207
+Epoch [137/500000], Step [100/217], Loss: 2.0169, Perplexity: 7.5153
+Epoch [137/500000], Step [200/217], Loss: 2.0109, Perplexity: 7.4702
+val_Epoch [137/500000], Step [92/93], Loss: 4.6148, Perplexity: 100.9712
+----------------------------------
+>>>> saving best epoch 137 4.6148351853893645
+epoch 138 num_epochs 500000
+Epoch [138/500000], Step [0/217], Loss: 0.0207, Perplexity: 1.0209
+Epoch [138/500000], Step [100/217], Loss: 2.0123, Perplexity: 7.4804
+Epoch [138/500000], Step [200/217], Loss: 2.0105, Perplexity: 7.4668
+val_Epoch [138/500000], Step [92/93], Loss: 4.6146, Perplexity: 100.9487
+----------------------------------
+>>>> saving best epoch 138 4.614612948509954
+epoch 139 num_epochs 500000
+Epoch [139/500000], Step [0/217], Loss: 0.0199, Perplexity: 1.0201
+Epoch [139/500000], Step [100/217], Loss: 2.0071, Perplexity: 7.4414
+Epoch [139/500000], Step [200/217], Loss: 2.0103, Perplexity: 7.4657
+val_Epoch [139/500000], Step [92/93], Loss: 4.6093, Perplexity: 100.4174
+----------------------------------
+>>>> saving best epoch 139 4.609335273824712
+epoch 140 num_epochs 500000
+Epoch [140/500000], Step [0/217], Loss: 0.0205, Perplexity: 1.0207
+Epoch [140/500000], Step [100/217], Loss: 2.0045, Perplexity: 7.4227
+Epoch [140/500000], Step [200/217], Loss: 2.0017, Perplexity: 7.4014
+val_Epoch [140/500000], Step [92/93], Loss: 4.6081, Perplexity: 100.2949
+----------------------------------
+>>>> saving best epoch 140 4.608115093682402
+epoch 141 num_epochs 500000
+Epoch [141/500000], Step [0/217], Loss: 0.0203, Perplexity: 1.0205
+Epoch [141/500000], Step [100/217], Loss: 1.9908, Perplexity: 7.3217
+Epoch [141/500000], Step [200/217], Loss: 2.0010, Perplexity: 7.3963
+val_Epoch [141/500000], Step [92/93], Loss: 4.5951, Perplexity: 98.9981
+----------------------------------
+>>>> saving best epoch 141 4.595100859160064
+epoch 142 num_epochs 500000
+Epoch [142/500000], Step [0/217], Loss: 0.0196, Perplexity: 1.0198
+Epoch [142/500000], Step [100/217], Loss: 1.9957, Perplexity: 7.3570
+Epoch [142/500000], Step [200/217], Loss: 1.9934, Perplexity: 7.3404
+val_Epoch [142/500000], Step [92/93], Loss: 4.6064, Perplexity: 100.1253
+----------------------------------
+epoch 143 num_epochs 500000
+Epoch [143/500000], Step [0/217], Loss: 0.0206, Perplexity: 1.0208
+Epoch [143/500000], Step [100/217], Loss: 1.9909, Perplexity: 7.3218
+Epoch [143/500000], Step [200/217], Loss: 1.9902, Perplexity: 7.3171
+val_Epoch [143/500000], Step [92/93], Loss: 4.5913, Perplexity: 98.6187
+----------------------------------
+>>>> saving best epoch 143 4.5912613304712435
+epoch 144 num_epochs 500000
+Epoch [144/500000], Step [0/217], Loss: 0.0198, Perplexity: 1.0200
+Epoch [144/500000], Step [100/217], Loss: 1.9839, Perplexity: 7.2708
+Epoch [144/500000], Step [200/217], Loss: 1.9880, Perplexity: 7.3011
+val_Epoch [144/500000], Step [92/93], Loss: 4.5904, Perplexity: 98.5317
+----------------------------------
+>>>> saving best epoch 144 4.590378566454816
+epoch 145 num_epochs 500000
+Epoch [145/500000], Step [0/217], Loss: 0.0191, Perplexity: 1.0193
+Epoch [145/500000], Step [100/217], Loss: 1.9792, Perplexity: 7.2373
+Epoch [145/500000], Step [200/217], Loss: 1.9808, Perplexity: 7.2483
+val_Epoch [145/500000], Step [92/93], Loss: 4.5784, Perplexity: 97.3585
+----------------------------------
+>>>> saving best epoch 145 4.578400365767941
+epoch 146 num_epochs 500000
+Epoch [146/500000], Step [0/217], Loss: 0.0193, Perplexity: 1.0195
+Epoch [146/500000], Step [100/217], Loss: 1.9796, Perplexity: 7.2400
+Epoch [146/500000], Step [200/217], Loss: 1.9786, Perplexity: 7.2323
+val_Epoch [146/500000], Step [92/93], Loss: 4.5817, Perplexity: 97.6834
+----------------------------------
+epoch 147 num_epochs 500000
+Epoch [147/500000], Step [0/217], Loss: 0.0193, Perplexity: 1.0195
+Epoch [147/500000], Step [100/217], Loss: 1.9719, Perplexity: 7.1846
+Epoch [147/500000], Step [200/217], Loss: 1.9668, Perplexity: 7.1479
+val_Epoch [147/500000], Step [92/93], Loss: 4.5844, Perplexity: 97.9409
+----------------------------------
+epoch 148 num_epochs 500000
+Epoch [148/500000], Step [0/217], Loss: 0.0201, Perplexity: 1.0203
+Epoch [148/500000], Step [100/217], Loss: 1.9707, Perplexity: 7.1760
+Epoch [148/500000], Step [200/217], Loss: 1.9679, Perplexity: 7.1555
+val_Epoch [148/500000], Step [92/93], Loss: 4.5739, Perplexity: 96.9191
+----------------------------------
+>>>> saving best epoch 148 4.573876765466506
+epoch 149 num_epochs 500000
+Epoch [149/500000], Step [0/217], Loss: 0.0203, Perplexity: 1.0205
+Epoch [149/500000], Step [100/217], Loss: 1.9695, Perplexity: 7.1671
+Epoch [149/500000], Step [200/217], Loss: 1.9633, Perplexity: 7.1228
+val_Epoch [149/500000], Step [92/93], Loss: 4.5672, Perplexity: 96.2745
+----------------------------------
+>>>> saving best epoch 149 4.567203301255421
+epoch 150 num_epochs 500000
+Epoch [150/500000], Step [0/217], Loss: 0.0194, Perplexity: 1.0196
+Epoch [150/500000], Step [100/217], Loss: 1.9579, Perplexity: 7.0843
+Epoch [150/500000], Step [200/217], Loss: 1.9631, Perplexity: 7.1216
+val_Epoch [150/500000], Step [92/93], Loss: 4.5650, Perplexity: 96.0639
+----------------------------------
+>>>> saving best epoch 150 4.565013557352046
+epoch 151 num_epochs 500000
+Epoch [151/500000], Step [0/217], Loss: 0.0193, Perplexity: 1.0195
+Epoch [151/500000], Step [100/217], Loss: 1.9584, Perplexity: 7.0876
+Epoch [151/500000], Step [200/217], Loss: 1.9550, Perplexity: 7.0638
+val_Epoch [151/500000], Step [92/93], Loss: 4.5652, Perplexity: 96.0783
+----------------------------------
+epoch 152 num_epochs 500000
+Epoch [152/500000], Step [0/217], Loss: 0.0191, Perplexity: 1.0193
+Epoch [152/500000], Step [100/217], Loss: 1.9548, Perplexity: 7.0626
+Epoch [152/500000], Step [200/217], Loss: 1.9496, Perplexity: 7.0256
+val_Epoch [152/500000], Step [92/93], Loss: 4.5693, Perplexity: 96.4722
+----------------------------------
+epoch 153 num_epochs 500000
+Epoch [153/500000], Step [0/217], Loss: 0.0198, Perplexity: 1.0199
+Epoch [153/500000], Step [100/217], Loss: 1.9414, Perplexity: 6.9684
+Epoch [153/500000], Step [200/217], Loss: 1.9482, Perplexity: 7.0161
+val_Epoch [153/500000], Step [92/93], Loss: 4.5572, Perplexity: 95.3152
+----------------------------------
+>>>> saving best epoch 153 4.55718941842356
+epoch 154 num_epochs 500000
+Epoch [154/500000], Step [0/217], Loss: 0.0201, Perplexity: 1.0203
+Epoch [154/500000], Step [100/217], Loss: 1.9500, Perplexity: 7.0284
+Epoch [154/500000], Step [200/217], Loss: 1.9420, Perplexity: 6.9725
+val_Epoch [154/500000], Step [92/93], Loss: 4.5455, Perplexity: 94.2074
+----------------------------------
+>>>> saving best epoch 154 4.545499083816364
+epoch 155 num_epochs 500000
+Epoch [155/500000], Step [0/217], Loss: 0.0190, Perplexity: 1.0192
+Epoch [155/500000], Step [100/217], Loss: 1.9430, Perplexity: 6.9797
+Epoch [155/500000], Step [200/217], Loss: 1.9392, Perplexity: 6.9534
+val_Epoch [155/500000], Step [92/93], Loss: 4.5454, Perplexity: 94.1972
+----------------------------------
+>>>> saving best epoch 155 4.545390375198856
+epoch 156 num_epochs 500000
+Epoch [156/500000], Step [0/217], Loss: 0.0197, Perplexity: 1.0199
+Epoch [156/500000], Step [100/217], Loss: 1.9405, Perplexity: 6.9625
+Epoch [156/500000], Step [200/217], Loss: 1.9364, Perplexity: 6.9341
+val_Epoch [156/500000], Step [92/93], Loss: 4.5393, Perplexity: 93.6240
+----------------------------------
+>>>> saving best epoch 156 4.5392867211372625
+epoch 157 num_epochs 500000
+Epoch [157/500000], Step [0/217], Loss: 0.0188, Perplexity: 1.0190
+Epoch [157/500000], Step [100/217], Loss: 1.9262, Perplexity: 6.8635
+Epoch [157/500000], Step [200/217], Loss: 1.9308, Perplexity: 6.8949
+val_Epoch [157/500000], Step [92/93], Loss: 4.5352, Perplexity: 93.2380
+----------------------------------
+>>>> saving best epoch 157 4.535155357853059
+epoch 158 num_epochs 500000
+Epoch [158/500000], Step [0/217], Loss: 0.0194, Perplexity: 1.0196
+Epoch [158/500000], Step [100/217], Loss: 1.9242, Perplexity: 6.8500
+Epoch [158/500000], Step [200/217], Loss: 1.9233, Perplexity: 6.8436
+val_Epoch [158/500000], Step [92/93], Loss: 4.5363, Perplexity: 93.3480
+----------------------------------
+epoch 159 num_epochs 500000
+Epoch [159/500000], Step [0/217], Loss: 0.0192, Perplexity: 1.0194
+Epoch [159/500000], Step [100/217], Loss: 1.9263, Perplexity: 6.8643
+Epoch [159/500000], Step [200/217], Loss: 1.9203, Perplexity: 6.8229
+val_Epoch [159/500000], Step [92/93], Loss: 4.5254, Perplexity: 92.3295
+----------------------------------
+>>>> saving best epoch 159 4.525363429900138
+epoch 160 num_epochs 500000
+Epoch [160/500000], Step [0/217], Loss: 0.0199, Perplexity: 1.0201
+Epoch [160/500000], Step [100/217], Loss: 1.9134, Perplexity: 6.7762
+Epoch [160/500000], Step [200/217], Loss: 1.9188, Perplexity: 6.8129
+val_Epoch [160/500000], Step [92/93], Loss: 4.5343, Perplexity: 93.1595
+----------------------------------
+epoch 161 num_epochs 500000
+Epoch [161/500000], Step [0/217], Loss: 0.0191, Perplexity: 1.0193
+Epoch [161/500000], Step [100/217], Loss: 1.9111, Perplexity: 6.7604
+Epoch [161/500000], Step [200/217], Loss: 1.9129, Perplexity: 6.7729
+val_Epoch [161/500000], Step [92/93], Loss: 4.5172, Perplexity: 91.5817
+----------------------------------
+>>>> saving best epoch 161 4.517230982421546
+epoch 162 num_epochs 500000
+Epoch [162/500000], Step [0/217], Loss: 0.0186, Perplexity: 1.0188
+Epoch [162/500000], Step [100/217], Loss: 1.9079, Perplexity: 6.7389
+Epoch [162/500000], Step [200/217], Loss: 1.9048, Perplexity: 6.7182
+val_Epoch [162/500000], Step [92/93], Loss: 4.5146, Perplexity: 91.3391
+----------------------------------
+>>>> saving best epoch 162 4.514578644947339
+epoch 163 num_epochs 500000
+Epoch [163/500000], Step [0/217], Loss: 0.0190, Perplexity: 1.0192
+Epoch [163/500000], Step [100/217], Loss: 1.9053, Perplexity: 6.7213
+Epoch [163/500000], Step [200/217], Loss: 1.9014, Perplexity: 6.6954
+val_Epoch [163/500000], Step [92/93], Loss: 4.5104, Perplexity: 90.9608
+----------------------------------
+>>>> saving best epoch 163 4.5104281620312765
+epoch 164 num_epochs 500000
+Epoch [164/500000], Step [0/217], Loss: 0.0187, Perplexity: 1.0189
+Epoch [164/500000], Step [100/217], Loss: 1.8999, Perplexity: 6.6854
+Epoch [164/500000], Step [200/217], Loss: 1.8951, Perplexity: 6.6533
+val_Epoch [164/500000], Step [92/93], Loss: 4.5153, Perplexity: 91.4035
+----------------------------------
+epoch 165 num_epochs 500000
+Epoch [165/500000], Step [0/217], Loss: 0.0189, Perplexity: 1.0191
+Epoch [165/500000], Step [100/217], Loss: 1.8995, Perplexity: 6.6829
+Epoch [165/500000], Step [200/217], Loss: 1.8951, Perplexity: 6.6529
+val_Epoch [165/500000], Step [92/93], Loss: 4.5098, Perplexity: 90.9076
+----------------------------------
+>>>> saving best epoch 165 4.5098438878213205
+epoch 166 num_epochs 500000
+Epoch [166/500000], Step [0/217], Loss: 0.0188, Perplexity: 1.0189
+Epoch [166/500000], Step [100/217], Loss: 1.8902, Perplexity: 6.6207
+Epoch [166/500000], Step [200/217], Loss: 1.8932, Perplexity: 6.6403
+val_Epoch [166/500000], Step [92/93], Loss: 4.5059, Perplexity: 90.5515
+----------------------------------
+>>>> saving best epoch 166 4.505918682262462
+epoch 167 num_epochs 500000
+Epoch [167/500000], Step [0/217], Loss: 0.0191, Perplexity: 1.0192
+Epoch [167/500000], Step [100/217], Loss: 1.8833, Perplexity: 6.5755
+Epoch [167/500000], Step [200/217], Loss: 1.8857, Perplexity: 6.5907
+val_Epoch [167/500000], Step [92/93], Loss: 4.4919, Perplexity: 89.2920
+----------------------------------
+>>>> saving best epoch 167 4.491911698413151
+epoch 168 num_epochs 500000
+Epoch [168/500000], Step [0/217], Loss: 0.0192, Perplexity: 1.0194
+Epoch [168/500000], Step [100/217], Loss: 1.8846, Perplexity: 6.5839
+Epoch [168/500000], Step [200/217], Loss: 1.8778, Perplexity: 6.5388
+val_Epoch [168/500000], Step [92/93], Loss: 4.5049, Perplexity: 90.4580
+----------------------------------
+epoch 169 num_epochs 500000
+Epoch [169/500000], Step [0/217], Loss: 0.0181, Perplexity: 1.0182
+Epoch [169/500000], Step [100/217], Loss: 1.8774, Perplexity: 6.5368
+Epoch [169/500000], Step [200/217], Loss: 1.8778, Perplexity: 6.5394
+val_Epoch [169/500000], Step [92/93], Loss: 4.4916, Perplexity: 89.2676
+----------------------------------
+>>>> saving best epoch 169 4.4916385014851885
+epoch 170 num_epochs 500000
+Epoch [170/500000], Step [0/217], Loss: 0.0185, Perplexity: 1.0187
+Epoch [170/500000], Step [100/217], Loss: 1.8744, Perplexity: 6.5167
+Epoch [170/500000], Step [200/217], Loss: 1.8752, Perplexity: 6.5219
+val_Epoch [170/500000], Step [92/93], Loss: 4.4861, Perplexity: 88.7770
+----------------------------------
+>>>> saving best epoch 170 4.486127361174552
+epoch 171 num_epochs 500000
+Epoch [171/500000], Step [0/217], Loss: 0.0189, Perplexity: 1.0190
+Epoch [171/500000], Step [100/217], Loss: 1.8768, Perplexity: 6.5327
+Epoch [171/500000], Step [200/217], Loss: 1.8656, Perplexity: 6.4597
+val_Epoch [171/500000], Step [92/93], Loss: 4.4852, Perplexity: 88.6991
+----------------------------------
+>>>> saving best epoch 171 4.48524998593074
+epoch 172 num_epochs 500000
+Epoch [172/500000], Step [0/217], Loss: 0.0187, Perplexity: 1.0188
+Epoch [172/500000], Step [100/217], Loss: 1.8664, Perplexity: 6.4651
+Epoch [172/500000], Step [200/217], Loss: 1.8650, Perplexity: 6.4557
+val_Epoch [172/500000], Step [92/93], Loss: 4.4815, Perplexity: 88.3662
+----------------------------------
+>>>> saving best epoch 172 4.481489037954679
+epoch 173 num_epochs 500000
+Epoch [173/500000], Step [0/217], Loss: 0.0189, Perplexity: 1.0191
+Epoch [173/500000], Step [100/217], Loss: 1.8561, Perplexity: 6.3988
+Epoch [173/500000], Step [200/217], Loss: 1.8568, Perplexity: 6.4029
+val_Epoch [173/500000], Step [92/93], Loss: 4.4782, Perplexity: 88.0772
+----------------------------------
+>>>> saving best epoch 173 4.478214028061077
+epoch 174 num_epochs 500000
+Epoch [174/500000], Step [0/217], Loss: 0.0185, Perplexity: 1.0187
+Epoch [174/500000], Step [100/217], Loss: 1.8508, Perplexity: 6.3648
+Epoch [174/500000], Step [200/217], Loss: 1.8597, Perplexity: 6.4218
+val_Epoch [174/500000], Step [92/93], Loss: 4.4701, Perplexity: 87.3683
+----------------------------------
+>>>> saving best epoch 174 4.470133084122852
+epoch 175 num_epochs 500000
+Epoch [175/500000], Step [0/217], Loss: 0.0180, Perplexity: 1.0181
+Epoch [175/500000], Step [100/217], Loss: 1.8511, Perplexity: 6.3671
+Epoch [175/500000], Step [200/217], Loss: 1.8518, Perplexity: 6.3710
+val_Epoch [175/500000], Step [92/93], Loss: 4.4784, Perplexity: 88.0928
+----------------------------------
+epoch 176 num_epochs 500000
+Epoch [176/500000], Step [0/217], Loss: 0.0185, Perplexity: 1.0186
+Epoch [176/500000], Step [100/217], Loss: 1.8407, Perplexity: 6.3008
+Epoch [176/500000], Step [200/217], Loss: 1.8542, Perplexity: 6.3866
+val_Epoch [176/500000], Step [92/93], Loss: 4.4705, Perplexity: 87.3974
+----------------------------------
+epoch 177 num_epochs 500000
+Epoch [177/500000], Step [0/217], Loss: 0.0179, Perplexity: 1.0181
+Epoch [177/500000], Step [100/217], Loss: 1.8383, Perplexity: 6.2855
+Epoch [177/500000], Step [200/217], Loss: 1.8428, Perplexity: 6.3142
+val_Epoch [177/500000], Step [92/93], Loss: 4.4625, Perplexity: 86.7018
+----------------------------------
+>>>> saving best epoch 177 4.462474238487982
+epoch 178 num_epochs 500000
+Epoch [178/500000], Step [0/217], Loss: 0.0190, Perplexity: 1.0192
+Epoch [178/500000], Step [100/217], Loss: 1.8356, Perplexity: 6.2692
+Epoch [178/500000], Step [200/217], Loss: 1.8388, Perplexity: 6.2890
+val_Epoch [178/500000], Step [92/93], Loss: 4.4606, Perplexity: 86.5421
+----------------------------------
+>>>> saving best epoch 178 4.460631057780276
+epoch 179 num_epochs 500000
+Epoch [179/500000], Step [0/217], Loss: 0.0180, Perplexity: 1.0181
+Epoch [179/500000], Step [100/217], Loss: 1.8307, Perplexity: 6.2382
+Epoch [179/500000], Step [200/217], Loss: 1.8376, Perplexity: 6.2816
+val_Epoch [179/500000], Step [92/93], Loss: 4.4617, Perplexity: 86.6337
+----------------------------------
+epoch 180 num_epochs 500000
+Epoch [180/500000], Step [0/217], Loss: 0.0186, Perplexity: 1.0188
+Epoch [180/500000], Step [100/217], Loss: 1.8238, Perplexity: 6.1952
+Epoch [180/500000], Step [200/217], Loss: 1.8253, Perplexity: 6.2045
+val_Epoch [180/500000], Step [92/93], Loss: 4.4515, Perplexity: 85.7597
+----------------------------------
+>>>> saving best epoch 180 4.451549453120077
+epoch 181 num_epochs 500000
+Epoch [181/500000], Step [0/217], Loss: 0.0181, Perplexity: 1.0182
+Epoch [181/500000], Step [100/217], Loss: 1.8216, Perplexity: 6.1817
+Epoch [181/500000], Step [200/217], Loss: 1.8237, Perplexity: 6.1948
+val_Epoch [181/500000], Step [92/93], Loss: 4.4567, Perplexity: 86.1997
+----------------------------------
+epoch 182 num_epochs 500000
+Epoch [182/500000], Step [0/217], Loss: 0.0183, Perplexity: 1.0185
+Epoch [182/500000], Step [100/217], Loss: 1.8232, Perplexity: 6.1915
+Epoch [182/500000], Step [200/217], Loss: 1.8070, Perplexity: 6.0922
+val_Epoch [182/500000], Step [92/93], Loss: 4.4545, Perplexity: 86.0168
+----------------------------------
+epoch 183 num_epochs 500000
+Epoch [183/500000], Step [0/217], Loss: 0.0178, Perplexity: 1.0180
+Epoch [183/500000], Step [100/217], Loss: 1.8174, Perplexity: 6.1556
+Epoch [183/500000], Step [200/217], Loss: 1.8113, Perplexity: 6.1186
+val_Epoch [183/500000], Step [92/93], Loss: 4.4546, Perplexity: 86.0226
+----------------------------------
+epoch 184 num_epochs 500000
+Epoch [184/500000], Step [0/217], Loss: 0.0179, Perplexity: 1.0181
+Epoch [184/500000], Step [100/217], Loss: 1.8113, Perplexity: 6.1186
+Epoch [184/500000], Step [200/217], Loss: 1.8137, Perplexity: 6.1328
+val_Epoch [184/500000], Step [92/93], Loss: 4.4429, Perplexity: 85.0234
+----------------------------------
+>>>> saving best epoch 184 4.442926606824321
+epoch 185 num_epochs 500000
+Epoch [185/500000], Step [0/217], Loss: 0.0192, Perplexity: 1.0194
+Epoch [185/500000], Step [100/217], Loss: 1.8036, Perplexity: 6.0717
+Epoch [185/500000], Step [200/217], Loss: 1.8053, Perplexity: 6.0819
+val_Epoch [185/500000], Step [92/93], Loss: 4.4353, Perplexity: 84.3762
+----------------------------------
+>>>> saving best epoch 185 4.435285250345866
+epoch 186 num_epochs 500000
+Epoch [186/500000], Step [0/217], Loss: 0.0174, Perplexity: 1.0176
+Epoch [186/500000], Step [100/217], Loss: 1.8008, Perplexity: 6.0544
+Epoch [186/500000], Step [200/217], Loss: 1.7991, Perplexity: 6.0441
+val_Epoch [186/500000], Step [92/93], Loss: 4.4434, Perplexity: 85.0612
+----------------------------------
+epoch 187 num_epochs 500000
+Epoch [187/500000], Step [0/217], Loss: 0.0180, Perplexity: 1.0181
+Epoch [187/500000], Step [100/217], Loss: 1.7945, Perplexity: 6.0165
+Epoch [187/500000], Step [200/217], Loss: 1.7940, Perplexity: 6.0133
+val_Epoch [187/500000], Step [92/93], Loss: 4.4380, Perplexity: 84.6022
+----------------------------------
+epoch 188 num_epochs 500000
+Epoch [188/500000], Step [0/217], Loss: 0.0178, Perplexity: 1.0179
+Epoch [188/500000], Step [100/217], Loss: 1.7954, Perplexity: 6.0221
+Epoch [188/500000], Step [200/217], Loss: 1.7838, Perplexity: 5.9524
+val_Epoch [188/500000], Step [92/93], Loss: 4.4316, Perplexity: 84.0665
+----------------------------------
+>>>> saving best epoch 188 4.431607830908991
+epoch 189 num_epochs 500000
+Epoch [189/500000], Step [0/217], Loss: 0.0172, Perplexity: 1.0174
+Epoch [189/500000], Step [100/217], Loss: 1.7865, Perplexity: 5.9684
+Epoch [189/500000], Step [200/217], Loss: 1.7869, Perplexity: 5.9708
+val_Epoch [189/500000], Step [92/93], Loss: 4.4352, Perplexity: 84.3666
+----------------------------------
+epoch 190 num_epochs 500000
+Epoch [190/500000], Step [0/217], Loss: 0.0191, Perplexity: 1.0193
+Epoch [190/500000], Step [100/217], Loss: 1.7720, Perplexity: 5.8826
+Epoch [190/500000], Step [200/217], Loss: 1.7797, Perplexity: 5.9279
+val_Epoch [190/500000], Step [92/93], Loss: 4.4431, Perplexity: 85.0410
+----------------------------------
+epoch 191 num_epochs 500000
+Epoch [191/500000], Step [0/217], Loss: 0.0173, Perplexity: 1.0175
+Epoch [191/500000], Step [100/217], Loss: 1.7745, Perplexity: 5.8975
+Epoch [191/500000], Step [200/217], Loss: 1.7873, Perplexity: 5.9732
+val_Epoch [191/500000], Step [92/93], Loss: 4.4428, Perplexity: 85.0127
+----------------------------------
+epoch 192 num_epochs 500000
+Epoch [192/500000], Step [0/217], Loss: 0.0179, Perplexity: 1.0181
+Epoch [192/500000], Step [100/217], Loss: 1.7674, Perplexity: 5.8556
+Epoch [192/500000], Step [200/217], Loss: 1.7768, Perplexity: 5.9109
+val_Epoch [192/500000], Step [92/93], Loss: 4.4284, Perplexity: 83.7940
+----------------------------------
+>>>> saving best epoch 192 4.4283611236080045
+epoch 193 num_epochs 500000
+Epoch [193/500000], Step [0/217], Loss: 0.0174, Perplexity: 1.0175
+Epoch [193/500000], Step [100/217], Loss: 1.7661, Perplexity: 5.8478
+Epoch [193/500000], Step [200/217], Loss: 1.7677, Perplexity: 5.8575
+val_Epoch [193/500000], Step [92/93], Loss: 4.4228, Perplexity: 83.3284
+----------------------------------
+>>>> saving best epoch 193 4.422788896868306
+epoch 194 num_epochs 500000
+Epoch [194/500000], Step [0/217], Loss: 0.0175, Perplexity: 1.0176
+Epoch [194/500000], Step [100/217], Loss: 1.7602, Perplexity: 5.8138
+Epoch [194/500000], Step [200/217], Loss: 1.7635, Perplexity: 5.8328
+val_Epoch [194/500000], Step [92/93], Loss: 4.4067, Perplexity: 81.9984
+----------------------------------
+>>>> saving best epoch 194 4.406699929186093
+epoch 195 num_epochs 500000
+Epoch [195/500000], Step [0/217], Loss: 0.0171, Perplexity: 1.0172
+Epoch [195/500000], Step [100/217], Loss: 1.7557, Perplexity: 5.7877
+Epoch [195/500000], Step [200/217], Loss: 1.7562, Perplexity: 5.7905
+val_Epoch [195/500000], Step [92/93], Loss: 4.4166, Perplexity: 82.8180
+----------------------------------
+epoch 196 num_epochs 500000
+Epoch [196/500000], Step [0/217], Loss: 0.0177, Perplexity: 1.0178
+Epoch [196/500000], Step [100/217], Loss: 1.7526, Perplexity: 5.7698
+Epoch [196/500000], Step [200/217], Loss: 1.7620, Perplexity: 5.8238
+val_Epoch [196/500000], Step [92/93], Loss: 4.4124, Perplexity: 82.4677
+----------------------------------
+epoch 197 num_epochs 500000
+Epoch [197/500000], Step [0/217], Loss: 0.0173, Perplexity: 1.0175
+Epoch [197/500000], Step [100/217], Loss: 1.7462, Perplexity: 5.7330
+Epoch [197/500000], Step [200/217], Loss: 1.7438, Perplexity: 5.7190
+val_Epoch [197/500000], Step [92/93], Loss: 4.3961, Perplexity: 81.1367
+----------------------------------
+>>>> saving best epoch 197 4.396135842928323
+epoch 198 num_epochs 500000
+Epoch [198/500000], Step [0/217], Loss: 0.0168, Perplexity: 1.0169
+Epoch [198/500000], Step [100/217], Loss: 1.7459, Perplexity: 5.7308
+Epoch [198/500000], Step [200/217], Loss: 1.7487, Perplexity: 5.7472
+val_Epoch [198/500000], Step [92/93], Loss: 4.3939, Perplexity: 80.9522
+----------------------------------
+>>>> saving best epoch 198 4.393859073679934
+epoch 199 num_epochs 500000
+Epoch [199/500000], Step [0/217], Loss: 0.0178, Perplexity: 1.0180
+Epoch [199/500000], Step [100/217], Loss: 1.7317, Perplexity: 5.6500
+Epoch [199/500000], Step [200/217], Loss: 1.7390, Perplexity: 5.6916
+val_Epoch [199/500000], Step [92/93], Loss: 4.4030, Perplexity: 81.6925
+----------------------------------
+epoch 200 num_epochs 500000
+Epoch [200/500000], Step [0/217], Loss: 0.0174, Perplexity: 1.0176
+Epoch [200/500000], Step [100/217], Loss: 1.7332, Perplexity: 5.6588
+Epoch [200/500000], Step [200/217], Loss: 1.7274, Perplexity: 5.6260
+val_Epoch [200/500000], Step [92/93], Loss: 4.3919, Perplexity: 80.7910
+----------------------------------
+>>>> saving best epoch 200 4.391864997084423
+epoch 201 num_epochs 500000
+Epoch [201/500000], Step [0/217], Loss: 0.0172, Perplexity: 1.0174
+Epoch [201/500000], Step [100/217], Loss: 1.7319, Perplexity: 5.6513
+Epoch [201/500000], Step [200/217], Loss: 1.7300, Perplexity: 5.6406
+val_Epoch [201/500000], Step [92/93], Loss: 4.3857, Perplexity: 80.2917
+----------------------------------
+>>>> saving best epoch 201 4.385666611374066
+epoch 202 num_epochs 500000
+Epoch [202/500000], Step [0/217], Loss: 0.0172, Perplexity: 1.0174
+Epoch [202/500000], Step [100/217], Loss: 1.7330, Perplexity: 5.6577
+Epoch [202/500000], Step [200/217], Loss: 1.7250, Perplexity: 5.6126
+val_Epoch [202/500000], Step [92/93], Loss: 4.4049, Perplexity: 81.8502
+----------------------------------
+epoch 203 num_epochs 500000
+Epoch [203/500000], Step [0/217], Loss: 0.0174, Perplexity: 1.0175
+Epoch [203/500000], Step [100/217], Loss: 1.7153, Perplexity: 5.5586
+Epoch [203/500000], Step [200/217], Loss: 1.7136, Perplexity: 5.5487
+val_Epoch [203/500000], Step [92/93], Loss: 4.3919, Perplexity: 80.7950
+----------------------------------
+epoch 204 num_epochs 500000
+Epoch [204/500000], Step [0/217], Loss: 0.0171, Perplexity: 1.0173
+Epoch [204/500000], Step [100/217], Loss: 1.7091, Perplexity: 5.5239
+Epoch [204/500000], Step [200/217], Loss: 1.7215, Perplexity: 5.5930
+val_Epoch [204/500000], Step [92/93], Loss: 4.3909, Perplexity: 80.7142
+----------------------------------
+epoch 205 num_epochs 500000
+Epoch [205/500000], Step [0/217], Loss: 0.0180, Perplexity: 1.0181
+Epoch [205/500000], Step [100/217], Loss: 1.7087, Perplexity: 5.5218
+Epoch [205/500000], Step [200/217], Loss: 1.7065, Perplexity: 5.5097
+val_Epoch [205/500000], Step [92/93], Loss: 4.3900, Perplexity: 80.6426
+----------------------------------
+epoch 206 num_epochs 500000
+Epoch [206/500000], Step [0/217], Loss: 0.0177, Perplexity: 1.0179
+Epoch [206/500000], Step [100/217], Loss: 1.7093, Perplexity: 5.5249
+Epoch [206/500000], Step [200/217], Loss: 1.6938, Perplexity: 5.4402
+val_Epoch [206/500000], Step [92/93], Loss: 4.3864, Perplexity: 80.3518
+----------------------------------
+epoch 207 num_epochs 500000
+Epoch [207/500000], Step [0/217], Loss: 0.0168, Perplexity: 1.0169
+Epoch [207/500000], Step [100/217], Loss: 1.6961, Perplexity: 5.4524
+Epoch [207/500000], Step [200/217], Loss: 1.6973, Perplexity: 5.4590
+val_Epoch [207/500000], Step [92/93], Loss: 4.3778, Perplexity: 79.6631
+----------------------------------
+>>>> saving best epoch 207 4.377806545585714
+epoch 208 num_epochs 500000
+Epoch [208/500000], Step [0/217], Loss: 0.0170, Perplexity: 1.0171
+Epoch [208/500000], Step [100/217], Loss: 1.6954, Perplexity: 5.4490
+Epoch [208/500000], Step [200/217], Loss: 1.6965, Perplexity: 5.4548
+val_Epoch [208/500000], Step [92/93], Loss: 4.3753, Perplexity: 79.4618
+----------------------------------
+>>>> saving best epoch 208 4.375276827043103
+epoch 209 num_epochs 500000
+Epoch [209/500000], Step [0/217], Loss: 0.0176, Perplexity: 1.0178
+Epoch [209/500000], Step [100/217], Loss: 1.6930, Perplexity: 5.4357
+Epoch [209/500000], Step [200/217], Loss: 1.6904, Perplexity: 5.4215
+val_Epoch [209/500000], Step [92/93], Loss: 4.3904, Perplexity: 80.6740
+----------------------------------
+epoch 210 num_epochs 500000
+Epoch [210/500000], Step [0/217], Loss: 0.0172, Perplexity: 1.0173
+Epoch [210/500000], Step [100/217], Loss: 1.6765, Perplexity: 5.3470
+Epoch [210/500000], Step [200/217], Loss: 1.6849, Perplexity: 5.3921
+val_Epoch [210/500000], Step [92/93], Loss: 4.3710, Perplexity: 79.1259
+----------------------------------
+>>>> saving best epoch 210 4.3710401647834365
+epoch 211 num_epochs 500000
+Epoch [211/500000], Step [0/217], Loss: 0.0175, Perplexity: 1.0177
+Epoch [211/500000], Step [100/217], Loss: 1.6762, Perplexity: 5.3453
+Epoch [211/500000], Step [200/217], Loss: 1.6764, Perplexity: 5.3465
+val_Epoch [211/500000], Step [92/93], Loss: 4.3843, Perplexity: 80.1842
+----------------------------------
+epoch 212 num_epochs 500000
+Epoch [212/500000], Step [0/217], Loss: 0.0176, Perplexity: 1.0178
+Epoch [212/500000], Step [100/217], Loss: 1.6766, Perplexity: 5.3475
+Epoch [212/500000], Step [200/217], Loss: 1.6733, Perplexity: 5.3296
+val_Epoch [212/500000], Step [92/93], Loss: 4.3707, Perplexity: 79.0991
+----------------------------------
+>>>> saving best epoch 212 4.370701333527924
+epoch 213 num_epochs 500000
+Epoch [213/500000], Step [0/217], Loss: 0.0168, Perplexity: 1.0169
+Epoch [213/500000], Step [100/217], Loss: 1.6639, Perplexity: 5.2801
+Epoch [213/500000], Step [200/217], Loss: 1.6710, Perplexity: 5.3174
+val_Epoch [213/500000], Step [92/93], Loss: 4.3610, Perplexity: 78.3341
+----------------------------------
+>>>> saving best epoch 213 4.360983592207714
+epoch 214 num_epochs 500000
+Epoch [214/500000], Step [0/217], Loss: 0.0161, Perplexity: 1.0162
+Epoch [214/500000], Step [100/217], Loss: 1.6564, Perplexity: 5.2404
+Epoch [214/500000], Step [200/217], Loss: 1.6757, Perplexity: 5.3426
+val_Epoch [214/500000], Step [92/93], Loss: 4.3632, Perplexity: 78.5100
+----------------------------------
+epoch 215 num_epochs 500000
+Epoch [215/500000], Step [0/217], Loss: 0.0169, Perplexity: 1.0170
+Epoch [215/500000], Step [100/217], Loss: 1.6543, Perplexity: 5.2293
+Epoch [215/500000], Step [200/217], Loss: 1.6623, Perplexity: 5.2714
+val_Epoch [215/500000], Step [92/93], Loss: 4.3732, Perplexity: 79.2996
+----------------------------------
+epoch 216 num_epochs 500000
+Epoch [216/500000], Step [0/217], Loss: 0.0166, Perplexity: 1.0167
+Epoch [216/500000], Step [100/217], Loss: 1.6587, Perplexity: 5.2525
+Epoch [216/500000], Step [200/217], Loss: 1.6512, Perplexity: 5.2131
+val_Epoch [216/500000], Step [92/93], Loss: 4.3686, Perplexity: 78.9318
+----------------------------------
+epoch 217 num_epochs 500000
+Epoch [217/500000], Step [0/217], Loss: 0.0165, Perplexity: 1.0166
+Epoch [217/500000], Step [100/217], Loss: 1.6534, Perplexity: 5.2248
+Epoch [217/500000], Step [200/217], Loss: 1.6441, Perplexity: 5.1765
+val_Epoch [217/500000], Step [92/93], Loss: 4.3560, Perplexity: 77.9413
+----------------------------------
+>>>> saving best epoch 217 4.3559555802294
+epoch 218 num_epochs 500000
+Epoch [218/500000], Step [0/217], Loss: 0.0162, Perplexity: 1.0163
+Epoch [218/500000], Step [100/217], Loss: 1.6451, Perplexity: 5.1817
+Epoch [218/500000], Step [200/217], Loss: 1.6571, Perplexity: 5.2442
+val_Epoch [218/500000], Step [92/93], Loss: 4.3766, Perplexity: 79.5671
+----------------------------------
+epoch 219 num_epochs 500000
+Epoch [219/500000], Step [0/217], Loss: 0.0158, Perplexity: 1.0160
+Epoch [219/500000], Step [100/217], Loss: 1.6342, Perplexity: 5.1251
+Epoch [219/500000], Step [200/217], Loss: 1.6422, Perplexity: 5.1665
+val_Epoch [219/500000], Step [92/93], Loss: 4.3404, Perplexity: 76.7377
+----------------------------------
+>>>> saving best epoch 219 4.340393466334189
+epoch 220 num_epochs 500000
+Epoch [220/500000], Step [0/217], Loss: 0.0170, Perplexity: 1.0171
+Epoch [220/500000], Step [100/217], Loss: 1.6287, Perplexity: 5.0971
+Epoch [220/500000], Step [200/217], Loss: 1.6470, Perplexity: 5.1915
+val_Epoch [220/500000], Step [92/93], Loss: 4.3563, Perplexity: 77.9665
+----------------------------------
+epoch 221 num_epochs 500000
+Epoch [221/500000], Step [0/217], Loss: 0.0164, Perplexity: 1.0166
+Epoch [221/500000], Step [100/217], Loss: 1.6368, Perplexity: 5.1389
+Epoch [221/500000], Step [200/217], Loss: 1.6237, Perplexity: 5.0719
+val_Epoch [221/500000], Step [92/93], Loss: 4.3251, Perplexity: 75.5701
+----------------------------------
+>>>> saving best epoch 221 4.3250612648584505
+epoch 222 num_epochs 500000
+Epoch [222/500000], Step [0/217], Loss: 0.0162, Perplexity: 1.0163
+Epoch [222/500000], Step [100/217], Loss: 1.6166, Perplexity: 5.0359
+Epoch [222/500000], Step [200/217], Loss: 1.6213, Perplexity: 5.0598
+val_Epoch [222/500000], Step [92/93], Loss: 4.3559, Perplexity: 77.9341
+----------------------------------
+epoch 223 num_epochs 500000
+Epoch [223/500000], Step [0/217], Loss: 0.0176, Perplexity: 1.0178
+Epoch [223/500000], Step [100/217], Loss: 1.6260, Perplexity: 5.0833
+Epoch [223/500000], Step [200/217], Loss: 1.6219, Perplexity: 5.0628
+val_Epoch [223/500000], Step [92/93], Loss: 4.3553, Perplexity: 77.8874
+----------------------------------
+epoch 224 num_epochs 500000
+Epoch [224/500000], Step [0/217], Loss: 0.0160, Perplexity: 1.0161
+Epoch [224/500000], Step [100/217], Loss: 1.6136, Perplexity: 5.0209
+Epoch [224/500000], Step [200/217], Loss: 1.6105, Perplexity: 5.0053
+val_Epoch [224/500000], Step [92/93], Loss: 4.3578, Perplexity: 78.0830
+----------------------------------
+epoch 225 num_epochs 500000
+Epoch [225/500000], Step [0/217], Loss: 0.0156, Perplexity: 1.0157
+Epoch [225/500000], Step [100/217], Loss: 1.6087, Perplexity: 4.9965
+Epoch [225/500000], Step [200/217], Loss: 1.6148, Perplexity: 5.0269
+val_Epoch [225/500000], Step [92/93], Loss: 4.3435, Perplexity: 76.9742
+----------------------------------
+epoch 226 num_epochs 500000
+Epoch [226/500000], Step [0/217], Loss: 0.0168, Perplexity: 1.0170
+Epoch [226/500000], Step [100/217], Loss: 1.5945, Perplexity: 4.9259
+Epoch [226/500000], Step [200/217], Loss: 1.6016, Perplexity: 4.9609
+val_Epoch [226/500000], Step [92/93], Loss: 4.3507, Perplexity: 77.5354
+----------------------------------
+epoch 227 num_epochs 500000
+Epoch [227/500000], Step [0/217], Loss: 0.0166, Perplexity: 1.0167
+Epoch [227/500000], Step [100/217], Loss: 1.6062, Perplexity: 4.9840
+Epoch [227/500000], Step [200/217], Loss: 1.5952, Perplexity: 4.9294
+val_Epoch [227/500000], Step [92/93], Loss: 4.3480, Perplexity: 77.3267
+----------------------------------
+epoch 228 num_epochs 500000
+Epoch [228/500000], Step [0/217], Loss: 0.0156, Perplexity: 1.0158
+Epoch [228/500000], Step [100/217], Loss: 1.5945, Perplexity: 4.9257
+Epoch [228/500000], Step [200/217], Loss: 1.5952, Perplexity: 4.9295
+val_Epoch [228/500000], Step [92/93], Loss: 4.3215, Perplexity: 75.3030
+----------------------------------
+>>>> saving best epoch 228 4.321519702993413
+epoch 229 num_epochs 500000
+Epoch [229/500000], Step [0/217], Loss: 0.0161, Perplexity: 1.0162
+Epoch [229/500000], Step [100/217], Loss: 1.5790, Perplexity: 4.8500
+Epoch [229/500000], Step [200/217], Loss: 1.5887, Perplexity: 4.8976
+val_Epoch [229/500000], Step [92/93], Loss: 4.3553, Perplexity: 77.8931
+----------------------------------
+epoch 230 num_epochs 500000
+Epoch [230/500000], Step [0/217], Loss: 0.0154, Perplexity: 1.0156
+Epoch [230/500000], Step [100/217], Loss: 1.5892, Perplexity: 4.8998
+Epoch [230/500000], Step [200/217], Loss: 1.5876, Perplexity: 4.8921
+val_Epoch [230/500000], Step [92/93], Loss: 4.3465, Perplexity: 77.2052
+----------------------------------
+epoch 231 num_epochs 500000
+Epoch [231/500000], Step [0/217], Loss: 0.0157, Perplexity: 1.0158
+Epoch [231/500000], Step [100/217], Loss: 1.5787, Perplexity: 4.8485
+Epoch [231/500000], Step [200/217], Loss: 1.5748, Perplexity: 4.8299
+val_Epoch [231/500000], Step [92/93], Loss: 4.3245, Perplexity: 75.5282
+----------------------------------
+epoch 232 num_epochs 500000
+Epoch [232/500000], Step [0/217], Loss: 0.0156, Perplexity: 1.0157
+Epoch [232/500000], Step [100/217], Loss: 1.5627, Perplexity: 4.7716
+Epoch [232/500000], Step [200/217], Loss: 1.5743, Perplexity: 4.8272
+val_Epoch [232/500000], Step [92/93], Loss: 4.3158, Perplexity: 74.8730
+----------------------------------
+>>>> saving best epoch 232 4.315793037414551
+epoch 233 num_epochs 500000
+Epoch [233/500000], Step [0/217], Loss: 0.0180, Perplexity: 1.0181
+Epoch [233/500000], Step [100/217], Loss: 1.5677, Perplexity: 4.7957
+Epoch [233/500000], Step [200/217], Loss: 1.5634, Perplexity: 4.7748
+val_Epoch [233/500000], Step [92/93], Loss: 4.3375, Perplexity: 76.5141
+----------------------------------
+epoch 234 num_epochs 500000
+Epoch [234/500000], Step [0/217], Loss: 0.0156, Perplexity: 1.0157
+Epoch [234/500000], Step [100/217], Loss: 1.5610, Perplexity: 4.7634
+Epoch [234/500000], Step [200/217], Loss: 1.5659, Perplexity: 4.7870
+val_Epoch [234/500000], Step [92/93], Loss: 4.3228, Perplexity: 75.4014
+----------------------------------
+epoch 235 num_epochs 500000
+Epoch [235/500000], Step [0/217], Loss: 0.0157, Perplexity: 1.0159
+Epoch [235/500000], Step [100/217], Loss: 1.5688, Perplexity: 4.8009
+Epoch [235/500000], Step [200/217], Loss: 1.5584, Perplexity: 4.7511
+val_Epoch [235/500000], Step [92/93], Loss: 4.3104, Perplexity: 74.4735
+----------------------------------
+>>>> saving best epoch 235 4.310443155227169
+epoch 236 num_epochs 500000
+Epoch [236/500000], Step [0/217], Loss: 0.0150, Perplexity: 1.0151
+Epoch [236/500000], Step [100/217], Loss: 1.5501, Perplexity: 4.7117
+Epoch [236/500000], Step [200/217], Loss: 1.5507, Perplexity: 4.7149
+val_Epoch [236/500000], Step [92/93], Loss: 4.3532, Perplexity: 77.7300
+----------------------------------
+epoch 237 num_epochs 500000
+Epoch [237/500000], Step [0/217], Loss: 0.0157, Perplexity: 1.0158
+Epoch [237/500000], Step [100/217], Loss: 1.5441, Perplexity: 4.6840
+Epoch [237/500000], Step [200/217], Loss: 1.5565, Perplexity: 4.7421
+val_Epoch [237/500000], Step [92/93], Loss: 4.3330, Perplexity: 76.1744
+----------------------------------
+epoch 238 num_epochs 500000
+Epoch [238/500000], Step [0/217], Loss: 0.0155, Perplexity: 1.0156
+Epoch [238/500000], Step [100/217], Loss: 1.5329, Perplexity: 4.6318
+Epoch [238/500000], Step [200/217], Loss: 1.5542, Perplexity: 4.7315
+val_Epoch [238/500000], Step [92/93], Loss: 4.3203, Perplexity: 75.2086
+----------------------------------
+epoch 239 num_epochs 500000
+Epoch [239/500000], Step [0/217], Loss: 0.0158, Perplexity: 1.0160
+Epoch [239/500000], Step [100/217], Loss: 1.5310, Perplexity: 4.6229
+Epoch [239/500000], Step [200/217], Loss: 1.5369, Perplexity: 4.6500
+val_Epoch [239/500000], Step [92/93], Loss: 4.3304, Perplexity: 75.9740
+----------------------------------
+epoch 240 num_epochs 500000
+Epoch [240/500000], Step [0/217], Loss: 0.0149, Perplexity: 1.0151
+Epoch [240/500000], Step [100/217], Loss: 1.5319, Perplexity: 4.6271
+Epoch [240/500000], Step [200/217], Loss: 1.5424, Perplexity: 4.6759
+val_Epoch [240/500000], Step [92/93], Loss: 4.3405, Perplexity: 76.7480
+----------------------------------
+epoch 241 num_epochs 500000
+Epoch [241/500000], Step [0/217], Loss: 0.0149, Perplexity: 1.0150
+Epoch [241/500000], Step [100/217], Loss: 1.5287, Perplexity: 4.6121
+Epoch [241/500000], Step [200/217], Loss: 1.5161, Perplexity: 4.5545
+val_Epoch [241/500000], Step [92/93], Loss: 4.3302, Perplexity: 75.9632
+----------------------------------
+epoch 242 num_epochs 500000
+Epoch [242/500000], Step [0/217], Loss: 0.0148, Perplexity: 1.0149
+Epoch [242/500000], Step [100/217], Loss: 1.5269, Perplexity: 4.6037
+Epoch [242/500000], Step [200/217], Loss: 1.5204, Perplexity: 4.5742
+val_Epoch [242/500000], Step [92/93], Loss: 4.3079, Perplexity: 74.2844
+----------------------------------
+>>>> saving best epoch 242 4.307901605483024
+epoch 243 num_epochs 500000
+Epoch [243/500000], Step [0/217], Loss: 0.0160, Perplexity: 1.0162
+Epoch [243/500000], Step [100/217], Loss: 1.5082, Perplexity: 4.5185
+Epoch [243/500000], Step [200/217], Loss: 1.5212, Perplexity: 4.5777
+val_Epoch [243/500000], Step [92/93], Loss: 4.3065, Perplexity: 74.1800
+----------------------------------
+>>>> saving best epoch 243 4.306494453901886
+epoch 244 num_epochs 500000
+Epoch [244/500000], Step [0/217], Loss: 0.0150, Perplexity: 1.0151
+Epoch [244/500000], Step [100/217], Loss: 1.5128, Perplexity: 4.5395
+Epoch [244/500000], Step [200/217], Loss: 1.5131, Perplexity: 4.5408
+val_Epoch [244/500000], Step [92/93], Loss: 4.3127, Perplexity: 74.6383
+----------------------------------
+epoch 245 num_epochs 500000
+Epoch [245/500000], Step [0/217], Loss: 0.0161, Perplexity: 1.0162
+Epoch [245/500000], Step [100/217], Loss: 1.5023, Perplexity: 4.4920
+Epoch [245/500000], Step [200/217], Loss: 1.5108, Perplexity: 4.5303
+val_Epoch [245/500000], Step [92/93], Loss: 4.3051, Perplexity: 74.0785
+----------------------------------
+>>>> saving best epoch 245 4.30512551594806
+epoch 246 num_epochs 500000
+Epoch [246/500000], Step [0/217], Loss: 0.0150, Perplexity: 1.0151
+Epoch [246/500000], Step [100/217], Loss: 1.5054, Perplexity: 4.5059
+Epoch [246/500000], Step [200/217], Loss: 1.4884, Perplexity: 4.4298
+val_Epoch [246/500000], Step [92/93], Loss: 4.3137, Perplexity: 74.7172
+----------------------------------
+epoch 247 num_epochs 500000
+Epoch [247/500000], Step [0/217], Loss: 0.0147, Perplexity: 1.0149
+Epoch [247/500000], Step [100/217], Loss: 1.4951, Perplexity: 4.4600
+Epoch [247/500000], Step [200/217], Loss: 1.4879, Perplexity: 4.4278
+val_Epoch [247/500000], Step [92/93], Loss: 4.2998, Perplexity: 73.6839
+----------------------------------
+>>>> saving best epoch 247 4.29978375024693
+epoch 248 num_epochs 500000
+Epoch [248/500000], Step [0/217], Loss: 0.0137, Perplexity: 1.0138
+Epoch [248/500000], Step [100/217], Loss: 1.4913, Perplexity: 4.4427
+Epoch [248/500000], Step [200/217], Loss: 1.4852, Perplexity: 4.4158
+val_Epoch [248/500000], Step [92/93], Loss: 4.3279, Perplexity: 75.7842
+----------------------------------
+epoch 249 num_epochs 500000
+Epoch [249/500000], Step [0/217], Loss: 0.0141, Perplexity: 1.0142
+Epoch [249/500000], Step [100/217], Loss: 1.4700, Perplexity: 4.3494
+Epoch [249/500000], Step [200/217], Loss: 1.4891, Perplexity: 4.4332
+val_Epoch [249/500000], Step [92/93], Loss: 4.3065, Perplexity: 74.1772
+----------------------------------
+epoch 250 num_epochs 500000
+Epoch [250/500000], Step [0/217], Loss: 0.0144, Perplexity: 1.0145
+Epoch [250/500000], Step [100/217], Loss: 1.4841, Perplexity: 4.4112
+Epoch [250/500000], Step [200/217], Loss: 1.4820, Perplexity: 4.4019
+val_Epoch [250/500000], Step [92/93], Loss: 4.3269, Perplexity: 75.7090
+----------------------------------
+epoch 251 num_epochs 500000
+Epoch [251/500000], Step [0/217], Loss: 0.0144, Perplexity: 1.0145
+Epoch [251/500000], Step [100/217], Loss: 1.4688, Perplexity: 4.3441
+Epoch [251/500000], Step [200/217], Loss: 1.4598, Perplexity: 4.3052
+val_Epoch [251/500000], Step [92/93], Loss: 4.3053, Perplexity: 74.0922
+----------------------------------
+epoch 252 num_epochs 500000
+Epoch [252/500000], Step [0/217], Loss: 0.0158, Perplexity: 1.0159
+Epoch [252/500000], Step [100/217], Loss: 1.4731, Perplexity: 4.3629
+Epoch [252/500000], Step [200/217], Loss: 1.4755, Perplexity: 4.3732
+val_Epoch [252/500000], Step [92/93], Loss: 4.3023, Perplexity: 73.8677
+----------------------------------
+epoch 253 num_epochs 500000
+Epoch [253/500000], Step [0/217], Loss: 0.0142, Perplexity: 1.0143
+Epoch [253/500000], Step [100/217], Loss: 1.4714, Perplexity: 4.3555
+Epoch [253/500000], Step [200/217], Loss: 1.4583, Perplexity: 4.2987
+val_Epoch [253/500000], Step [92/93], Loss: 4.3030, Perplexity: 73.9233
+----------------------------------
+epoch 254 num_epochs 500000
+Epoch [254/500000], Step [0/217], Loss: 0.0151, Perplexity: 1.0153
+Epoch [254/500000], Step [100/217], Loss: 1.4581, Perplexity: 4.2977
+Epoch [254/500000], Step [200/217], Loss: 1.4595, Perplexity: 4.3038
+val_Epoch [254/500000], Step [92/93], Loss: 4.2953, Perplexity: 73.3540
+----------------------------------
+>>>> saving best epoch 254 4.295297494498632
+epoch 255 num_epochs 500000
+Epoch [255/500000], Step [0/217], Loss: 0.0139, Perplexity: 1.0140
+Epoch [255/500000], Step [100/217], Loss: 1.4578, Perplexity: 4.2967
+Epoch [255/500000], Step [200/217], Loss: 1.4567, Perplexity: 4.2916
+val_Epoch [255/500000], Step [92/93], Loss: 4.2852, Perplexity: 72.6186
+----------------------------------
+>>>> saving best epoch 255 4.285221351090298
+epoch 256 num_epochs 500000
+Epoch [256/500000], Step [0/217], Loss: 0.0153, Perplexity: 1.0154
+Epoch [256/500000], Step [100/217], Loss: 1.4654, Perplexity: 4.3291
+Epoch [256/500000], Step [200/217], Loss: 1.4508, Perplexity: 4.2667
+val_Epoch [256/500000], Step [92/93], Loss: 4.3043, Perplexity: 74.0205
+----------------------------------
+epoch 257 num_epochs 500000
+Epoch [257/500000], Step [0/217], Loss: 0.0161, Perplexity: 1.0162
+Epoch [257/500000], Step [100/217], Loss: 1.4361, Perplexity: 4.2043
+Epoch [257/500000], Step [200/217], Loss: 1.4399, Perplexity: 4.2202
+val_Epoch [257/500000], Step [92/93], Loss: 4.3004, Perplexity: 73.7308
+----------------------------------
+epoch 258 num_epochs 500000
+Epoch [258/500000], Step [0/217], Loss: 0.0155, Perplexity: 1.0157
+Epoch [258/500000], Step [100/217], Loss: 1.4427, Perplexity: 4.2322
+Epoch [258/500000], Step [200/217], Loss: 1.4357, Perplexity: 4.2026
+val_Epoch [258/500000], Step [92/93], Loss: 4.3050, Perplexity: 74.0658
+----------------------------------
+epoch 259 num_epochs 500000
+Epoch [259/500000], Step [0/217], Loss: 0.0143, Perplexity: 1.0144
+Epoch [259/500000], Step [100/217], Loss: 1.4300, Perplexity: 4.1788
+Epoch [259/500000], Step [200/217], Loss: 1.4344, Perplexity: 4.1970
+val_Epoch [259/500000], Step [92/93], Loss: 4.2878, Perplexity: 72.8070
+----------------------------------
+epoch 260 num_epochs 500000
+Epoch [260/500000], Step [0/217], Loss: 0.0142, Perplexity: 1.0143
+Epoch [260/500000], Step [100/217], Loss: 1.4339, Perplexity: 4.1949
+Epoch [260/500000], Step [200/217], Loss: 1.4298, Perplexity: 4.1778
+val_Epoch [260/500000], Step [92/93], Loss: 4.3290, Perplexity: 75.8675
+----------------------------------
+epoch 261 num_epochs 500000
+Epoch [261/500000], Step [0/217], Loss: 0.0137, Perplexity: 1.0138
+Epoch [261/500000], Step [100/217], Loss: 1.4104, Perplexity: 4.0977
+Epoch [261/500000], Step [200/217], Loss: 1.4222, Perplexity: 4.1462
+val_Epoch [261/500000], Step [92/93], Loss: 4.2765, Perplexity: 71.9858
+----------------------------------
+>>>> saving best epoch 261 4.276468876869448
+epoch 262 num_epochs 500000
+Epoch [262/500000], Step [0/217], Loss: 0.0139, Perplexity: 1.0140
+Epoch [262/500000], Step [100/217], Loss: 1.4082, Perplexity: 4.0885
+Epoch [262/500000], Step [200/217], Loss: 1.4018, Perplexity: 4.0625
+val_Epoch [262/500000], Step [92/93], Loss: 4.2814, Perplexity: 72.3435
+----------------------------------
+epoch 263 num_epochs 500000
+Epoch [263/500000], Step [0/217], Loss: 0.0152, Perplexity: 1.0154
+Epoch [263/500000], Step [100/217], Loss: 1.4220, Perplexity: 4.1454
+Epoch [263/500000], Step [200/217], Loss: 1.3960, Perplexity: 4.0390
+val_Epoch [263/500000], Step [92/93], Loss: 4.3176, Perplexity: 75.0101
+----------------------------------
+epoch 264 num_epochs 500000
+Epoch [264/500000], Step [0/217], Loss: 0.0131, Perplexity: 1.0132
+Epoch [264/500000], Step [100/217], Loss: 1.4113, Perplexity: 4.1012
+Epoch [264/500000], Step [200/217], Loss: 1.4064, Perplexity: 4.0813
+val_Epoch [264/500000], Step [92/93], Loss: 4.2956, Perplexity: 73.3767
+----------------------------------
+epoch 265 num_epochs 500000
+Epoch [265/500000], Step [0/217], Loss: 0.0134, Perplexity: 1.0135
+Epoch [265/500000], Step [100/217], Loss: 1.3989, Perplexity: 4.0507
+Epoch [265/500000], Step [200/217], Loss: 1.3926, Perplexity: 4.0251
+val_Epoch [265/500000], Step [92/93], Loss: 4.2841, Perplexity: 72.5358
+----------------------------------
+epoch 266 num_epochs 500000
+Epoch [266/500000], Step [0/217], Loss: 0.0136, Perplexity: 1.0136
+Epoch [266/500000], Step [100/217], Loss: 1.3925, Perplexity: 4.0248
+Epoch [266/500000], Step [200/217], Loss: 1.3904, Perplexity: 4.0165
+val_Epoch [266/500000], Step [92/93], Loss: 4.2966, Perplexity: 73.4473
+----------------------------------
+epoch 267 num_epochs 500000
+Epoch [267/500000], Step [0/217], Loss: 0.0145, Perplexity: 1.0146
+Epoch [267/500000], Step [100/217], Loss: 1.3956, Perplexity: 4.0373
+Epoch [267/500000], Step [200/217], Loss: 1.3956, Perplexity: 4.0374
+val_Epoch [267/500000], Step [92/93], Loss: 4.3161, Perplexity: 74.8931
+----------------------------------
+epoch 268 num_epochs 500000
+Epoch [268/500000], Step [0/217], Loss: 0.0135, Perplexity: 1.0136
+Epoch [268/500000], Step [100/217], Loss: 1.3767, Perplexity: 3.9619
+Epoch [268/500000], Step [200/217], Loss: 1.3935, Perplexity: 4.0288
+val_Epoch [268/500000], Step [92/93], Loss: 4.2725, Perplexity: 71.7026
+----------------------------------
+>>>> saving best epoch 268 4.272527107628443
+epoch 269 num_epochs 500000
+Epoch [269/500000], Step [0/217], Loss: 0.0134, Perplexity: 1.0135
+Epoch [269/500000], Step [100/217], Loss: 1.3778, Perplexity: 3.9660
+Epoch [269/500000], Step [200/217], Loss: 1.3754, Perplexity: 3.9566
+val_Epoch [269/500000], Step [92/93], Loss: 4.2759, Perplexity: 71.9478
+----------------------------------
+epoch 270 num_epochs 500000
+Epoch [270/500000], Step [0/217], Loss: 0.0129, Perplexity: 1.0130
+Epoch [270/500000], Step [100/217], Loss: 1.3756, Perplexity: 3.9576
+Epoch [270/500000], Step [200/217], Loss: 1.3795, Perplexity: 3.9731
+val_Epoch [270/500000], Step [92/93], Loss: 4.2972, Perplexity: 73.4925
+----------------------------------
+epoch 271 num_epochs 500000
+Epoch [271/500000], Step [0/217], Loss: 0.0131, Perplexity: 1.0132
+Epoch [271/500000], Step [100/217], Loss: 1.3753, Perplexity: 3.9564
+Epoch [271/500000], Step [200/217], Loss: 1.3704, Perplexity: 3.9369
+val_Epoch [271/500000], Step [92/93], Loss: 4.2881, Perplexity: 72.8261
+----------------------------------
+epoch 272 num_epochs 500000
+Epoch [272/500000], Step [0/217], Loss: 0.0138, Perplexity: 1.0139
+Epoch [272/500000], Step [100/217], Loss: 1.3655, Perplexity: 3.9178
+Epoch [272/500000], Step [200/217], Loss: 1.3491, Perplexity: 3.8539
+val_Epoch [272/500000], Step [92/93], Loss: 4.2711, Perplexity: 71.6018
+----------------------------------
+>>>> saving best epoch 272 4.271119558683005
+epoch 273 num_epochs 500000
+Epoch [273/500000], Step [0/217], Loss: 0.0129, Perplexity: 1.0130
+Epoch [273/500000], Step [100/217], Loss: 1.3570, Perplexity: 3.8844
+Epoch [273/500000], Step [200/217], Loss: 1.3693, Perplexity: 3.9326
+val_Epoch [273/500000], Step [92/93], Loss: 4.2674, Perplexity: 71.3337
+----------------------------------
+>>>> saving best epoch 273 4.267368334595875
+epoch 274 num_epochs 500000
+Epoch [274/500000], Step [0/217], Loss: 0.0127, Perplexity: 1.0128
+Epoch [274/500000], Step [100/217], Loss: 1.3663, Perplexity: 3.9207
+Epoch [274/500000], Step [200/217], Loss: 1.3520, Perplexity: 3.8650
+val_Epoch [274/500000], Step [92/93], Loss: 4.2879, Perplexity: 72.8158
+----------------------------------
+epoch 275 num_epochs 500000
+Epoch [275/500000], Step [0/217], Loss: 0.0141, Perplexity: 1.0142
+Epoch [275/500000], Step [100/217], Loss: 1.3595, Perplexity: 3.8944
+Epoch [275/500000], Step [200/217], Loss: 1.3671, Perplexity: 3.9238
+val_Epoch [275/500000], Step [92/93], Loss: 4.2893, Perplexity: 72.9164
+----------------------------------
+epoch 276 num_epochs 500000
+Epoch [276/500000], Step [0/217], Loss: 0.0130, Perplexity: 1.0131
+Epoch [276/500000], Step [100/217], Loss: 1.3449, Perplexity: 3.8378
+Epoch [276/500000], Step [200/217], Loss: 1.3467, Perplexity: 3.8447
+val_Epoch [276/500000], Step [92/93], Loss: 4.2790, Perplexity: 72.1702
+----------------------------------
+epoch 277 num_epochs 500000
+Epoch [277/500000], Step [0/217], Loss: 0.0140, Perplexity: 1.0141
+Epoch [277/500000], Step [100/217], Loss: 1.3482, Perplexity: 3.8505
+Epoch [277/500000], Step [200/217], Loss: 1.3470, Perplexity: 3.8457
+val_Epoch [277/500000], Step [92/93], Loss: 4.2535, Perplexity: 70.3539
+----------------------------------
+>>>> saving best epoch 277 4.253537662567631
+epoch 278 num_epochs 500000
+Epoch [278/500000], Step [0/217], Loss: 0.0150, Perplexity: 1.0151
+Epoch [278/500000], Step [100/217], Loss: 1.3367, Perplexity: 3.8064
+Epoch [278/500000], Step [200/217], Loss: 1.3247, Perplexity: 3.7609
+val_Epoch [278/500000], Step [92/93], Loss: 4.2706, Perplexity: 71.5641
+----------------------------------
+epoch 279 num_epochs 500000
+Epoch [279/500000], Step [0/217], Loss: 0.0127, Perplexity: 1.0128
+Epoch [279/500000], Step [100/217], Loss: 1.3356, Perplexity: 3.8023
+Epoch [279/500000], Step [200/217], Loss: 1.3226, Perplexity: 3.7533
+val_Epoch [279/500000], Step [92/93], Loss: 4.2749, Perplexity: 71.8750
+----------------------------------
+epoch 280 num_epochs 500000
+Epoch [280/500000], Step [0/217], Loss: 0.0141, Perplexity: 1.0142
+Epoch [280/500000], Step [100/217], Loss: 1.3336, Perplexity: 3.7945
+Epoch [280/500000], Step [200/217], Loss: 1.3169, Perplexity: 3.7319
+val_Epoch [280/500000], Step [92/93], Loss: 4.2756, Perplexity: 71.9265
+----------------------------------
+epoch 281 num_epochs 500000
+Epoch [281/500000], Step [0/217], Loss: 0.0127, Perplexity: 1.0128
+Epoch [281/500000], Step [100/217], Loss: 1.3153, Perplexity: 3.7259
+Epoch [281/500000], Step [200/217], Loss: 1.3129, Perplexity: 3.7170
+val_Epoch [281/500000], Step [92/93], Loss: 4.2893, Perplexity: 72.9146
+----------------------------------
+epoch 282 num_epochs 500000
+Epoch [282/500000], Step [0/217], Loss: 0.0126, Perplexity: 1.0126
+Epoch [282/500000], Step [100/217], Loss: 1.3066, Perplexity: 3.6937
+Epoch [282/500000], Step [200/217], Loss: 1.3319, Perplexity: 3.7884
+val_Epoch [282/500000], Step [92/93], Loss: 4.2978, Perplexity: 73.5369
+----------------------------------
+epoch 283 num_epochs 500000
+Epoch [283/500000], Step [0/217], Loss: 0.0127, Perplexity: 1.0128
+Epoch [283/500000], Step [100/217], Loss: 1.3024, Perplexity: 3.6782
+Epoch [283/500000], Step [200/217], Loss: 1.3178, Perplexity: 3.7351
+val_Epoch [283/500000], Step [92/93], Loss: 4.2916, Perplexity: 73.0844
+----------------------------------
+epoch 284 num_epochs 500000
+Epoch [284/500000], Step [0/217], Loss: 0.0130, Perplexity: 1.0131
+Epoch [284/500000], Step [100/217], Loss: 1.3042, Perplexity: 3.6846
+Epoch [284/500000], Step [200/217], Loss: 1.3054, Perplexity: 3.6892
+val_Epoch [284/500000], Step [92/93], Loss: 4.3134, Perplexity: 74.6966
+----------------------------------
+epoch 285 num_epochs 500000
+Epoch [285/500000], Step [0/217], Loss: 0.0149, Perplexity: 1.0151
+Epoch [285/500000], Step [100/217], Loss: 1.2857, Perplexity: 3.6173
+Epoch [285/500000], Step [200/217], Loss: 1.2986, Perplexity: 3.6643
+val_Epoch [285/500000], Step [92/93], Loss: 4.2991, Perplexity: 73.6350
+----------------------------------
+epoch 286 num_epochs 500000
+Epoch [286/500000], Step [0/217], Loss: 0.0121, Perplexity: 1.0122
+Epoch [286/500000], Step [100/217], Loss: 1.2887, Perplexity: 3.6282
+Epoch [286/500000], Step [200/217], Loss: 1.2904, Perplexity: 3.6344
+val_Epoch [286/500000], Step [92/93], Loss: 4.2757, Perplexity: 71.9280
+----------------------------------
+epoch 287 num_epochs 500000
+Epoch [287/500000], Step [0/217], Loss: 0.0136, Perplexity: 1.0136
+Epoch [287/500000], Step [100/217], Loss: 1.2914, Perplexity: 3.6377
+Epoch [287/500000], Step [200/217], Loss: 1.2728, Perplexity: 3.5709
+val_Epoch [287/500000], Step [92/93], Loss: 4.2749, Perplexity: 71.8741
+----------------------------------
+epoch 288 num_epochs 500000
+Epoch [288/500000], Step [0/217], Loss: 0.0125, Perplexity: 1.0125
+Epoch [288/500000], Step [100/217], Loss: 1.2838, Perplexity: 3.6104
+Epoch [288/500000], Step [200/217], Loss: 1.2794, Perplexity: 3.5944
+val_Epoch [288/500000], Step [92/93], Loss: 4.2935, Perplexity: 73.2220
+----------------------------------
+epoch 289 num_epochs 500000
+Epoch [289/500000], Step [0/217], Loss: 0.0119, Perplexity: 1.0120
+Epoch [289/500000], Step [100/217], Loss: 1.2795, Perplexity: 3.5949
+Epoch [289/500000], Step [200/217], Loss: 1.2601, Perplexity: 3.5259
+val_Epoch [289/500000], Step [92/93], Loss: 4.2912, Perplexity: 73.0536
+----------------------------------
+epoch 290 num_epochs 500000
+Epoch [290/500000], Step [0/217], Loss: 0.0128, Perplexity: 1.0129
+Epoch [290/500000], Step [100/217], Loss: 1.2720, Perplexity: 3.5680
+Epoch [290/500000], Step [200/217], Loss: 1.2545, Perplexity: 3.5060
+val_Epoch [290/500000], Step [92/93], Loss: 4.3055, Perplexity: 74.1085
+----------------------------------
+epoch 291 num_epochs 500000
+Epoch [291/500000], Step [0/217], Loss: 0.0113, Perplexity: 1.0114
+Epoch [291/500000], Step [100/217], Loss: 1.2529, Perplexity: 3.5003
+Epoch [291/500000], Step [200/217], Loss: 1.2731, Perplexity: 3.5721
+val_Epoch [291/500000], Step [92/93], Loss: 4.3018, Perplexity: 73.8300
+----------------------------------
+epoch 292 num_epochs 500000
+Epoch [292/500000], Step [0/217], Loss: 0.0122, Perplexity: 1.0123
+Epoch [292/500000], Step [100/217], Loss: 1.2639, Perplexity: 3.5391
+Epoch [292/500000], Step [200/217], Loss: 1.2582, Perplexity: 3.5192
+val_Epoch [292/500000], Step [92/93], Loss: 4.2889, Perplexity: 72.8844
+----------------------------------
+epoch 293 num_epochs 500000
+Epoch [293/500000], Step [0/217], Loss: 0.0125, Perplexity: 1.0126
+Epoch [293/500000], Step [100/217], Loss: 1.2571, Perplexity: 3.5152
+Epoch [293/500000], Step [200/217], Loss: 1.2618, Perplexity: 3.5317
+val_Epoch [293/500000], Step [92/93], Loss: 4.2752, Perplexity: 71.8958
+----------------------------------
+epoch 294 num_epochs 500000
+Epoch [294/500000], Step [0/217], Loss: 0.0145, Perplexity: 1.0146
+Epoch [294/500000], Step [100/217], Loss: 1.2477, Perplexity: 3.4822
+Epoch [294/500000], Step [200/217], Loss: 1.2481, Perplexity: 3.4837
+val_Epoch [294/500000], Step [92/93], Loss: 4.3304, Perplexity: 75.9719
+----------------------------------
+epoch 295 num_epochs 500000
+Epoch [295/500000], Step [0/217], Loss: 0.0129, Perplexity: 1.0129
+Epoch [295/500000], Step [100/217], Loss: 1.2401, Perplexity: 3.4559
+Epoch [295/500000], Step [200/217], Loss: 1.2442, Perplexity: 3.4702
+val_Epoch [295/500000], Step [92/93], Loss: 4.2668, Perplexity: 71.2903
+----------------------------------
+epoch 296 num_epochs 500000
+Epoch [296/500000], Step [0/217], Loss: 0.0126, Perplexity: 1.0127
+Epoch [296/500000], Step [100/217], Loss: 1.2459, Perplexity: 3.4760
+Epoch [296/500000], Step [200/217], Loss: 1.2406, Perplexity: 3.4577
+val_Epoch [296/500000], Step [92/93], Loss: 4.2749, Perplexity: 71.8730
+----------------------------------
+epoch 297 num_epochs 500000
+Epoch [297/500000], Step [0/217], Loss: 0.0136, Perplexity: 1.0137
+Epoch [297/500000], Step [100/217], Loss: 1.2279, Perplexity: 3.4139
+Epoch [297/500000], Step [200/217], Loss: 1.2412, Perplexity: 3.4599
+val_Epoch [297/500000], Step [92/93], Loss: 4.3154, Perplexity: 74.8468
+----------------------------------
+epoch 298 num_epochs 500000
+Epoch [298/500000], Step [0/217], Loss: 0.0109, Perplexity: 1.0109
+Epoch [298/500000], Step [100/217], Loss: 1.2344, Perplexity: 3.4363
+Epoch [298/500000], Step [200/217], Loss: 1.2225, Perplexity: 3.3955
+val_Epoch [298/500000], Step [92/93], Loss: 4.2798, Perplexity: 72.2254
+----------------------------------
+epoch 299 num_epochs 500000
+Epoch [299/500000], Step [0/217], Loss: 0.0122, Perplexity: 1.0123
+Epoch [299/500000], Step [100/217], Loss: 1.2455, Perplexity: 3.4745
+Epoch [299/500000], Step [200/217], Loss: 1.2261, Perplexity: 3.4078
+val_Epoch [299/500000], Step [92/93], Loss: 4.2807, Perplexity: 72.2903
+----------------------------------
+epoch 300 num_epochs 500000
+Epoch [300/500000], Step [0/217], Loss: 0.0125, Perplexity: 1.0126
+Epoch [300/500000], Step [100/217], Loss: 1.2174, Perplexity: 3.3785
+Epoch [300/500000], Step [200/217], Loss: 1.2134, Perplexity: 3.3650
+val_Epoch [300/500000], Step [92/93], Loss: 4.2762, Perplexity: 71.9692
+----------------------------------
+epoch 301 num_epochs 500000
+Epoch [301/500000], Step [0/217], Loss: 0.0143, Perplexity: 1.0144
+Epoch [301/500000], Step [100/217], Loss: 1.2136, Perplexity: 3.3655
+Epoch [301/500000], Step [200/217], Loss: 1.2135, Perplexity: 3.3652
+val_Epoch [301/500000], Step [92/93], Loss: 4.2652, Perplexity: 71.1766
+----------------------------------
+epoch 302 num_epochs 500000
+Epoch [302/500000], Step [0/217], Loss: 0.0112, Perplexity: 1.0113
+Epoch [302/500000], Step [100/217], Loss: 1.2144, Perplexity: 3.3684
+Epoch [302/500000], Step [200/217], Loss: 1.2152, Perplexity: 3.3709
+val_Epoch [302/500000], Step [92/93], Loss: 4.3018, Perplexity: 73.8342
+----------------------------------
+epoch 303 num_epochs 500000
+Epoch [303/500000], Step [0/217], Loss: 0.0114, Perplexity: 1.0115
+Epoch [303/500000], Step [100/217], Loss: 1.2055, Perplexity: 3.3384
+Epoch [303/500000], Step [200/217], Loss: 1.2063, Perplexity: 3.3411
+val_Epoch [303/500000], Step [92/93], Loss: 4.3068, Perplexity: 74.2016
+----------------------------------
+epoch 304 num_epochs 500000
+Epoch [304/500000], Step [0/217], Loss: 0.0128, Perplexity: 1.0129
+Epoch [304/500000], Step [100/217], Loss: 1.1946, Perplexity: 3.3022
+Epoch [304/500000], Step [200/217], Loss: 1.1985, Perplexity: 3.3152
+val_Epoch [304/500000], Step [92/93], Loss: 4.2671, Perplexity: 71.3130
+----------------------------------
+epoch 305 num_epochs 500000
+Epoch [305/500000], Step [0/217], Loss: 0.0126, Perplexity: 1.0127
+Epoch [305/500000], Step [100/217], Loss: 1.1834, Perplexity: 3.2655
+Epoch [305/500000], Step [200/217], Loss: 1.2031, Perplexity: 3.3304
+val_Epoch [305/500000], Step [92/93], Loss: 4.2837, Perplexity: 72.5053
+----------------------------------
+epoch 306 num_epochs 500000
+Epoch [306/500000], Step [0/217], Loss: 0.0117, Perplexity: 1.0118
+Epoch [306/500000], Step [100/217], Loss: 1.1904, Perplexity: 3.2884
+Epoch [306/500000], Step [200/217], Loss: 1.1958, Perplexity: 3.3063
+val_Epoch [306/500000], Step [92/93], Loss: 4.2614, Perplexity: 70.9123
+----------------------------------
+epoch 307 num_epochs 500000
+Epoch [307/500000], Step [0/217], Loss: 0.0115, Perplexity: 1.0116
+Epoch [307/500000], Step [100/217], Loss: 1.1772, Perplexity: 3.2453
+Epoch [307/500000], Step [200/217], Loss: 1.1892, Perplexity: 3.2846
+val_Epoch [307/500000], Step [92/93], Loss: 4.2970, Perplexity: 73.4770
+----------------------------------
+epoch 308 num_epochs 500000
+early stopping at: 308
+prev save epoch:  277
+best loss: 4.253537662567631
+final best loss: 4.253537662567631

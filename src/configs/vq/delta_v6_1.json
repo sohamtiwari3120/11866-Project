@@ -1,7 +1,7 @@
 {
   "l_vqconfig": "vqgan/configs/l2_32_smoothSS.json",
   "pipeline": "er2er",
-  "tag": "delta_v6_wtext-N-seg-N_ws-N_es-30_concat-N_",
+  "tag": "delta_v6_exp-1_wtext-Y_concat-Y_full-Y_aligned-N_seg-N_ws-N_es-30_",
   "segment_tag": "",
   "learning_rate": 0.01,
   "warmup_steps": 100000,

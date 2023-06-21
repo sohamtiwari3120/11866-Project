@@ -157,11 +157,20 @@ class FACTModel(nn.Module):
 
     # creating post processing layers that will temporally downsample merged
     # speaker embedding
-    post_layers = [nn.Sequential(
-                   nn.Conv1d(dim*2,dim*2,85 if self.use_text_transcriptions and self.use_concat_attention else 5,stride=2,padding=2,
-                             padding_mode='replicate'),
-                   nn.LeakyReLU(0.2, True),
-                   nn.BatchNorm1d(dim*2))]
+    if self.use_text_transcriptions and self.use_concat_attention:
+        post_layers = [nn.Sequential(
+                    nn.Linear(120, 40),
+                    nn.GELU(),
+                    nn.Conv1d(dim*2,dim*2, 5,stride=2,padding=2,
+                                padding_mode='replicate'),
+                    nn.LeakyReLU(0.2, True),
+                    nn.BatchNorm1d(dim*2))]
+    else:
+        post_layers = [nn.Sequential(
+                    nn.Conv1d(dim*2,dim*2, 5,stride=2,padding=2,
+                                padding_mode='replicate'),
+                    nn.LeakyReLU(0.2, True),
+                    nn.BatchNorm1d(dim*2))]
     for _ in range(1, quant_factor):
         post_layers += [nn.Sequential(
                         nn.Conv1d(dim*2,dim*2,5,stride=1,padding=2,
@@ -284,9 +293,10 @@ class FACTModel(nn.Module):
         speaker_audioandmotion_features = self.cm_transformer_audio_motion(data_features)
         text_full_features = self.text_embedding_projector(inputs['transcript_full'])
         if self.use_concat_attention:
-            speaker_audioandtext_features = self.cm_transformer_audio_text({'x_a':text_full_features, 'x_b':audio_full_features})
+            # speaker_audioandtext_features = self.cm_transformer_audio_text({'x_a':audio_full_features, 'x_b':text_full_features})
+            speaker_textandaudio_features = self.cm_transformer_audio_text({'x_a':text_full_features, 'x_b':audio_full_features})
             speaker_motionandtext_features = self.cm_transformer_motion_text({'x_a':text_full_features, 'x_b':motion_full_features})
-            speaker_full_features = torch.concat([speaker_audioandmotion_features, speaker_audioandtext_features, speaker_motionandtext_features], dim=1)
+            speaker_full_features = torch.concat([speaker_audioandmotion_features, speaker_textandaudio_features, speaker_motionandtext_features], dim=1)
         else:
             data_features = {'x_a':text_full_features, 'x_b':speaker_audioandmotion_features}
             speaker_full_features = self.cm_transformer_audioandmotion_text(data_features)

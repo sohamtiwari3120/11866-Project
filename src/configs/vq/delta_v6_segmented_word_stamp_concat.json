@@ -1,7 +1,7 @@
 {
   "l_vqconfig": "vqgan/configs/l2_32_smoothSS.json",
   "pipeline": "er2er",
-  "tag": "delta_v6_wtext-Y_seg-Y_ws-Y_es-200_concat-Y_",
+  "tag": "delta_v6_wtext-Y_seg-N_ws-Y_es-30_concat-Y_audio-text_",
   "segment_tag": "",
   "learning_rate": 0.01,
   "warmup_steps": 100000,
@@ -9,7 +9,7 @@
   "num_epochs": 500000,
   "batch_size": 32,
   "early_stopping": {
-    "patience": 200
+    "patience": 30
   },
   "loss_config": {
     "loss_aug": "normal",
@@ -65,7 +65,7 @@
     "less_expressive_style_embeddings_dir": "./data/reference_style_embedidngs/results_less4/code/",
     "more_expressive_style_embeddings_dir": "./data/reference_style_embedidngs/results_more4/code/",
     "transcript_embeddings_dim": 384,
-    "transcripts_segmented": true,
+    "transcripts_segmented": false,
     "train_split_ratio": 0.70
   }
 }

@@ -1,0 +1,14 @@
+Namespace(config='configs/vq/delta_v6.json', checkpoint='models/delta_v6_er2er_best.pth', speaker='conan', etag='', sample_idx=None, save=False)
+l_model_path vqgan/models/l2_32_smoothSS_er2er_best.pth
+starting lr 2.0
+Let's use 1 GPUs!
+>> changing lr to 4.5e-06
+loading checkpoint from... vqgan/models/l2_32_smoothSS_er2er_best.pth
+> checkpoint models/delta_v6_er2er_best.pth
+starting lr 0.01
+Let's use 1 GPUs!
+loading from checkpoint... models/delta_v6_er2er_best.pth
+loaded: .//data/conan/test/p1_speak_files_clean_deca.npy (1049, 64, 3) (1049, 64, 3)
+*******
+out (1024, 64, 56)
+overall l2: 35.346798
